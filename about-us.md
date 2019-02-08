@@ -1,6 +1,6 @@
 ---
 layout: page
-title: О проекте
+title: О проекте и условия для авторов
 permalink: /about-us/
 ---
 
