@@ -2,7 +2,7 @@
 layout: post
 title:  "Инструкция, как работать с гемом Carrierwave (загрузка изображений в приложении Ruby on Rails)"
 date:   2019-08-01 06:00:00 +0300
-categories: carrierwave
+categories: ruby
 ---
 **Требуется установленный ImageMagick:**
 

@@ -2,7 +2,7 @@
 layout: post
 title:  "Психологические аспекты работы программиста. Планирование и самоменеджмент"
 date:   2019-10-03 06:00:00 +0300
-categories: psychology
+categories: others
 ---
 
 ## STAR

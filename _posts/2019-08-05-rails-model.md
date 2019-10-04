@@ -2,7 +2,7 @@
 layout: post
 title:  "Пошаговая инструкция, как создать сущность в Rails"
 date:   2019-08-05 06:00:00 +0300
-categories: rails-model
+categories: ruby
 ---
 
 **Create model:**
