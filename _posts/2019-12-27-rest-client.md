@@ -5,7 +5,7 @@ date:   2019-11-27 06:00:00 +0300
 categories: others
 ---
 
-Insomnia &mash; это программа для тестирования REST API.
+Insomnia &mdash; это программа для тестирования REST API.
 
 [https://insomnia.rest/](https://insomnia.rest/)
 
