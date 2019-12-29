@@ -15,7 +15,7 @@ rails g model Post title:string body:text
 rake db:migrate
 ```
 
-Чтобы создать RESTful JSON API на Ruby on Rails, надо:
+**Чтобы создать RESTful JSON API на Ruby on Rails, надо:**
 
 1. Добавить в Gemfile:
 
@@ -56,7 +56,11 @@ module Api
       # GET /api/v1/posts
       def index
         @posts = Post.all
-        render json: @posts, status: :ok
+        if @posts.present?
+          render json: @posts, status: :ok
+        else
+          render json: {status: 'ERROR', message: 'Posts not found'}, status: :not_found
+        end
       end
 
       # GET /api/v1/posts/:id
@@ -112,8 +116,18 @@ end
 
 |  Action    |  Method    |  Path    |  Comment    |
 |-------|-------|-------|-------|
-| List | GET | /api/v1/posts | Просмотр списка постов |
-| Create | POST | /api/v1/posts | Создать новый пост |
-| Read | GET | /api/v1/posts/:id | Просмотр поста |
-| Update | PATCH, PUT | /api/v1/posts/:id | Изменить пост |
-| Delete | DELETE | /api/v1/posts/:id | Удалить пост |
+| **List** | GET | /api/v1/posts | Просмотр списка постов |
+| **Create** | POST | /api/v1/posts | Создать новый пост |
+| **Read** | GET | /api/v1/posts/:id | Просмотр поста |
+| **Update** | PATCH, PUT | /api/v1/posts/:id | Изменить пост |
+| **Delete** | DELETE | /api/v1/posts/:id | Удалить пост |
+
+**Чтобы создать новый пост в теле запроса POST по адресу /api/v1/posts
+отправим:**
+
+```ruby
+{
+  "title": "This is test",
+  "body": "Hello API!"
+}
+```
