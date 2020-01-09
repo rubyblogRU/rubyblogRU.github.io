@@ -86,7 +86,6 @@ module Api
         else
           render json: {status: 'ERROR', message: 'Post not updated', data: @post.errors}, status: :unprocessable_entity
         end
-
       end
 
       # DELETE /api/v1/posts/:id
