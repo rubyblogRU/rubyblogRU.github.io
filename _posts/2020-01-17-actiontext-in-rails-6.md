@@ -7,7 +7,7 @@ categories: others
 Создадим контроллер:
 
 ```bash
-rails g controller Post
+rails g controller Posts
 ```
 
 Пропишем в routes.rb:
@@ -41,28 +41,31 @@ rake db:migrate
 has_rich_text :text
 ```
 
-Пропишем в контроллере:
+Пропишем в контроллере posts_controller.rb:
 ```ruby
 class PostsController < ApplicationController
+  def new
+  end
 
- def create
-   @post = Post.new(post_params)
-   @post.save
-   redirect_to @post
- end
+  def create
+    @post = Post.new(post_params)
+    @post.save
+    redirect_to @post
+  end
 
- private
+  private
 
- def post_params
-   params.require(:post).permit(:title, :text)
- end
+  def post_params
+    params.require(:post).permit(:title, :text)
+  end
 end
 ```
 
 Пропишем во вьюхе app/views/posts/new.rb:
 
 ```ruby
-<%= form_with scope: :post, url: posts_path, local: true do |form| %><p>
+<%= form_with scope: :post, url: posts_path, local: true do |form| %>
+  <p>
     <%= form.label :title %><br>
     <%= form.text_field :title %>
   </p>
@@ -83,7 +86,7 @@ end
 Пропишем в контроллере:
 ```ruby
 def show
-   @post = Post.find(params[:id])
+  @post = Post.find(params[:id])
 end
 ```
 
@@ -92,5 +95,5 @@ end
 ```ruby
 <p>Post Title:<strong><%= @post.title %></strong></p>
 <p>Post Text:<strong><%= @post.text %></strong></p>
-<p><%= link_to ‘Create new’, new_post_path %></p>
+<p><%= link_to 'Create new Post', new_post_path %></p>
 ```
