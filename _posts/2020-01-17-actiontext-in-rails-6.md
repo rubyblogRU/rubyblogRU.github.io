@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Инструкция: как настроить форму с RichText полем в Rails 6 (как включить ActionText"
+title:  "Инструкция: как настроить форму с RichText полем в Rails 6 (как включить ActionText)"
 date:   2020-01-17 06:00:00 +0300
 categories: others
 ---
