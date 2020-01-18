@@ -93,7 +93,17 @@ end
 Пропишем во вьюхе app/views/posts/show.html.erb
 
 ```ruby
-<p>Post Title:<strong><%= @post.title %></strong></p>
-<p>Post Text:<strong><%= @post.text %></strong></p>
+<p>Post Title: <strong><%= @post.title %></strong></p>
+<p>Post Text: <strong><%= @post.text %></strong></p>
 <p><%= link_to 'Create new Post', new_post_path %></p>
+```
+
+Запустим:
+```bash
+rails s
+```
+
+Откроем:
+```txt
+http://localhost:3000/posts/new
 ```
