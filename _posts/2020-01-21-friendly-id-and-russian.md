@@ -58,7 +58,7 @@ rails generate friendly_id
 rails db:migrate
 ```
 
-app/model/user.rb:
+app/models/user.rb:
 
 ```ruby
 class User < ApplicationRecord
@@ -71,7 +71,7 @@ class User < ApplicationRecord
 end
 ```
 
-app/controller/users_controller.rb
+app/controllers/users_controller.rb
 
 ```ruby
 class UserController < ApplicationController
@@ -79,6 +79,14 @@ class UserController < ApplicationController
     @user = User.friendly.find(params[:id])
   end
 end
+```
+
+Создадим вьюху app/views/users/show.html.erb:
+
+```ruby
+<h1><%= @user.name %></h1>
+<p><%= @user.email %></p>
+<p><%= @user.slug %></p>
 ```
 
 Откроем Rails-консоль и создадим юзера:
