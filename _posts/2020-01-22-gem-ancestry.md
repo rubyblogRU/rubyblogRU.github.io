@@ -200,6 +200,19 @@ end
 
 Готово. Теперь можно вкладывать подкатегории в категории. Плюс у нас готовы 2 типа меню, отображающие всю структуру категорий-подкатегорий (в index.html.erb) и меню отображающее только подкатегории данной категории (в show.html.erb)
 
+Плюс Вы можете добавить меню с корневыми категориями (добавим в layout):
+
+```ruby
+# app/views/layouts/application.html.erb
+<ul id="menu">
+  <% Category.roots.each do |category| %>
+    <li><%= link_to category.name, category %></li>
+  <% end %>
+</ul>
+
+<hr>
+```
+
 Можно ещё почитать: [https://hackernoon.com/nested-categories-with-rails-gem-ancestry-112ca8bbbf98](https://hackernoon.com/nested-categories-with-rails-gem-ancestry-112ca8bbbf98)
 
 Более подробно про гем и его настройки, читайте тут: [https://github.com/stefankroes/ancestry](https://github.com/stefankroes/ancestry)
