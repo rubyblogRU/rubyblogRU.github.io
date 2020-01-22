@@ -94,7 +94,7 @@ end
 ```bash
 rails c
 
-User.create! name: "Анфиса Николаевна Добронравова"
+User.create!(name: "Анфиса Николаевна Добронравова", email: "foo@barbaz.ru")
 ```
 
 Запустим приложение:
