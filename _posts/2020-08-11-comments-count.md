@@ -11,7 +11,7 @@ categories: others
 
 ### Сделаем следующее:
 
-1. Создадим миграцию:
+1). Создадим миграцию:
 
 ```ruby
 class AddCommentsCountToArticles < ActiveRecord::Migration[6.0]
@@ -21,9 +21,9 @@ class AddCommentsCountToArticles < ActiveRecord::Migration[6.0]
 end
 ```
 
-2. Прогоним миграцию `rails db:migrate`
+2). Прогоним миграцию `rails db:migrate`
 
-2. Создадим `rake task`:
+3). Создадим `rake task`:
 
 Создайте файл `lib/tasks/update_comments_count.rake`
 
@@ -39,7 +39,7 @@ namespace :db do
 end
 ```
 
-3. Добавим `counter_cache` для связи в модели `Comment`:
+4). Добавим `counter_cache` для связи в модели `Comment`:
 
 ```ruby
 class Comment < ApplicationRecord
@@ -47,13 +47,13 @@ class Comment < ApplicationRecord
 end
 ```
 
-4. Запустим таск:
+5). Запустим таск:
 
 ```bash
 rails db:update_comments_count
 ```
 
-5. Добавим во view `app/views/articles/show.html.erb`
+6). Добавим во view `app/views/articles/show.html.erb`
 
 ```ruby
 <h2>Comments (<%= @article.comments_count %>) :</h2>
