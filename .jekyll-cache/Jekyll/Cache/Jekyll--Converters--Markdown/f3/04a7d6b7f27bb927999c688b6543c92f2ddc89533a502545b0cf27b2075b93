@@ -1,0 +1,47 @@
+I",<p><a href="https://github.com/rbenv/rbenv">https://github.com/rbenv/rbenv</a></p>
+
+<p><strong>Для Bash:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>echo 'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;' &gt;&gt; ~/.bashrc
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>echo 'eval &quot;$(rbenv init -)&quot;' &gt;&gt; ~/.bashrc
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>echo 'export PATH=&quot;$HOME/.rbenv/plugins/ruby-build/bin:$PATH&quot;' &gt;&gt; ~/.bashrc
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>git clone https://github.com/rbenv/rbenv-vars.git ~/.rbenv/plugins/rbenv-vars
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>exec $SHELL
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>rbenv install 2.7.1
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>rbenv global 2.7.1
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>ruby -v
+</pre></div>
+</div>
+</div>
+
+<p><strong>Для Zsh:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>echo 'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;' &gt;&gt; ~/.zshrc
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>echo 'eval &quot;$(rbenv init -)&quot;' &gt;&gt; ~/.zshrc
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>echo 'export PATH=&quot;$HOME/.rbenv/plugins/ruby-build/bin:$PATH&quot;' &gt;&gt; ~/.zshrc
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>git clone https://github.com/rbenv/rbenv-vars.git ~/.rbenv/plugins/rbenv-vars
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>exec $SHELL
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>rbenv install 2.7.1
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>rbenv global 2.7.1
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>ruby -v
+</pre></div>
+</div>
+</div>
+
+<p><strong>Список доступных версий ruby:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rbenv install -l
+</pre></div>
+</div>
+</div>
+
+:ET

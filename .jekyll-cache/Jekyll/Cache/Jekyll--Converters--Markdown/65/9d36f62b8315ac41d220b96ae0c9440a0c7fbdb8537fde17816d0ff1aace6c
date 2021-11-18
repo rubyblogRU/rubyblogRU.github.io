@@ -1,0 +1,200 @@
+I"�#<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker run -it ubuntu bash
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>apt update
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>apt install mc
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>exit
+</pre></div>
+</div>
+</div>
+
+<ul>
+  <li>образы - для создания контейнеров. read only. базовая конфигурация авто</li>
+  <li>реестры</li>
+  <li>контейнеры</li>
+</ul>
+
+<p>Образы расположены в реестре (public, private)</p>
+
+<blockquote>
+  <p>Docker Hub: hub.docker.com</p>
+</blockquote>
+
+<p>Контейнеры - директории (создаются из образа).</p>
+
+<p>Каждый контейнер изолирован.</p>
+
+<ul>
+  <li>create</li>
+  <li>start</li>
+  <li>stop</li>
+  <li>movied</li>
+  <li>deleted</li>
+</ul>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker compose
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span># запуск. файл с инструкцией в директории
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>docker compose up
+</pre></div>
+</div>
+</div>
+<h1 id="основные-команды-для-работы-с-контейнерами">Основные команды для работы с контейнерами</h1>
+
+<p>Чтобы работать без sudo:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo usermod -aG docker username
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>sudo service docker restart
+</pre></div>
+</div>
+</div>
+<p>Посмотреть все запущенные и остановленные контейнеры:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker ps -a
+</pre></div>
+</div>
+</div>
+<p>Заново запустить контейнер</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker start NAME
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p><strong>ВЕЗДЕ В КОНСПЕКТЕ NAME - это имя контейнера</strong></p>
+</blockquote>
+
+<p>Остановить:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker stop NAME
+</pre></div>
+</div>
+</div>
+<p>Запустить и указать имя хоста в -h</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker run -h foobar -it ubuntu bash
+</pre></div>
+</div>
+</div>
+<p>Информация о контейнере:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker inspect NAME
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>docker inspect NAME | grep IPAddress
+</pre></div>
+</div>
+</div>
+<p>Запустить контейнер со своим именем:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker run --name FooBarBaz -it ubuntu bash
+</pre></div>
+</div>
+</div>
+<p>Посмотреть, какие файлы в контейнере добавили и изменили:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker diff NAME
+</pre></div>
+</div>
+</div>
+<p>Просмотр всех событий внутри контейнера:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker logs NAME
+</pre></div>
+</div>
+</div>
+<p>Удаление контейнера:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker rm NAME
+</pre></div>
+</div>
+</div>
+<p>Удалить все остановленные контейнеры:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker rm -v $(docker ps -aq -f status=exited)
+</pre></div>
+</div>
+</div>
+<p>Запустить в фоновом режиме:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker run -d
+</pre></div>
+</div>
+</div>
+<p>Apache:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo docker run -it bitnami/apache
+</pre></div>
+</div>
+</div>
+<p>Проброс портов (8000 - локальный порт, 8080 - порт в контейнере):</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo docker stop NAME
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>sudo docker run -d -p 8000:8080 bitnami/apache
+</pre></div>
+</div>
+</div>
+<p>Откроем в браузере: 0.0.0.0:8000</p>
+
+<p>Список образов:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker images
+</pre></div>
+</div>
+</div>
+<p>Справка:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker
+</pre></div>
+</div>
+</div>
+<h1 id="создание-собственного-образа">Создание собственного образа</h1>
+
+<p>Контейнер -&gt; Образ</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker run -it --name foobar --hostname foobar ubuntu bash
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>apt update
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>apt install cowsay
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>ln -s /usr/games/cowsay /usr/bin/cowsay
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>exit
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>docker commit NAME krdprog/foobar
+</pre></div>
+</div>
+</div>
+<p>NAME - имя контейнера, krdprog - docker ID, foobar - имя образа</p>
+
+<p>Вернут sha256</p>
+
+<p>Наберём и посмотрим список образов, там и наш новый:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker images
+</pre></div>
+</div>
+</div>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker run krdprog/foobar cowsay &quot;Foo!&quot;
+</pre></div>
+</div>
+</div>
+<p>Отправка образа на Docker Hub:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker push krdprog/foobar
+</pre></div>
+</div>
+</div>
+<p>Можно указать tag:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker push krdprog/foobar:tagname
+</pre></div>
+</div>
+</div>
+<p>Удалить образ локально:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>docker rmi IMAGE_ID
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>docker images
+</pre></div>
+</div>
+</div>
+<h2 id="создание-образов-с-использованием-dockerfile">Создание образов с использованием Dockerfile</h2>
+:ET

@@ -1,0 +1,36 @@
+I"�	<p>Если надо сделать так, чтобы на компьютере было несколько версий Ruby и Ruby on Rails, или что-то не работает при базовой установке, вам поможет с этим RVM (Ruby Version Manager).</p>
+
+<p>Сначала надо удалить уже установленные Ruby и Ruby on Rails и поставить всё через rvm - <a href="https://rvm.io">https://rvm.io</a></p>
+
+<p><strong>Команда удаления ruby:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get purge ruby
+</pre></div>
+</div>
+</div>
+
+<p><strong>Инструкция по установке RVM (команды в терминале GNU/Linux):</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>sudo apt-get install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>curl -sSL https://get.rvm.io | bash -s stable
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>source ~/.rvm/scripts/rvm
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>rvm install 2.6.5
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>rvm use 2.6.5 --default
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>ruby -v
+</pre></div>
+</div>
+</div>
+
+<p>Команды RVM можно посмотреть тут: <a href="http://cheat.errtheblog.com/s/rvm">http://cheat.errtheblog.com/s/rvm</a></p>
+
+<p><strong>Альтернатива:</strong> <a href="https://github.com/rbenv/rbenv">RBENV - https://github.com/rbenv/rbenv</a></p>
+:ET

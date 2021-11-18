@@ -1,0 +1,59 @@
+I"~<ul>
+  <li><a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
+  <li><a href="https://github.com/nodesource/distributions#deb">https://github.com/nodesource/distributions#deb</a></li>
+  <li><a href="https://github.com/yarnpkg/yarn">https://github.com/yarnpkg/yarn</a></li>
+  <li><a href="https://yarnpkg.com/getting-started/install">https://yarnpkg.com/getting-started/install</a></li>
+</ul>
+
+<p><strong>Bundler:</strong></p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install bundler:2.1.4
+</pre></div>
+</div>
+</div>
+
+<p><strong>Установка Node.js v14.x:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span># Using Ubuntu
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>sudo apt-get install -y nodejs
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>node -v
+</pre></div>
+</div>
+</div>
+
+<p><strong>Установка Node.js v13.x:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span># Using Ubuntu
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>sudo apt-get install -y nodejs
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>node -v
+</pre></div>
+</div>
+</div>
+
+<p><strong>Установка npm:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt install npm
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>npm -v
+</pre></div>
+</div>
+</div>
+
+<p><strong>Установка Yarn:</strong></p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>echo &quot;deb https://dl.yarnpkg.com/debian/ stable main&quot; | sudo tee /etc/apt/sources.list.d/yarn.list
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>sudo apt-get update &amp;&amp; sudo apt-get install yarn
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>yarn -v
+</pre></div>
+</div>
+</div>
+:ET

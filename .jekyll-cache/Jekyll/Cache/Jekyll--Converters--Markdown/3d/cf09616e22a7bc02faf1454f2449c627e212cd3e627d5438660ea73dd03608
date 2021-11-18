@@ -1,0 +1,16 @@
+I"�<p>Найти рекурсивно текст в файлах каталога (включая вложенные подкаталоги):</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>grep -iRl 'ищу текст' .
+</pre></div>
+</div>
+</div>
+
+<p>Вывести рекурсивно список файлов в каталоге (включая вложенные подкаталоги):</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>find $PWD -type f
+</pre></div>
+</div>
+</div>
+:ET

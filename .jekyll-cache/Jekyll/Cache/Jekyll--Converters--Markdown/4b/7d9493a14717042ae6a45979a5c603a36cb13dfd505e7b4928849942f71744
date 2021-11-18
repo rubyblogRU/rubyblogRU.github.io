@@ -1,0 +1,185 @@
+I"�G<p><strong>Предположим, что у нас есть модель Post:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g model Post title:string body:text
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<p><strong>Чтобы создать RESTful JSON API на Ruby on Rails, надо:</strong></p>
+
+<ol>
+  <li>Добавить в Gemfile:</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">jbuilder</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">~&gt; 2.7</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<ol>
+  <li>Сделать bundle install</li>
+</ol>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle install
+</pre></div>
+</div>
+</div>
+
+<ol>
+  <li>Прописать в /config/routes.rb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># /config/routes.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#036;font-weight:bold">Rails</span>.application.routes.draw <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  namespace <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">api</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    namespace <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">v1</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>      resources <span style="color:#A60">:posts</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<ol>
+  <li>Создать каталог /app/controllers/api/v1/ и файл /app/controllers/api/v1/posts_controller.rb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># /app/controllers/api/v1/posts_controller.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Api</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">V1</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">PostsController</span> &lt; <span style="color:#036;font-weight:bold">ApplicationController</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      before_action <span style="color:#A60">:set_post</span>, <span style="color:#606">only</span>: [<span style="color:#A60">:show</span>, <span style="color:#A60">:update</span>, <span style="color:#A60">:destroy</span>]
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>      skip_forgery_protection
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>      <span style="color:#777"># GET /api/v1/posts</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">index</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        <span style="color:#33B">@posts</span> = <span style="color:#036;font-weight:bold">Post</span>.all
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>        <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@posts</span>.present?
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>          render <span style="color:#606">json</span>: <span style="color:#33B">@posts</span>, <span style="color:#606">status</span>: <span style="color:#A60">:ok</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>        <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>          render <span style="color:#606">json</span>: {<span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">ERROR</span><span style="color:#710">'</span></span>, <span style="color:#606">message</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Posts not found</span><span style="color:#710">'</span></span>}, <span style="color:#606">status</span>: <span style="color:#A60">:not_found</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>      <span style="color:#777"># GET /api/v1/posts/:id</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>        render <span style="color:#606">json</span>: <span style="color:#33B">@post</span>, <span style="color:#606">status</span>: <span style="color:#A60">:ok</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>      <span style="color:#777"># POST /api/v1/posts</span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">create</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>        <span style="color:#33B">@post</span> = <span style="color:#036;font-weight:bold">Post</span>.new(post_params)
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>        <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@post</span>.save
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>          render <span style="color:#606">json</span>: {<span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">SUCCESS</span><span style="color:#710">'</span></span>, <span style="color:#606">message</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Created post</span><span style="color:#710">'</span></span>, <span style="color:#606">data</span>: <span style="color:#33B">@post</span>}, <span style="color:#606">status</span>: <span style="color:#A60">:ok</span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>        <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>          render <span style="color:#606">json</span>: {<span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">ERROR</span><span style="color:#710">'</span></span>, <span style="color:#606">message</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Post not created</span><span style="color:#710">'</span></span>, <span style="color:#606">data</span>: <span style="color:#33B">@post</span>.errors}, <span style="color:#606">status</span>: <span style="color:#A60">:unprocessable_entity</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>      <span style="color:#777"># PATCH, PUT /api/v1/posts/:id</span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">update</span>
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>        <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@post</span>.update_attributes(post_params)
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>          render <span style="color:#606">json</span>: {<span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">SUCCESS</span><span style="color:#710">'</span></span>, <span style="color:#606">message</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Updated post</span><span style="color:#710">'</span></span>, <span style="color:#606">data</span>: <span style="color:#33B">@post</span>}, <span style="color:#606">status</span>: <span style="color:#A60">:ok</span>
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>        <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>          render <span style="color:#606">json</span>: {<span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">ERROR</span><span style="color:#710">'</span></span>, <span style="color:#606">message</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Post not updated</span><span style="color:#710">'</span></span>, <span style="color:#606">data</span>: <span style="color:#33B">@post</span>.errors}, <span style="color:#606">status</span>: <span style="color:#A60">:unprocessable_entity</span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>      <span style="color:#777"># DELETE /api/v1/posts/:id</span>
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">destroy</span>
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>        <span style="color:#33B">@post</span>.destroy
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>        render <span style="color:#606">json</span>: {<span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">SUCCESS</span><span style="color:#710">'</span></span>, <span style="color:#606">message</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Deleted post</span><span style="color:#710">'</span></span>, <span style="color:#606">data</span>: <span style="color:#33B">@post</span>}, <span style="color:#606">status</span>: <span style="color:#A60">:ok</span>
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>      private
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span>
+<span class="line-numbers"><a href="#n52" name="n52">52</a></span>      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">set_post</span>
+<span class="line-numbers"><a href="#n53" name="n53">53</a></span>        <span style="color:#33B">@post</span> = <span style="color:#036;font-weight:bold">Post</span>.find(params[<span style="color:#A60">:id</span>])
+<span class="line-numbers"><a href="#n54" name="n54">54</a></span>        <span style="color:#080;font-weight:bold">rescue</span> <span style="color:#036;font-weight:bold">Exception</span>
+<span class="line-numbers"><a href="#n55" name="n55">55</a></span>          render <span style="color:#606">json</span>: {<span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">ERROR</span><span style="color:#710">'</span></span>, <span style="color:#606">message</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Post not found</span><span style="color:#710">'</span></span>}, <span style="color:#606">status</span>: <span style="color:#A60">:not_found</span>
+<span class="line-numbers"><a href="#n56" name="n56">56</a></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n57" name="n57">57</a></span>
+<span class="line-numbers"><a href="#n58" name="n58">58</a></span>      <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">post_params</span>
+<span class="line-numbers"><a href="#n59" name="n59">59</a></span>        params.require(<span style="color:#A60">:post</span>).permit(<span style="color:#A60">:title</span>, <span style="color:#A60">:body</span>)
+<span class="line-numbers"><strong><a href="#n60" name="n60">60</a></strong></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n61" name="n61">61</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n62" name="n62">62</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n63" name="n63">63</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<ol>
+  <li>Проверять API мы будем программой Insomnia. <a href="http://rubyblog.ru/others/rest-client/">Тут был обзор программы</a></li>
+</ol>
+
+<p><strong>Наш созданный REST JSON API:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Method</th>
+      <th>Path</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>List</strong></td>
+      <td>GET</td>
+      <td>/api/v1/posts</td>
+      <td>Просмотр списка постов</td>
+    </tr>
+    <tr>
+      <td><strong>Create</strong></td>
+      <td>POST</td>
+      <td>/api/v1/posts</td>
+      <td>Создать новый пост</td>
+    </tr>
+    <tr>
+      <td><strong>Read</strong></td>
+      <td>GET</td>
+      <td>/api/v1/posts/:id</td>
+      <td>Просмотр поста</td>
+    </tr>
+    <tr>
+      <td><strong>Update</strong></td>
+      <td>PATCH, PUT</td>
+      <td>/api/v1/posts/:id</td>
+      <td>Изменить пост</td>
+    </tr>
+    <tr>
+      <td><strong>Delete</strong></td>
+      <td>DELETE</td>
+      <td>/api/v1/posts/:id</td>
+      <td>Удалить пост</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Чтобы создать новый пост в теле запроса POST по адресу /api/v1/posts
+отправим:</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>{
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#606"><span style="color:#404">&quot;</span><span>title</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">This is test</span><span style="color:#710">&quot;</span></span>,
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#606"><span style="color:#404">&quot;</span><span>body</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello API!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>}
+</pre></div>
+</div>
+</div>
+:ET

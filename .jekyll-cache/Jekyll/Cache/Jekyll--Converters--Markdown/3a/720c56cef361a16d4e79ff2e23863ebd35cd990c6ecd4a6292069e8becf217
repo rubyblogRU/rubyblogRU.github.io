@@ -1,0 +1,29 @@
+I"f<ul>
+  <li><a href="http://watir.com/">http://watir.com/</a></li>
+  <li><a href="https://github.com/watir/watir">https://github.com/watir/watir</a></li>
+  <li><a href="https://www.rubydoc.info/gems/watir/">https://www.rubydoc.info/gems/watir/</a></li>
+  <li><a href="http://watir.com/guides/form-example/">http://watir.com/guides/form-example/</a></li>
+</ul>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install watir
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">watir</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>browser = <span style="color:#036;font-weight:bold">Watir</span>::<span style="color:#036;font-weight:bold">Browser</span>.new
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>browser.goto <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">watir.com</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>browser.link(<span style="color:#606">text</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Guides</span><span style="color:#710">'</span></span>).click
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>puts browser.title
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#777"># =&gt; 'Guides – Watir Project'</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>browser.close
+</pre></div>
+</div>
+</div>
+
+:ET

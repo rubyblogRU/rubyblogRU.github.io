@@ -1,0 +1,82 @@
+I"v<p>Проведём тест-драйв гемов для транслитерации кириллицы и выясним, какой гем лучше отработает задачу. Проведём транслитерацию с русского в латиницу (английский).</p>
+
+<h2 id="варианты-гемов-для-транслитерации-кириллицы-участники-тест-драйва">Варианты гемов для транслитерации кириллицы (участники тест-драйва)</h2>
+
+<ol>
+  <li>gem russian</li>
+  <li>gem translit</li>
+  <li>gem cyrillizer</li>
+</ol>
+
+<h2 id="тестируем-gem-russian">Тестируем gem russian</h2>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install russian
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">russian</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#036;font-weight:bold">Russian</span>.translit(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Поставка комплектующих для двигателей внутреннего сгорания</span><span style="color:#710">'</span></span>)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#777"># =&gt; &quot;Postavka komplektuyuschih dlya dvigateley vnutrennego sgoraniya&quot;</span>
+</pre></div>
+</div>
+</div>
+
+<h2 id="тестируем-gem-translit">Тестируем gem translit</h2>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install translit
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">translit</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>str = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Поставка комплектующих для двигателей внутреннего сгорания</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#036;font-weight:bold">Translit</span>.convert(str, <span style="color:#A60">:english</span>)
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="color:#777"># =&gt; &quot;Postawka komplektuüschih dlq dwigatelej wnutrennego sgoraniq&quot;</span>
+</pre></div>
+</div>
+</div>
+
+<h2 id="тестируем-gem-cyrillizer">Тестируем gem cyrillizer</h2>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install cyrillizer
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">cyrillizer</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Поставка комплектующих для двигателей внутреннего сгорания</span><span style="color:#710">'</span></span>.to_lat
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#777"># =&gt; Postavka komplektuющih dlя dvigateleй vnutrennego sgoraniя</span>
+</pre></div>
+</div>
+</div>
+
+<h2 id="результат-тест-драйва">Результат тест-драйва</h2>
+
+<p>Как видите, побеждает gem russian с отработкой без ошибок:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># =&gt; &quot;Postavka komplektuyuschih dlya dvigateley vnutrennego sgoraniya&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Оставшиеся два гема отработали с ошибками:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># =&gt; &quot;Postawka komplektuüschih dlq dwigatelej wnutrennego sgoraniq&quot;</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#777"># =&gt; Postavka komplektuющih dlя dvigateleй vnutrennego sgoraniя</span>
+</pre></div>
+</div>
+</div>
+:ET

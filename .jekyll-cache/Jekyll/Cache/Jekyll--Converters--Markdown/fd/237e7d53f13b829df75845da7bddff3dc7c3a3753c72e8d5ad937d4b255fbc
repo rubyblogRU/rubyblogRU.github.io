@@ -1,0 +1,76 @@
+I"-<ul>
+  <li><a href="https://ruby-doc.org/stdlib-2.6.5/libdoc/yaml/rdoc/YAML.html">https://ruby-doc.org/stdlib-2.6.5/libdoc/yaml/rdoc/YAML.html</a></li>
+  <li><a href="https://yaml.org/YAML_for_ruby">https://yaml.org/YAML_for_ruby</a></li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># /app/foo.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Foo</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  attr_accessor <span style="color:#A60">:title</span>, <span style="color:#A60">:body</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># /app/app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">yaml</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>foo = <span style="color:#036;font-weight:bold">Foo</span>.new
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>foo.title = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Foo Bar</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>foo.body = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Bar Baz</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>puts <span style="color:#036;font-weight:bold">YAML</span>.dump(foo)
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>foo_yaml = <span style="color:#036;font-weight:bold">YAML</span>.dump(foo)
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>copy = <span style="color:#036;font-weight:bold">YAML</span>.load(foo_yaml)
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>puts copy.title
+</pre></div>
+</div>
+</div>
+
+<h2 id="yamlstore">YAML::Store</h2>
+
+<ul>
+  <li><a href="https://ruby-doc.org/stdlib-2.6.5/libdoc/yaml/rdoc/YAML/Store.html">https://ruby-doc.org/stdlib-2.6.5/libdoc/yaml/rdoc/YAML/Store.html</a></li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">yaml/store</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Post</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  attr_accessor <span style="color:#A60">:title</span>, <span style="color:#A60">:body</span>, <span style="color:#A60">:id</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>post = <span style="color:#036;font-weight:bold">Post</span>.new
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>post.title = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>post.body = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Bar</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>post.id = <span style="color:#00D">1</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>store = <span style="color:#036;font-weight:bold">YAML</span>::<span style="color:#036;font-weight:bold">Store</span>.new(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">foo.yaml</span><span style="color:#710">'</span></span>)
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#777"># write</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>store.transaction <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  store[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">First post</span><span style="color:#710">&quot;</span></span>] = post
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="color:#777"># read</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>store.transaction <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>  puts store[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">First post</span><span style="color:#710">&quot;</span></span>].title
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span><span style="color:#777"># получить ключи в виде массива</span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>store.transaction <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>  p store.roots
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Посмотреть пример использования и реализации в приложении Sinatra: <a href="https://github.com/krdprog/hfr-sinatra">https://github.com/krdprog/hfr-sinatra</a></p>
+:ET

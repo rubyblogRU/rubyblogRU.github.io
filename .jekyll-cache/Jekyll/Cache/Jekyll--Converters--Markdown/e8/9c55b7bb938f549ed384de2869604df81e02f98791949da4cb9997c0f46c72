@@ -1,0 +1,195 @@
+I"�'<p>Установка:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install git
+</pre></div>
+</div>
+</div>
+<p>Глобальные настройки:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git config --global user.name &quot;FooBar&quot;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git config --global user.email &quot;foo@bar.ru&quot;
+</pre></div>
+</div>
+</div>
+<p>или в файле: ~/.gitconfig</p>
+
+<p>Инициализация проекта:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkdir git-project &amp;&amp; cd git-project
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git init
+</pre></div>
+</div>
+</div>
+<p>Добавить файл на коммит кандидат - индексация файлов:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git add foo.txt
+</pre></div>
+</div>
+</div>
+<p>Дефолтный UI редактор:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gitk
+</pre></div>
+</div>
+</div>
+<p>Коммит:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git commit
+</pre></div>
+</div>
+</div>
+<p>или</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git commit -m &quot;First Commit&quot;
+</pre></div>
+</div>
+</div>
+<p>В gitk –&gt; Shift + F5 - посмотреть изменения</p>
+
+<p>вносим изменения в файл, и чтобы его опять закоммитить надо сначала сделать</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git add foo.txt (добавление файла в индекс)
+</pre></div>
+</div>
+</div>
+<p>Статус - есть ли что коммитить, что поменялось</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git status
+</pre></div>
+</div>
+</div>
+<p>Откат к предыдущей версии файла</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout -- foo.txt
+</pre></div>
+</div>
+</div>
+<p>Ещё про индексацию файлов (добавить все файлы в индексацию):</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git add * - все файлы
+</pre></div>
+</div>
+</div>
+<p>или</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git add . - файлы только в текущем каталоге
+</pre></div>
+</div>
+</div>
+<p>Копия репозитория с github:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git clone https://foo.bar
+</pre></div>
+</div>
+</div>
+<p>работаем с файлами…</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git status
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git add foo.txt
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>git commit -m &quot;Comment&quot;
+</pre></div>
+</div>
+</div>
+<p>Загрузка на github:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git push
+</pre></div>
+</div>
+</div>
+<p>Получить изменения из github</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git pull
+</pre></div>
+</div>
+</div>
+<p>Индексировать все файлы можно ещё так:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git add -A
+</pre></div>
+</div>
+</div>
+<p>Отменить все изменения до commit, но уже с add:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git reset --hard HEAD
+</pre></div>
+</div>
+</div>
+<p>Отменить добавление к индексации файла до коммита</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git reset HEAD foo.txt
+</pre></div>
+</div>
+</div>
+<p>Удалить файлы и каталоги вне индекса:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git clean -n - посмотреть, что будет удалено
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git clean -nd
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>git clean -fd
+</pre></div>
+</div>
+</div>
+<p>Команда выше не удаляет файлы которые перечислены в .gitignore.</p>
+
+<p>Просмотреть, а затем удалить ВСЕ непроиндексированные файлы и папки, включая игнорируемы Git-ом:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git clean -ndx
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git clean -fdx
+</pre></div>
+</div>
+</div>
+<p>История репозитория:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>git log
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>git log --pretty=oneline - покажет историю в 1 строку
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>git log --pretty=oneline -max-count=3
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>git log --pretty=oneline --all
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>git log --pretty=oneline --author=&quot;krdprog&quot;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>git log --pretty=format:&quot;%h - %s : %ad [%an]&quot; --date=short - короткая запись hash, комментария, даты и автора
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>git log --pretty=format:&quot;%h %ad | %s&quot; --date=short
+</pre></div>
+</div>
+</div>
+<p>сделал себе алиас gl</p>
+
+<p>Все алиасы для git тут: <a href="http://rubyblog.ru/others/git-aliases/">http://rubyblog.ru/others/git-aliases/</a></p>
+
+<p>Пример ветки дерева, снапшоты:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  2d67e51 2018-04-04  night edition
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  a813a4d 2018-04-04  Two commit
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  58cbea1 2018-04-04  First commit
+</pre></div>
+</div>
+</div>
+<p>Возврат к предыдущему коммиту:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout a813a4d
+</pre></div>
+</div>
+</div>
+<p>где a813a4d - это хеш нужного коммита</p>
+
+<p>таким образом ходим по истории коммитов</p>
+
+<p>Переключение на ветку master:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout master
+</pre></div>
+</div>
+</div>
+
+<p>Продолжение с продвинутыми командами тут: <a href="http://rubyblog.ru/others/git-2/">http://rubyblog.ru/others/git-2/</a></p>
+:ET

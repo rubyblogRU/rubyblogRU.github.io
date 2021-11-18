@@ -1,0 +1,43 @@
+I"l<p>Ссылка: <a href="http://cheat.sh/">http://cheat.sh/</a></p>
+
+<p>Гитхаб: <a href="https://github.com/chubin/cheat.sh">https://github.com/chubin/cheat.sh</a></p>
+
+<p>Нашёл интересную штуку, может кому пригодится. Документация прямо в терминале.</p>
+
+<p>Установка:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkdir -p ~/bin/
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>curl https://cht.sh/:cht.sh &gt; ~/bin/cht.sh
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>chmod +x ~/bin/cht.sh
+</pre></div>
+</div>
+</div>
+
+<p>Использование в терминале (поиск по документации и ответам на StackOverflow):</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>cht.sh ruby reverse a list
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>cht.sh ruby random list elements
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>cht.sh ruby array
+</pre></div>
+</div>
+</div>
+
+<p>Интерактивный режим:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>cht.sh --shell
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#777"># или по конкретному языку:</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>cht.sh --shell ruby
+</pre></div>
+</div>
+</div>
+
+<p>И многое другое…</p>
+
+<p>Инструмент супер, за подсказку пишите спасибо в tg: @krdprog</p>
+:ET

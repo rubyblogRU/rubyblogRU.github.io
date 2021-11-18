@@ -1,0 +1,1227 @@
+I"��<h1 id="конспект-лекций-курса-по-rubysinatraruby-on-rails-часть-5">Конспект лекций курса по Ruby/Sinatra/Ruby on Rails (часть 5)</h1>
+
+<p><img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby-red.svg" alt="ruby" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby%20on%20Rails-red.svg" alt="ror" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Sinatra-red.svg" alt="sinatra" /></p>
+
+<p><strong>Конспект составил:</strong> Алексей Цаплин-Купайсинов (Ruby-программист) - <a href="https://github.com/krdprog">https://github.com/krdprog</a></p>
+
+<p><strong>Курс:</strong> <a href="http://rubyschool.us/">http://rubyschool.us/</a></p>
+
+<p><strong>Автор курса:</strong> Роман Пушкин (программист из Сан-Франциско)</p>
+
+<h2 id="урок-31">Урок 31</h2>
+
+<h4 id="как-работает-http">Как работает HTTP</h4>
+
+<blockquote>
+  <p>Изучи ссылку: How exacty HTTP protocol works? - Stack Overflow
+https://stackoverflow.com/questions/20918321/how-exacty-http-protocol-works
+и what happens when you type in a URL in browser - Stack Overflow
+https://stackoverflow.com/questions/2092527/what-happens-when-you-type-in-a-url-in-browser</p>
+</blockquote>
+
+<p>Порт - это абстракция операционной системы, или абстракция протокола.</p>
+
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>1. Resolve domain if not an IP (DNS query)
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>2. Open port 80 by default if not SSL and not overridden by a colon (http: //host:port/)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>3. Send request (#1) for http: //host/uri/here?other=stuff&amp;too
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>4. Receive response (#2)
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>5. Close
+</pre></div>
+</div>
+</div>
+<p>Порты:</p>
+
+<ul>
+  <li>80 - http</li>
+  <li>443 - https</li>
+</ul>
+
+<p>Запрос:</p>
+
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>GET /uri/here?other=stuff&amp;too HTTP/1.1
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>Host: host
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>Other: Headers, too.  Such as cookies
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>Header: Value
+</pre></div>
+</div>
+</div>
+<p>Ответ:</p>
+
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>HTTP/1.1 200 OK
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>Other: Headers, too.  Such as cookies
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>Header: Value
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>&lt;html&gt;Actual HTTP payload is here, could be HTML data, downloaded file data, etc.
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Изучи ссылку:
+Сетевая модель OSI — Википедия
+https://ru.wikipedia.org/wiki/%D0%A1%D0%B5%D1%82%D0%B5%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C_OSI</p>
+</blockquote>
+
+<h4 id="what-happens-when-you-type-in-a-url-in-browser">what happens when you type in a URL in browser</h4>
+
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>1. browser checks cache; if requested object is in cache and is fresh, skip to #9
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>2. browser asks OS for server's IP address
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>3. OS makes a DNS lookup and replies the IP address to the browser
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>4. browser opens a TCP connection to server (this step is much more complex with HTTPS)
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>5. browser sends the HTTP request through TCP connection
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>6. browser receives HTTP response and may close the TCP connection, or reuse it for another request
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>7. browser checks if the response is a redirect or a conditional response (3xx result status codes), authorization request (401), error (4xx and 5xx), etc.; these are handled differently from normal responses (2xx)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>8. if cacheable, response is stored in cache
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>9. browser decodes response (e.g. if it's gzipped)
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>10. browser determines what to do with response (e.g. is it a HTML page, is it an image, is it a sound clip?)
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>11. browser renders response, or offers a download dialog for unrecognized types
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p><a href="https://stackoverflow.com/questions/2092527/what-happens-when-you-type-in-a-url-in-browser">what happens when you type in a URL in browser - Stack Overflow</a></p>
+</blockquote>
+
+<h4 id="stateless-без-состояния">stateless (без состояния)</h4>
+
+<p>HTTP - это протокол без состояния, т.к. сервер не прицепляет никакого специального значения.</p>
+
+<blockquote>
+  <p>Изучить ссылку: Why is it said that “HTTP is a stateless protocol”? - Stack Overflow
+https://stackoverflow.com/questions/13200152/why-is-it-said-that-http-is-a-stateless-protocol</p>
+</blockquote>
+
+<blockquote>
+  <p>Протокол без сохранения состояния — Википедия
+https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D1%82%D0%BE%D0%BA%D0%BE%D0%BB_%D0%B1%D0%B5%D0%B7<em>%D1%81%D0%BE%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F</em>%D1%81%D0%BE%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D1%8F</p>
+</blockquote>
+
+<p>Если сервер разрывает соединение, как же сделать так, чтобы работала авторизация и мы были уверены, что это тот самый пользователь. Для этого существует специальный механизм.</p>
+
+<blockquote>
+  <p>Программа charles-proxy - анализ трафика</p>
+</blockquote>
+
+<blockquote>
+  <p>url unescape online (search query)</p>
+</blockquote>
+
+<blockquote>
+  <p>Изучи ссылку: RFC 2616 - Hypertext Transfer Protocol – HTTP/1.1
+https://tools.ietf.org/html/rfc2616</p>
+</blockquote>
+
+<h4 id="gem-devise---для-авторизации">gem devise - для авторизации</h4>
+
+<blockquote>
+  <p><a href="https://github.com/plataformatec/devise">GitHub - plataformatec/devise: Flexible authentication solution for Rails with Warden.</a></p>
+</blockquote>
+
+<blockquote>
+  <p><a href="https://habr.com/post/208056/">Аутентификация в Rails-приложениях с помощью Devise. Часть 1: базовая настройка / Хабр</a></p>
+</blockquote>
+
+<h4 id="vanillajs--js">Vanilla.js == JS</h4>
+
+<blockquote>
+  <p>Vanilla JS - http://vanilla-js.com/</p>
+</blockquote>
+
+<h3 id="функция-в-js">Функция в js</h3>
+<div class="language-js highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">foo</span>()
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>{
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  alert(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Hello!</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>}
+</pre></div>
+</div>
+</div>
+<p>В JS функция вызывается по хэндлеру/событию (обработчик):</p>
+
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;button</span> <span style="color:#b48">onclick</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span>foo()<span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Click me!<span style="color:#070;font-weight:bold">&lt;/button&gt;</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#070;font-weight:bold">&lt;script&gt;</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  <span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">foo</span>() {</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">    alert(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello!</span><span style="color:#710">&quot;</span></span>);</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  }</span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span><span style="color:#070;font-weight:bold">&lt;/script&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<p>Переменные:</p>
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;button</span> <span style="color:#b48">onclick</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span>foo()<span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Click me!<span style="color:#070;font-weight:bold">&lt;/button&gt;</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#070;font-weight:bold">&lt;script&gt;</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  <span style="color:#080;font-weight:bold">var</span> x = <span style="color:#00D">1</span>;</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black"></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  <span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">foo</span>() {</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">    alert(x);</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">    x = x+<span style="color:#00D">1</span>;</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  }</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#070;font-weight:bold">&lt;/script&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<h2 id="урок-32">Урок 32</h2>
+
+<h4 id="разбор-вопросов">Разбор вопросов:</h4>
+
+<blockquote>
+  <p>Изучить: 15 Questions to Ask During a Ruby Interview · GitHub
+https://gist.github.com/krdprog/64a463de21fe77a8946019fde6662d67</p>
+</blockquote>
+
+<ul>
+  <li>классы содержат данные, имеют методы, которые взаимодействуют с этими данными и используются для того, чтобы создавать объекты на основе этих классов</li>
+  <li>объект - это экземпляр класса. для некоторых - это коренной класс руби Object</li>
+  <li>модуль - механизм, который служит для namespaces (пространства имён) module/end - Namespace::Class.method. Ещё, модули предоставляют механизм для множественного наследования с помощью миксинов. module/end - extend</li>
+  <li>три уровня доступа для модулей и классов: public - по умолчанию, protected, private - методы доступные только внутри самого класса</li>
+</ul>
+
+<blockquote>
+  <p><a href="https://habr.com/post/87119/">ООП с примерами (часть 1) / Хабр</a>
+<a href="https://habr.com/post/87205/">ООП с примерами (часть 2) / Хабр</a></p>
+</blockquote>
+
+<blockquote>
+  <p><a href="https://github.com/ro31337/first-visit-js">GitHub - ro31337/first-visit-js: Tiny jQuery plugin to display a message to the user on the first visit to a page</a></p>
+</blockquote>
+
+<h4 id="localstorage">localStorage</h4>
+
+<div class="language-js highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>window.localStorage
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>HTML5 Web Storage https://www.w3schools.com/html/html5_webstorage.asp</p>
+</blockquote>
+
+<blockquote>
+  <p><a href="https://habr.com/post/349164/">Почему не стоит использовать LocalStorage / Хабр</a></p>
+</blockquote>
+
+<blockquote>
+  <p><a href="https://tproger.ru/articles/localstorage/">LocalStorage на пальцах</a></p>
+</blockquote>
+
+<blockquote>
+  <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">window.localStorage - Web APIs | MDN</a></p>
+</blockquote>
+
+<div class="language-js highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">foo</span>() {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">var</span> x = window.localStorage.getItem(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">score</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  window.localStorage.setItem(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">score</span><span style="color:#710">'</span></span>, <span style="color:#00D">555</span>);
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  alert(x);
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>}
+</pre></div>
+</div>
+</div>
+
+<div class="language-js highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">foo</span>() {
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">var</span> x = window.localStorage.getItem(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">score</span><span style="color:#710">'</span></span>); <span style="color:#777">// это как x = hh['score'] в ruby</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#777">// x * 1 - чтобы преобразовать строку в число</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  x = x * <span style="color:#00D">1</span> + <span style="color:#00D">1</span>;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  window.localStorage.setItem(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">score</span><span style="color:#710">'</span></span>, x); <span style="color:#777">// hh['score'] = x</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  alert(x);
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>}
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Looping through localStorage in HTML5 and JavaScript - Stack Overflow
+https://stackoverflow.com/questions/3138564/looping-through-localstorage-in-html5-and-javascript</p>
+</blockquote>
+
+<h4 id="activerecord">ActiveRecord</h4>
+
+<blockquote>
+  <p><a href="https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/TableDefinition.html">ActiveRecord::ConnectionAdapters::TableDefinition</a></p>
+</blockquote>
+
+<blockquote>
+  <p><a href="https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html">ActiveRecord::ConnectionAdapters::SchemaStatements</a></p>
+</blockquote>
+
+<ul>
+  <li>:primary_key</li>
+  <li>:text</li>
+  <li>:integer</li>
+  <li>:float</li>
+  <li>:decimal</li>
+  <li>:datetime</li>
+  <li>:timestamp</li>
+  <li>:time</li>
+  <li>:date</li>
+  <li>:binary</li>
+  <li>:boolean</li>
+</ul>
+
+<h4 id="pizzashop">PizzaShop</h4>
+
+<ul>
+  <li>цены рекомендуется хранить в базе в минимальных величинах</li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra/reloader</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra/activerecord</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>set <span style="color:#A60">:database</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sqlite3:database.db</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Product</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Base</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:create_migration NAME=create_products
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to db/migrate/9279387982_create_products.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CreateProducts</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Migration</span>[<span style="color:#60E">5.2</span>]
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">change</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    create_table <span style="color:#A60">:products</span> <span style="color:#080;font-weight:bold">do</span> |t|
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>      t.string <span style="color:#A60">:title</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>      t.text <span style="color:#A60">:description</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>      t.decimal <span style="color:#A60">:price</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>      t.decimal <span style="color:#A60">:size</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      t.boolean <span style="color:#A60">:is_spicy</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      t.boolean <span style="color:#A60">:is_veg</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>      t.boolean <span style="color:#A60">:is_best_offer</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>      t.string <span style="color:#A60">:path_to_image</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>      t.timestamps
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>seed database - наполнить базу данных</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:create_migration NAME=add_products
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to db/migrate/786238472_add_products.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">AddProducts</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Migration</span>[<span style="color:#60E">5.2</span>]
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">change</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#036;font-weight:bold">Product</span>.create <span style="color:#A60">:title</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Гавайская</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>      <span style="color:#A60">:description</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Это гавайская пицца</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>      <span style="color:#A60">:price</span> =&gt; <span style="color:#00D">350</span>,
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>      <span style="color:#A60">:size</span> =&gt; <span style="color:#00D">30</span>,
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>      <span style="color:#A60">:is_spicy</span> =&gt; <span style="color:#069">false</span>,
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      <span style="color:#A60">:is_veg</span> =&gt; <span style="color:#069">false</span>,
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      <span style="color:#A60">:is_best_offer</span> =&gt; <span style="color:#069">false</span>,
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>      <span style="color:#A60">:path_to_image</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/images/01.jpg</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    <span style="color:#036;font-weight:bold">Product</span>.create <span style="color:#A60">:title</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Пепперони</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>      <span style="color:#A60">:description</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Это пицца Пепперони</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>      <span style="color:#A60">:price</span> =&gt; <span style="color:#00D">450</span>,
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>      <span style="color:#A60">:size</span> =&gt; <span style="color:#00D">30</span>,
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>      <span style="color:#A60">:is_spicy</span> =&gt; <span style="color:#069">false</span>,
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>      <span style="color:#A60">:is_veg</span> =&gt; <span style="color:#069">false</span>,
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>      <span style="color:#A60">:is_best_offer</span> =&gt; <span style="color:#069">true</span>,
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>      <span style="color:#A60">:path_to_image</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/images/02.jpg</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>    <span style="color:#036;font-weight:bold">Product</span>.create <span style="color:#A60">:title</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Вегетарианская</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>      <span style="color:#A60">:description</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Это вегетарианская пицца</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>      <span style="color:#A60">:price</span> =&gt; <span style="color:#00D">400</span>,
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>      <span style="color:#A60">:size</span> =&gt; <span style="color:#00D">30</span>,
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>      <span style="color:#A60">:is_spicy</span> =&gt; <span style="color:#069">false</span>,
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>      <span style="color:#A60">:is_veg</span> =&gt; <span style="color:#069">true</span>,
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>      <span style="color:#A60">:is_best_offer</span> =&gt; <span style="color:#069">false</span>,
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>      <span style="color:#A60">:path_to_image</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/images/03.jpg</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="домашнее-задание">Домашнее задание:</h4>
+<ul>
+  <li>сделать страницу вывода продуктов</li>
+</ul>
+
+<h2 id="урок-33">Урок 33</h2>
+
+<h4 id="разбор-вопросов-2">Разбор вопросов (2):</h4>
+
+<blockquote>
+  <p>Изучить: 15 Questions to Ask During a Ruby Interview · GitHub
+https://gist.github.com/krdprog/64a463de21fe77a8946019fde6662d67</p>
+</blockquote>
+
+<ul>
+  <li>три способа вызвать метод в руби:
+```ruby
+    <h1 id="1">1</h1>
+    <p>object = Object.new
+puts object.object_id</p>
+  </li>
+</ul>
+
+<h1 id="2">2</h1>
+<p>puts object.send(:object_id)</p>
+
+<h1 id="3">3</h1>
+<p>puts object.method(:object_id).call</p>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>- оператор ||=
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>&gt; [operators - What does \||= (or-equals) mean in Ruby? - Stack Overflow](https://stackoverflow.com/questions/995593/what-does-or-equals-mean-in-ruby#14697343)
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>&gt; [ruby - Что делает оператор «\|| =» в рубине?](https://stackoverrun.com/ru/q/2545320)
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>- Что такое self? self всегда указывает на текущий объект. Может быть вызван без создания объекта.
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>```ruby
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>class WhatIsSelf
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  def test
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    puts &quot;At the instance level, self is #{self}&quot;
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  end
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  def self.test
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    puts &quot;At the class level, self is #{self}&quot;
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  end
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>end
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>WhatIsSelf.test
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span> #=&gt; At the class level, self is WhatIsSelf
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>WhatIsSelf.new.test
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span> #=&gt; At the instance level, self is #&lt;WhatIsSelf:0x28190&gt;
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p><a href="https://gist.github.com/krdprog/64a463de21fe77a8946019fde6662d67#what-does-self-mean">15 Questions to Ask During a Ruby Interview · GitHub</a></p>
+</blockquote>
+
+<ul>
+  <li>Что такое Proc? Процедура. Три типа:
+    <ol>
+      <li>анонимные методы (функции без имени)</li>
+      <li>lambda</li>
+      <li>блок</li>
+    </ol>
+  </li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># wants a proc, a lambda, AND a block</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">three_ways</span>(proc, lambda, &amp;block)
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  proc.call
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  lambda.call
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">yield</span> <span style="color:#777"># like block.call</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>proc.inspect<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>lambda.inspect<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>block.inspect<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>anonymous = <span style="color:#036;font-weight:bold">Proc</span>.new { puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">I'm a Proc for sure.</span><span style="color:#710">&quot;</span></span> }
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>nameless  = lambda { puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">But what about me?</span><span style="color:#710">&quot;</span></span> }
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>three_ways(anonymous, nameless) <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">I'm a block, but could it be???</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span> <span style="color:#777">#=&gt; I'm a Proc for sure.</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span> <span style="color:#777">#=&gt; But what about me?</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span> <span style="color:#777">#=&gt; I'm a block, but could it be???</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span> <span style="color:#777">#=&gt; #&lt;Proc:0x00089d64&gt; #&lt;Proc:0x00089c74&gt; #&lt;Proc:0x00089b34&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="продолжение-pizzashop">Продолжение PizzaShop</h4>
+
+<ul>
+  <li>нам надо создать корзину, но чтобы при закрытии браузера данные сохранялись.</li>
+</ul>
+
+<p>Помежуточная проверка работает ли кнопка:</p>
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;p&gt;</span><span style="color:#070;font-weight:bold">&lt;button</span> <span style="color:#b48">onclick</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span>alert(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">hello</span><span style="color:#710">'</span></span>)<span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Добавить в корзину<span style="color:#070;font-weight:bold">&lt;/button&gt;</span><span style="color:#070;font-weight:bold">&lt;/p&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<h5 id="number-2">Number 2:</h5>
+
+<p>js:</p>
+<div class="language-js highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">add_to_cart</span>() {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  alert(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">hello all!</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>}
+</pre></div>
+</div>
+</div>
+<p>html:</p>
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;p&gt;</span><span style="color:#070;font-weight:bold">&lt;button</span> <span style="color:#b48">onclick</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span>add_to_cart()<span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Добавить в корзину<span style="color:#070;font-weight:bold">&lt;/button&gt;</span><span style="color:#070;font-weight:bold">&lt;/p&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Плохие программисты беспокоятся о коде. Хорошие программисты беспокоятся о структурах данных и их взаимодействии (Л. Торвальдс)</p>
+</blockquote>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra/reloader</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra/activerecord</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>set <span style="color:#A60">:database</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sqlite3:database.db</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Product</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Base</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/products</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#33B">@products</span> = <span style="color:#036;font-weight:bold">Product</span>.all
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  erb <span style="color:#A60">:products</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/products.erb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&lt;h1&gt;Наша <span style="color:#606">продукция</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;table cellpadding=&quot;10&quot; cellspacing=&quot;0&quot; border=&quot;1&quot;&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;% @products.each do |product| %&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;tr&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;td&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">      &lt;h2&gt;&lt;%= product.title %&gt;&lt;</span><span style="color:#404">/</span></span>h2&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      &lt;p&gt;&lt;strong&gt;<span style="color:#606">Описание</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">strong&gt; &lt;%= product.description %&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">td&gt;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;td&gt;&lt;img src=&quot;&lt;%= product.path_to_image %&gt;&quot; alt=&quot;&lt;%= product.title %&gt;&quot;&gt;&lt;</span><span style="color:#404">/</span></span>td&gt;
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    &lt;td&gt;
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>      &lt;p&gt;&lt;strong&gt;<span style="color:#606">Цена</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">strong&gt; &lt;%= product.price %&gt; руб.&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>      &lt;p&gt;&lt;strong&gt;<span style="color:#606">Размер</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">strong&gt; &lt;%= product.size %&gt; см&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>      &lt;p&gt;&lt;button onclick=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">add_to_cart(&lt;%= product.id %&gt;)</span><span style="color:#710">&quot;</span></span>&gt;Добавить в корзину&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">button&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>    &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">td&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;</span><span style="color:#404">/</span></span>tr&gt;
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">table&gt;</span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+<h4 id="структура-данных-для-нашей-корзины-заказа-в-pizzashop---хеш">Структура данных для нашей корзины заказа в PizzaShop - хеш:</h4>
+
+<ul>
+  <li>key - id продукта</li>
+  <li>value - количество</li>
+</ul>
+
+<p>Перед написанием на js напишем на ruby:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>order = {}
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>loop <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  print <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Введите id продукта: </span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  id_product = gets.strip
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  print <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Сколько штук вы хотите заказать: </span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  amount_now = gets.strip.to_i
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  amount = order[id_product].to_i
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  amount += amount_now
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  order[id_product] = amount
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  puts order.inspect
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>GitHub - krdprog/order-counter-ruby: Order counter (Ruby)
+https://github.com/krdprog/order-counter-ruby/</p>
+</blockquote>
+
+<p>На сервер мы будем передавать строку.</p>
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>1 = 5, 2 = 12, 3 = 0
+</pre></div>
+</div>
+</div>
+<p>Можно использовать json.</p>
+
+<p>Теперь напишем это на JS:</p>
+
+<div class="language-js highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777">// + to public/js/main.js</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">add_to_cart</span>(id)
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>{
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">var</span> key = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">product_</span><span style="color:#710">'</span></span> + id;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">var</span> x = window.localStorage.getItem(key);
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  x = x * <span style="color:#00D">1</span> + <span style="color:#00D">1</span>;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  window.localStorage.setItem(key, x);
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>}
+</pre></div>
+</div>
+</div>
+<p>Смотрим на наличие ошибок в консоли Firefox веб-инспектора.</p>
+
+<p>И, смотрим в хранилище веб-инспектора. Или в консоли веб-инспектора набрать:</p>
+
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>localStorage
+</pre></div>
+</div>
+</div>
+<p>Очистить:</p>
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>localStorage.clear();
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Когда нужно делать рефакторинг кода. Ответ: всегда.</p>
+</blockquote>
+
+<p>Сделаем счётчик товаров в корзине:</p>
+
+<ul>
+  <li>ламерский способ - создать переменную counter, но это не будет учитывать наш localStorage</li>
+</ul>
+
+<p>Нам надо пройтись по хешу и посчитать продукты, которые добавили в корзину:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app-order-calc.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#777"># calculate total number of items in cart</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>total = <span style="color:#00D">0</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>order.each <span style="color:#080;font-weight:bold">do</span> |key, value|
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  total += value
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Total: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>total<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>javascript - Listing localstorage - Stack Overflow
+https://stackoverflow.com/questions/2841029/listing-localstorage#2841042</p>
+</blockquote>
+
+<blockquote>
+  <p>javascript - enumerating localStorage properties - Stack Overflow
+https://stackoverflow.com/questions/27946563/enumerating-localstorage-properties</p>
+</blockquote>
+
+<p><strong>Домашнее задание:</strong></p>
+<ul>
+  <li>найти про enumerate localStorage</li>
+  <li>найти как пройтись по каждому элементу хеша localStorage</li>
+  <li>написать JS функцию подсчёта общего количества заказанных продуктов в корзине.</li>
+</ul>
+
+<h2 id="урок-34">Урок 34</h2>
+
+<h4 id="x--y">x ||= y</h4>
+
+<p>Это сокращённо:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>x = x || y
+</pre></div>
+</div>
+</div>
+<p>Что означает:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>x || y
+</pre></div>
+</div>
+</div>
+<p>|| - логическое ИЛИ</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">if</span> x == <span style="color:#00D">1</span> || x == <span style="color:#00D">2</span>
+</pre></div>
+</div>
+</div>
+<p>Срабатывает первое условие, если не срабатывает, берёт второе условие:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#069">nil</span> || <span style="color:#00D">4</span> <span style="color:#777">#=&gt; 4</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#069">false</span> || <span style="color:#00D">2</span> <span style="color:#777">#=&gt; 2</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#00D">123</span> || <span style="color:#00D">2</span> <span style="color:#777">#=&gt; 123</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>x = x || <span style="color:#00D">4</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>x = <span style="color:#069">false</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>x = x || <span style="color:#00D">2</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>puts x
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="color:#777">#=&gt; 2</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>x = <span style="color:#069">true</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>x = x || <span style="color:#00D">2</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>puts x
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#777">#=&gt; true</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>x = <span style="color:#00D">5</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>x = x || <span style="color:#00D">2</span> <span style="color:#777"># это мы можем заменить на x ||= 2</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>puts x
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#777">#=&gt; 5</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>x = <span style="color:#00D">5</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>x ||= <span style="color:#00D">2</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>puts x
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="color:#777">#=&gt; 5</span>
+</pre></div>
+</div>
+</div>
+<h4 id="x--y-используется-для-установки-значения-по-умолчанию">x ||= y используется для установки значения по умолчанию</h4>
+
+<h4 id="продолжаем-pizzashop">Продолжаем PizzaShop:</h4>
+
+<p>Напишем подсчёт количества товаров в корзине на js:</p>
+
+<div class="language-js highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777">// + to public/js/main.js</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">cart_get_number_of_items</span>()
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>{
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">var</span> cnt = <span style="color:#00D">0</span>;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> i = <span style="color:#00D">0</span>; i &lt; window.localStorage.length; i++)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  {
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#080;font-weight:bold">var</span> key = window.localStorage.key(i); <span style="color:#777">// получаем ключ</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#080;font-weight:bold">var</span> value = window.localStorage.getItem(key); <span style="color:#777">// получаем значение</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#080;font-weight:bold">if</span>(key.indexOf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">product_</span><span style="color:#710">'</span></span>) == <span style="color:#00D">0</span>)
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    {
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>      cnt = cnt + value * <span style="color:#00D">1</span>;
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    }
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  }
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  <span style="color:#080;font-weight:bold">return</span> cnt;
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>}
+</pre></div>
+</div>
+</div>
+<p>Проверим в консоли firefox:</p>
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>cart_get_number_of_items()
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/layout.erb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>&lt;form action=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/cart</span><span style="color:#710">&quot;</span></span> method=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">POST</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  &lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">submit</span><span style="color:#710">&quot;</span></span> value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Корзина (0 шт.)</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">form&gt;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<h4 id="итого">ИТОГО:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/layout.erb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&lt;!<span style="color:#036;font-weight:bold">DOCTYPE</span> html&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>&lt;html&gt;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>&lt;head&gt;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  &lt;meta charset=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">utf-8</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  &lt;meta http-equiv=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">X-UA-Compatible</span><span style="color:#710">&quot;</span></span> content=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">IE=edge</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  &lt;title&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">title&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;link rel=&quot;stylesheet&quot; href=&quot;css</span><span style="color:#404">/</span><span style="color:#C2C">s</span></span>tyle.css<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;/head&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;body&gt;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;p&gt;&lt;a href=</span><span style="color:#710">&quot;</span></span>/<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&gt;Главная страница&lt;/a&gt; | &lt;a href=</span><span style="color:#710">&quot;</span></span>/products<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&gt;Наша продукция&lt;/a&gt;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;form action=</span><span style="color:#710">&quot;</span></span>/cart<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> method=</span><span style="color:#710">&quot;</span></span><span style="color:#036;font-weight:bold">POST</span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&gt;</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;input type=</span><span style="color:#710">&quot;</span></span>hidden<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> name=</span><span style="color:#710">&quot;</span></span>orders<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> id=</span><span style="color:#710">&quot;</span></span>orders_input<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&gt;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;input type=</span><span style="color:#710">&quot;</span></span>submit<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> id=</span><span style="color:#710">&quot;</span></span>orders_button<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&gt;</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/form&gt;</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;/p&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;%= yield %&gt;</span></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;script src=</span><span style="color:#710">&quot;</span></span><span style="color:#606">https</span>:<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#404">/</span></span>ajax.googleapis.com/ajax/libs/jquery/<span style="color:#60E">3.3</span>.<span style="color:#F00;background-color:#FAA">1</span>/jquery.min.js<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&gt;&lt;/script&gt;</span></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;script src=</span><span style="color:#710">&quot;</span></span>/js/main.js<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&gt;&lt;/script&gt;</span></span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;script&gt;</span></span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    $(function() {</span></span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      update_orders_input();</span></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      update_orders_button();</span></span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    });</span></span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/script&gt;</span></span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;/body&gt;</span></span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;/html&gt;</span></span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+<div class="language-js highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777">// + to public/js/main.js</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">add_to_cart</span>(id)
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>{
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">var</span> key = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">product_</span><span style="color:#710">'</span></span> + id;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">var</span> x = window.localStorage.getItem(key);
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  x = x * <span style="color:#00D">1</span> + <span style="color:#00D">1</span>;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  window.localStorage.setItem(key, x);
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  update_orders_input();
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  update_orders_button();
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>}
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">cart_get_number_of_items</span>()
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>{
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  <span style="color:#080;font-weight:bold">var</span> cnt = <span style="color:#00D">0</span>;
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>  <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> i = <span style="color:#00D">0</span>; i &lt; window.localStorage.length; i++)
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>  {
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>    <span style="color:#080;font-weight:bold">var</span> key = window.localStorage.key(i); <span style="color:#777">// получаем ключ</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>    <span style="color:#080;font-weight:bold">var</span> value = window.localStorage.getItem(key); <span style="color:#777">// получаем значение</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>    <span style="color:#080;font-weight:bold">if</span>(key.indexOf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">product_</span><span style="color:#710">'</span></span>) == <span style="color:#00D">0</span>)
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>    {
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>      cnt = cnt + value * <span style="color:#00D">1</span>;
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>    }
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>  }
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>  <span style="color:#080;font-weight:bold">return</span> cnt;
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>}
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">update_orders_input</span>()
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>{
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>  orders = cart_get_orders();
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>  <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">#orders_input</span><span style="color:#710">'</span></span>).val(orders);
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>}
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">cart_get_orders</span>()
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>{
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>  <span style="color:#080;font-weight:bold">var</span> orders = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#710">'</span></span>;
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>  <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> i = <span style="color:#00D">0</span>; i &lt; window.localStorage.length; i++)
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>  {
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>    <span style="color:#080;font-weight:bold">var</span> key = window.localStorage.key(i); <span style="color:#777">// получаем ключ</span>
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>    <span style="color:#080;font-weight:bold">var</span> value = window.localStorage.getItem(key); <span style="color:#777">// получаем значение</span>
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span>    <span style="color:#080;font-weight:bold">if</span>(key.indexOf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">product_</span><span style="color:#710">'</span></span>) == <span style="color:#00D">0</span>)
+<span class="line-numbers"><a href="#n52" name="n52">52</a></span>    {
+<span class="line-numbers"><a href="#n53" name="n53">53</a></span>      orders = orders + key + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">=</span><span style="color:#710">'</span></span> + value + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">,</span><span style="color:#710">'</span></span>;
+<span class="line-numbers"><a href="#n54" name="n54">54</a></span>    }
+<span class="line-numbers"><a href="#n55" name="n55">55</a></span>  }
+<span class="line-numbers"><a href="#n56" name="n56">56</a></span>
+<span class="line-numbers"><a href="#n57" name="n57">57</a></span>  <span style="color:#080;font-weight:bold">return</span> orders;
+<span class="line-numbers"><a href="#n58" name="n58">58</a></span>}
+<span class="line-numbers"><a href="#n59" name="n59">59</a></span>
+<span class="line-numbers"><strong><a href="#n60" name="n60">60</a></strong></span>
+<span class="line-numbers"><a href="#n61" name="n61">61</a></span><span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">update_orders_button</span>()
+<span class="line-numbers"><a href="#n62" name="n62">62</a></span>{
+<span class="line-numbers"><a href="#n63" name="n63">63</a></span>  <span style="color:#080;font-weight:bold">var</span> text = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Корзина (</span><span style="color:#710">'</span></span> + cart_get_number_of_items() + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20"> шт.)</span><span style="color:#710">'</span></span>;
+<span class="line-numbers"><a href="#n64" name="n64">64</a></span>  <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">#orders_button</span><span style="color:#710">'</span></span>).val(text);
+<span class="line-numbers"><a href="#n65" name="n65">65</a></span>}
+</pre></div>
+</div>
+</div>
+
+<h4 id="домашнее-задание-1">Домашнее задание:</h4>
+<ul>
+  <li>на странице /cart вывести в виде таблицы список продуктов в корзине и их количество</li>
+  <li>на странице /cart сделать так, чтобы форма сабмитилась по адресу /order и чтобы в базу данных заносился заказ: имя, телефон, адрес доставки, список купленных товаров (в виде текстового поля).</li>
+</ul>
+
+<h3 id="ruby-on-rails">Ruby on Rails</h3>
+
+<p>Я устанавливаю ruby через RVM</p>
+
+<p>Посмотрим доступные версии Rails:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem search '^rails$' --all
+</pre></div>
+</div>
+</div>
+<p>Чтобы установить конкретную версию, введите (вместо rails_version - номер версии):</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install rails -v rails_version
+</pre></div>
+</div>
+</div>
+<p>С помощью gemset-ов можно использовать вместе разные версии Rails и Ruby. Это делается с помощью команды gem.</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rvm gemset create gemset_name <span style="color:#777"># create a gemset</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>rvm ruby_version<span style="color:#33B">@gemset_name</span>  <span style="color:#777"># specify Ruby version and our new gemset</span>
+</pre></div>
+</div>
+</div>
+<p>Gemset-ы позволяют создавать полнофункциональные окружения для gem-ов, а также настраивать неограниченное количество окружений для каждой версии Ruby.</p>
+
+<blockquote>
+  <p><a href="https://github.com/DefactoSoftware/Hours">GitHub - DefactoSoftware/Hours: Time registration that doesn’t suck</a></p>
+</blockquote>
+
+<h4 id="rails-приложение-может-запускаться-в-3-типах-окружения">Rails-приложение может запускаться в 3 типах окружения:</h4>
+<ul>
+  <li>development</li>
+  <li>test</li>
+  <li>production</li>
+</ul>
+
+<h4 id="создадим-новое-рейлс-приложение">Создадим новое рейлс-приложение:</h4>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails new blog
+</pre></div>
+</div>
+</div>
+<p>Последовательность запуска rails (для справки):</p>
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>boot.rb -&gt; rails -&gt; environment.rb -&gt; development.rb (test.rb or production.rb)
+</pre></div>
+</div>
+</div>
+<p>Запуск приложения:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails s
+</pre></div>
+</div>
+</div>
+<p>Если не запустится, установи nodejs:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install nodejs
+</pre></div>
+</div>
+</div>
+<p>Если всё ок, приложение запустится и можно открывать в браузере: http://localhost:3000/</p>
+
+<p>Обновлять bundle можно командой:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle update
+</pre></div>
+</div>
+</div>
+<h3 id="mvc">MVC</h3>
+<p>Model, View, Controller</p>
+
+<p>Controller - отвечает за работу с какой-либо сущностью</p>
+
+<h4 id="создадим-контроллер">Создадим контроллер:</h4>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails generate controller home index
+</pre></div>
+</div>
+</div>
+<p>Найдём файл /app/controllers/home_controller.rb</p>
+
+<p>Найдём файл /app/views/home/index.html.erb</p>
+
+<p>Откроем в браузере: http://localhost:3000/home/index</p>
+
+<blockquote>
+  <p>Обычно /home/index создаётся для главной страницы сайта
+Надо открыть /config/routes.rb и прописать:</p>
+</blockquote>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">Rails</span>.application.routes.draw <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">home#index</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Изучить: Rails Routing from the Outside In — Ruby on Rails Guides
+http://guides.rubyonrails.org/routing.html</p>
+</blockquote>
+
+<h2 id="урок-35">Урок 35</h2>
+
+<h4 id="разбор-вопросов-на-интервью">Разбор вопросов на интервью</h4>
+
+<blockquote>
+  <p><a href="https://gist.github.com/krdprog/64a463de21fe77a8946019fde6662d67#what-is-unit-testing-in-classical-terms--what-is-the-primary-technique-when-writing-a-test">15 Questions to Ask During a Ruby Interview · GitHub</a></p>
+</blockquote>
+
+<ul>
+  <li>Что такое юнит-тесты. Юнит-тесты предназначены для тестирования отдельных модулей программы (к частям, которые не делимы).</li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">test/unit</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Brokened</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">uh_oh</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">I needs fixing</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">BrokenedTest</span> &lt; <span style="color:#036;font-weight:bold">Test</span>::<span style="color:#036;font-weight:bold">Unit</span>::<span style="color:#036;font-weight:bold">TestCase</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">test_uh_oh</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    actual = <span style="color:#036;font-weight:bold">Brokened</span>.new
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    assert_equal(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">I'm all better!</span><span style="color:#710">&quot;</span></span>, actual.uh_oh)
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span> <span style="color:#777">#=&gt; Started</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span> <span style="color:#777">#=&gt; F</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span> <span style="color:#777">#=&gt; Finished in 0.663831 seconds.</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span> <span style="color:#777">#=&gt;</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span> <span style="color:#777">#=&gt;   1) Failure:</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span> <span style="color:#777">#=&gt; test_uh_oh:11</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span> <span style="color:#777">#=&gt; &lt;&quot;I'm all better!&quot;&gt; expected but was</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span> <span style="color:#777">#=&gt; &lt;&quot;I needs fixing&quot;&gt;.</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span> <span style="color:#777">#=&gt;</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span> <span style="color:#777">#=&gt; 1 tests, 1 assertions, 1 failures, 0 errors</span>
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Вызываем метод и проверяем, что результат совпадает с эталоном</p>
+</blockquote>
+
+<p>test coverage - покрытие тестами</p>
+
+<p>Интеграционное тестирование - тестирование сайта в браузере</p>
+
+<p>Как много надо покрывать кода тестами?</p>
+
+<p>Юнит тестирование нужно, чтобы при возрастании сложности приложения функциональность большого приложения сохранялась.</p>
+
+<ul>
+  <li>Статическая и динамическая типизация</li>
+</ul>
+
+<div class="language-java highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777">// Java</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">boolean</span> isEmpty(<span style="color:#0a8;font-weight:bold">String</span> s) {
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">return</span> s.length() == <span style="color:#00D">0</span>;
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>}
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># ruby</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">empty?</span>(s)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">return</span> s.size == <span style="color:#00D">0</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>В руби меньше кода и он более гибкий.</p>
+
+<blockquote>
+  <p><a href="https://web.archive.org/web/20150220030931/http://odesk-tests.com:80/">oDesk and Elance Tests 2015</a></p>
+</blockquote>
+
+<blockquote>
+  <p><a href="https://web.archive.org/web/20150206003956/http://odesk-tests.com:80/tests/307/questions">Ruby on Rails Test 2015 - oDesk</a></p>
+</blockquote>
+
+<h4 id="продолжаем-pizzashop-1">Продолжаем PizzaShop</h4>
+
+<p>Нам надо разбить строку результата заказа в Ruby</p>
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&quot;product_1=9,product_3=2,&quot;
+</pre></div>
+</div>
+</div>
+<p>Создадим отдельную руби-программу:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># pizza-shop-other.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>orders = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">product_1=9,product_3=2,</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>s1 = orders.split(<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">,</span><span style="color:#404">/</span></span>)
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>s1.each <span style="color:#080;font-weight:bold">do</span> |x|
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  s2 = x.split(<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">=</span><span style="color:#404">/</span></span>)
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  s3 = s2[<span style="color:#00D">0</span>].split(<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">_</span><span style="color:#404">/</span></span>)
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  key = s3[<span style="color:#00D">1</span>]
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  value = s2[<span style="color:#00D">1</span>]
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Priduct Id: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>key<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">, number of items: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>value<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>Это не эффективный способ, лучше использовать json (позволяет поддерживать формат данных любой сложности).</p>
+
+<p>Перепишем в метод:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/cart</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  orders_input = params[<span style="color:#A60">:orders</span>]
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#33B">@items</span> = parse_orders_input orders_input
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#33B">@items</span>.each <span style="color:#080;font-weight:bold">do</span> |item|
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#777"># id, cnt</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    item[<span style="color:#00D">0</span>] = <span style="color:#036;font-weight:bold">Product</span>.find(item[<span style="color:#00D">0</span>])
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  erb <span style="color:#A60">:cart</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="color:#777"># Parse orders line:</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">parse_orders_input</span> orders_input
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  s1 = orders_input.split(<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">,</span><span style="color:#404">/</span></span>)
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>  arr = []
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>  s1.each <span style="color:#080;font-weight:bold">do</span> |x|
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>    s2 = x.split(<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">=</span><span style="color:#404">/</span></span>)
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>    s3 = s2[<span style="color:#00D">0</span>].split(<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">_</span><span style="color:#404">/</span></span>)
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>    id = s3[<span style="color:#00D">1</span>]
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>    cnt = s2[<span style="color:#00D">1</span>]
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>    arr2 = [id, cnt]
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>    arr.push arr2
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>  <span style="color:#080;font-weight:bold">return</span> arr
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to /views/cart.erb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&lt;h2&gt;Заказанные <span style="color:#606">товары</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h2&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;10&quot;&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;tr&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;th&gt;Товар&lt;</span><span style="color:#404">/</span></span>th&gt;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    &lt;th&gt;Цена&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">th&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;th&gt;Количество&lt;</span><span style="color:#404">/</span></span>th&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">tr&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;% total_qty = 0 %&gt;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;% total_price = 0 %&gt;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;% @items.each do |item| %&gt;</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;tr&gt;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;td&gt;&lt;%= item[0].title %&gt;&lt;</span><span style="color:#404">/</span></span>td&gt;
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>    &lt;td&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> item[0].price %&gt; руб.&lt;/td&gt;</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;td&gt;&lt;%</span><span style="color:#710">=</span></span> item[<span style="color:#00D">1</span>] %&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">td&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;</span><span style="color:#404">/</span></span>tr&gt;
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">total_qty</span><span style="color:#710"> </span></span>+= item[<span style="color:#00D">1</span>].to_i <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;% total_price += item[0].price * total_qty %</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>  &lt;tr style=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">background: yellow;</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>    &lt;td&gt;&lt;strong&gt;<span style="color:#606">Сумма</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">strong&gt;&lt;</span><span style="color:#404">/</span></span>td&gt;
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>    &lt;td&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> total_price %&gt; руб.&lt;/td&gt;</span></span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;td&gt;&lt;%</span><span style="color:#710">=</span></span> total_qty <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/td</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>  &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">tr&gt;</span></span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;</span><span style="color:#404">/</span></span>table&gt;
+</pre></div>
+</div>
+</div>
+<h4 id="отношение-между-сущностями">Отношение между сущностями:</h4>
+<ul>
+  <li>один ко многим</li>
+  <li>многие к одному</li>
+  <li>многие ко многим</li>
+  <li>один к одному</li>
+</ul>
+
+<p>Доделаем PizzaShop не лучшим, но простым путём. Создадим форму и отправим заказ на сервер (сохраним в базе данных).</p>
+
+<blockquote>
+  <p>GitHub - krdprog/PizzaShop-rubyschool: Pizza Shop (rubyschool project). Ruby, Sinatra, ActiveRecord, JS, localStorage
+https://github.com/krdprog/PizzaShop-rubyschool</p>
+</blockquote>
+
+<h4 id="домашнее-задание-2">Домашнее задание:</h4>
+<ul>
+  <li>сделать модель Order с полями из формы cart.erb, не забыть про миграцию</li>
+  <li>добавить post-обработчик /place_order в котором получать данные из страницы и сохранять в базу данных</li>
+  <li>выводить на экран сообщение “Заказ принят”</li>
+  <li>выводить на экран страницу со всеми принятыми заказами</li>
+</ul>
+
+<h2 id="содержание-конспекта">Содержание конспекта:</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-01/">Урок 01-14</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-02/">Урок 15-19</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-03/">Урок 20-25</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-04/">Урок 26-30</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-05/">Урок 31-35</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-06/">Урок 36-40</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-07/">Урок 41-45</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-08/">Урок 46-50</a></td>
+    </tr>
+  </tbody>
+</table>
+:ET

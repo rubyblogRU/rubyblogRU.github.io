@@ -1,0 +1,949 @@
+I"c<h1 id="конспект-лекций-курса-по-rubysinatraruby-on-rails-часть-7">Конспект лекций курса по Ruby/Sinatra/Ruby on Rails (часть 7)</h1>
+
+<p><img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby-red.svg" alt="ruby" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby%20on%20Rails-red.svg" alt="ror" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Sinatra-red.svg" alt="sinatra" /></p>
+
+<p><strong>Конспект составил:</strong> Алексей Цаплин-Купайсинов (Ruby-программист) - <a href="https://github.com/krdprog">https://github.com/krdprog</a></p>
+
+<p><strong>Курс:</strong> <a href="http://rubyschool.us/">http://rubyschool.us/</a></p>
+
+<p><strong>Автор курса:</strong> Роман Пушкин (программист из Сан-Франциско)</p>
+
+<h2 id="урок-41">Урок 41</h2>
+
+<p><strong>Когда используется единственное число, а когда множественное?</strong></p>
+
+<ul>
+  <li>таблицы в БД - множественное число</li>
+  <li>модели - единственное число</li>
+  <li>контроллеры - множественное число</li>
+</ul>
+
+<blockquote>
+  <p>В книге Rails. Гибкая разработка веб-приложений (Руби, Томас, Хэнссон) прочитать про соглашения об именах.</p>
+</blockquote>
+
+<h4 id="типы-связей">Типы связей</h4>
+
+<blockquote>
+  <p>http://rusrails.ru/active-record-associations</p>
+</blockquote>
+
+<p><strong>Тип 1 - * (one-to-many)</strong></p>
+
+<div class="language-text highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Article            |  Comment
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>has_many :comments |  belongs_to :article
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>id                 |  id, article_id
+</pre></div>
+</div>
+</div>
+
+<p><strong>Тип 1 - 1 (one-to-one)</strong> - помогает нормализовать БД</p>
+
+<div class="language-text highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Order              |  Address
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>has_one :address   |  belongs_to :order
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>id                 |  id, order_id
+</pre></div>
+</div>
+</div>
+
+<p>Нормализация, денормализация. Плюсы и минусы подходов. В варианте выше потребуется ещё 1 запрос к базе данных.</p>
+
+<blockquote>
+  <p>Понятие complex_type - сложный тип (изучить)</p>
+</blockquote>
+
+<p><strong>Тип * - * (many-to-many)</strong></p>
+
+<div class="language-text highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Tag                               |  Article
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>таблица tags                      |  таблица articles
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>id                                |  id
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>has_and_belongs_to_many :articles | has_and_belongs_to_many :tags
+</pre></div>
+</div>
+</div>
+
+<p>для связи между ними создаётся ещё одна таблица tags_articles (tag_id, article_id)</p>
+
+<blockquote>
+  <p>Изучить: http://www.rusrails.ru/active-record-associations#foreign_key</p>
+</blockquote>
+
+<h4 id="вывод-комментариев-в-представлении-статьи">Вывод комментариев в представлении статьи:</h4>
+
+<p>Добавим в /app/views/articles/show.html.erb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;h3&gt;<span style="color:#606">Комментарии</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h3&gt;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= 'Без комментариев' if @article.comments.empty? %&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;% @article.comments.each do |comment| %&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;&lt;strong&gt;Автор:&lt;</span><span style="color:#404">/</span><span style="color:#C2C">s</span></span>trong&gt; &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> comment.author %&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;p&gt;&lt;%</span><span style="color:#710">=</span></span> comment.body <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/p</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>&lt;hr&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+</pre></div>
+</div>
+</div>
+
+<h4 id="ещё-раз-про-activerecord">Ещё раз про ActiveRecord</h4>
+
+<p><strong>Вспомним CRUD:</strong></p>
+
+<ul>
+  <li>Create - (new) - .create - .save</li>
+  <li>Read - .where - .find(3), .all</li>
+  <li>Update - (update)</li>
+  <li>Delete - (destroy)</li>
+</ul>
+
+<blockquote>
+  <p>https://github.com/rails/strong_parameters</p>
+</blockquote>
+
+<blockquote>
+  <p>https://guides.rubyonrails.org/action_controller_overview.html#more-examples</p>
+</blockquote>
+
+<p><strong>Вспомним REST:</strong></p>
+
+<ul>
+  <li>resource</li>
+  <li>resources</li>
+</ul>
+
+<p>Можно вкладывать, получаются длинные URL:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>resources <span style="color:#A60">:article</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  resources <span style="color:#A60">:comments</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>x = <span style="color:#00D">2</span> != <span style="color:#00D">3</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>puts x <span style="color:#777">#=&gt; true</span>
+</pre></div>
+</div>
+</div>
+
+<h3 id="rspec---фреймворк-для-тестирования-приложений">Rspec - фреймворк для тестирования приложений</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install rspec
+</pre></div>
+</div>
+</div>
+
+<p>Запуск тестов:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rspec
+</pre></div>
+</div>
+</div>
+
+<p><strong>В Rspec существует 2 слова:</strong></p>
+
+<ul>
+  <li>describe</li>
+  <li>it</li>
+</ul>
+
+<p><strong>Создадим и протестируем героя компьютерной игры.</strong></p>
+
+<blockquote>
+  <p>https://github.com/krdprog/rspec-demo-rubyschool - репозиторий Rspec-demo</p>
+</blockquote>
+
+<p>Создадим файл hero.rb</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Hero</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(name, health=<span style="color:#00D">100</span>)
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    <span style="color:#33B">@name</span> = name.capitalize
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#33B">@health</span> = health
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  attr_reader <span style="color:#A60">:name</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">power_up</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    <span style="color:#33B">@health</span> += <span style="color:#00D">10</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">power_down</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    <span style="color:#33B">@health</span> -= <span style="color:#00D">10</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">hero_info</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@name</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> has </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@health</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> health</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Создадим файл hero_spec.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">./hero</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>describe <span style="color:#036;font-weight:bold">Hero</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">has a capitalized name</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    hero = <span style="color:#036;font-weight:bold">Hero</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    expect(hero.name).to eq <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">can power up</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    hero = <span style="color:#036;font-weight:bold">Hero</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    expect(hero.power_up).to eq <span style="color:#00D">110</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>И, запустим тест:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rspec hero_spec.rb
+</pre></div>
+</div>
+</div>
+
+<p>Написание тестов в большом приложении - это вклад в будущее, защита приложения от ошибок.</p>
+
+<h2 id="урок-42">Урок 42</h2>
+
+<p>Продолжим рассматривать Rspec и тестирование.</p>
+
+<p>Добавим к нашим тестам в файле hero_spec.rb</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">can power down</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>    hero = <span style="color:#036;font-weight:bold">Hero</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    expect(hero.power_down).to eq <span style="color:#00D">90</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">displays full hero info</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    hero = <span style="color:#036;font-weight:bold">Hero</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    expect(hero.hero_info).to eq <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo has 100 health</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>У нас часто повторяется код hero = Hero.new ‘foo’, и это не совпадает с DRY (Don`t Repeat Yourself), ниже мы его оптимизируем, добавив before-do-end</p>
+
+<p>Рефакторинг hero_spec.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">./hero</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>describe <span style="color:#036;font-weight:bold">Hero</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  before <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    <span style="color:#33B">@hero</span> = <span style="color:#036;font-weight:bold">Hero</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">has a capitalized name</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    expect(<span style="color:#33B">@hero</span>.name).to eq <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Foo</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">can power up</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    expect(<span style="color:#33B">@hero</span>.power_up).to eq <span style="color:#00D">110</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">can power down</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>    expect(<span style="color:#33B">@hero</span>.power_down).to eq <span style="color:#00D">90</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">displays full hero info</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>    expect(<span style="color:#33B">@hero</span>.hero_info).to eq <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo has 100 health</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Тесты должны быть:</strong></p>
+
+<ul>
+  <li>надёжные (reliable) - дают тот же результат - без зависимостей от соединения, от БД и т.п.</li>
+  <li>easy to write - если тест пишется не легко, то что-то не так с тем, что тестируем.</li>
+  <li>easy to understand - лёгкие для понимания другими программистами.</li>
+  <li>скорость не особо важна</li>
+  <li>не важно DRY</li>
+</ul>
+
+<h4 id="rspec-matchers">Rspec Matchers</h4>
+
+<blockquote>
+  <p>Изучить ссылку: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers</p>
+</blockquote>
+
+<p><strong>Сделаем ещё одно приложение и тест:</strong></p>
+
+<p>car.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Car</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#036;font-weight:bold">Miles_Per_Gallon</span> = <span style="color:#00D">20</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  attr_reader <span style="color:#A60">:fuel</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    <span style="color:#33B">@fuel</span> = <span style="color:#00D">0</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">add_fuel</span> amount
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#33B">@fuel</span> += amount
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#777"># Как далеко мы сможем проехать:</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">range</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    <span style="color:#33B">@fuel</span> * <span style="color:#036;font-weight:bold">Miles_Per_Gallon</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="color:#777"># car = Car.new</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="color:#777"># car.add_fuel 10</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span><span style="color:#777"># puts &quot;Range is #{car.range}&quot;</span>
+</pre></div>
+</div>
+</div>
+
+<p>car_spec.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">./car</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>describe <span style="color:#036;font-weight:bold">Car</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">must return range</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#777"># arrange</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    car = <span style="color:#036;font-weight:bold">Car</span>.new
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    <span style="color:#777"># act</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    car.add_fuel <span style="color:#00D">10</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#777"># assert</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    expect(car.range).to eq <span style="color:#00D">200</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Структура тестов:</strong></p>
+
+<div class="language-text highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span># arrange
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span># act
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span># assert
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># arrange - подготовка объекта для проведения теста</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  car = <span style="color:#036;font-weight:bold">Car</span>.new
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#777"># act - действие</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  result = car.add_fuel <span style="color:#00D">10</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#777"># assert - проверка действия</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  expect(result) ...
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Заметка по Issue на Github. У issue есть номер (например #12), если при коммите указать этот номер, то issue сама закроектся и пометится как выполненная.</p>
+</blockquote>
+
+<h3 id="devise">Devise</h3>
+
+<p>Devise - гем для авторизации</p>
+
+<p>Добавим в Gemfile:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">devise</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle
+</pre></div>
+</div>
+</div>
+<p><strong>Вывести в терминал список генераторов в системе:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g
+</pre></div>
+</div>
+</div>
+
+<div class="language-text highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Devise:
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  devise
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  devise:controllers
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  devise:install
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  devise:views
+</pre></div>
+</div>
+</div>
+
+<p>Введём:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g devise:install
+</pre></div>
+</div>
+</div>
+
+<p>План, как подключать devise:</p>
+
+<ol>
+  <li>gem ‘devise’ в Gemfile</li>
+  <li>rails g devise:install</li>
+</ol>
+
+<p>Проверить есть ли строка в файле config/environments/development.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>config.action_mailer.default_url_options = { <span style="color:#606">host</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">localhost</span><span style="color:#710">'</span></span>, <span style="color:#606">port</span>: <span style="color:#00D">3000</span> }
+</pre></div>
+</div>
+</div>
+
+<p>Проверить, что в  /config/routes.rb указано:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>root <span style="color:#606">to</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">home#index</span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Добавить в app/views/layouts/application.html.erb для флеш-сообщений:</p>
+
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;p</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">notice</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#F00;background-color:#FAA">&lt;</span>%= notice %<span style="color:#F00;background-color:#FAA">&gt;</span><span style="color:#070;font-weight:bold">&lt;/p&gt;</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#070;font-weight:bold">&lt;p</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">alert</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#F00;background-color:#FAA">&lt;</span>%= alert %<span style="color:#F00;background-color:#FAA">&gt;</span><span style="color:#070;font-weight:bold">&lt;/p&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<p>Для кастомизации форм:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g devise:views
+</pre></div>
+</div>
+</div>
+
+<p><strong>Далее, создадим модель пользователя:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g devise User
+</pre></div>
+</div>
+</div>
+
+<p>Devise создал параметры: e-mail, зашифрованный пароль, токен для сброса пароля.</p>
+
+<p><strong>Наберём:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<p>И, запустим:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails s
+</pre></div>
+</div>
+</div>
+
+<h3 id="задача-чтобы-мы-могли-просматривать-статьи-но-не-могли-их-создавать">Задача: чтобы мы могли просматривать статьи, но не могли их создавать.</h3>
+
+<ul>
+  <li>http://localhost:3000/articles</li>
+  <li>http://localhost:3000/articles/new</li>
+</ul>
+
+<p>Откроем /app/controllers/articles_controller.rb и добавим:</p>
+
+<blockquote>
+  <p>Примечание: начиная с Rails 5 синтаксис before_filter устарел и заменён на before_action</p>
+</blockquote>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>before_action <span style="color:#A60">:authenticate_user!</span>
+</pre></div>
+</div>
+</div>
+
+<p>Добавим в /app/views/layouts/application.html.erb:</p>
+
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;p&gt;</span><span style="color:#070;font-weight:bold">&lt;a</span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/users/sign_in</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Sign In<span style="color:#070;font-weight:bold">&lt;/a&gt;</span> | <span style="color:#070;font-weight:bold">&lt;a</span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/users/sign_out</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">data-method</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">delete</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Sign Out<span style="color:#070;font-weight:bold">&lt;/a&gt;</span><span style="color:#070;font-weight:bold">&lt;/p&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<p>Далее, мы заменим эти ссылки на ссылки с именноваными маршрутами.</p>
+
+<blockquote>
+  <p>Документация по гему devise - https://github.com/plataformatec/devise</p>
+</blockquote>
+
+<blockquote>
+  <p>Статья на Хабре по devise - https://habr.com/ru/post/208056/</p>
+</blockquote>
+
+<blockquote>
+  <p>Посмотреть примеры - https://github.com/plataformatec/devise/wiki/Example-applications</p>
+</blockquote>
+
+<h2 id="урок-43">Урок 43</h2>
+
+<p>Заменим жёстко прописанные ссылки, на ссылки с именованными маршрутами:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;p&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to &quot;Sign In&quot;, new_user_session_path %&gt; | &lt;%</span><span style="color:#710">=</span></span> link_to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sign Out</span><span style="color:#710">&quot;</span></span>, destroy_user_session_path, <span style="color:#606">method</span>: <span style="color:#A60">:delete</span> %&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<h4 id="далее-выведем-имя-пользователя-при-авторизации-и-уберём-sign-out-ссылку-когда-мы-не-авторизованы">Далее, выведем имя пользователя при авторизации, и уберём Sign Out ссылку, когда мы не авторизованы.</h4>
+
+<blockquote>
+  <p>https://github.com/plataformatec/devise#controller-filters-and-helpers</p>
+</blockquote>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">if</span><span style="color:#710"> </span></span>user_signed_in? <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  Hello, &lt;%= current_user.email %</span><span style="color:#710">&gt;</span></span> | &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to &quot;Sign Out&quot;, destroy_user_session_path, method: :delete %&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% else %&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%</span><span style="color:#710">=</span></span> link_to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sign In</span><span style="color:#710">&quot;</span></span>, new_user_session_path <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %</span><span style="color:#710">&gt;</span></span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="авторизация-сессии">Авторизация, сессии</h4>
+
+<ul>
+  <li>Аутентификация - проверка пользователя и пароля</li>
+  <li>Авторизация - наделение определёнными правами в зависимости от роли (юзер/админ)</li>
+</ul>
+
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>       Login, password
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>User ------------------&gt; Server
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>     &lt;------------------
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>       Cookies (*)
+</pre></div>
+</div>
+</div>
+
+<p>/config/initializers/devise.rb</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># config.secret_key =</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="механизм-сессий">Механизм сессий</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>session[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">key</span><span style="color:#710">'</span></span>] = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">value</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Cookie выдаётся при первом обращении к серверу, и затем без авторизации идёт обмен данными.</p>
+
+<h4 id="json---универсальный-формат-данных">JSON - универсальный формат данных</h4>
+
+<blockquote>
+  <p>https://ru.wikipedia.org/wiki/JSON</p>
+</blockquote>
+
+<p>Следующий пример показывает JSON-представление объекта, описывающего человека. В объекте есть строковые поля имени и фамилии, объект, описывающий адрес, и массив, содержащий список телефонов. Как видно из примера, значение может представлять собой вложенную структуру.</p>
+
+<div class="language-json highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>{
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>   <span style="color:#606"><span style="color:#404">&quot;</span><span>firstName</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Иван</span><span style="color:#710">&quot;</span></span>,
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>   <span style="color:#606"><span style="color:#404">&quot;</span><span>lastName</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Иванов</span><span style="color:#710">&quot;</span></span>,
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>   <span style="color:#606"><span style="color:#404">&quot;</span><span>address</span><span style="color:#404">&quot;</span></span>: {
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>       <span style="color:#606"><span style="color:#404">&quot;</span><span>streetAddress</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Московское ш., 101, кв.101</span><span style="color:#710">&quot;</span></span>,
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>       <span style="color:#606"><span style="color:#404">&quot;</span><span>city</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Ленинград</span><span style="color:#710">&quot;</span></span>,
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>       <span style="color:#606"><span style="color:#404">&quot;</span><span>postalCode</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">101101</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>   },
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>   <span style="color:#606"><span style="color:#404">&quot;</span><span>phoneNumbers</span><span style="color:#404">&quot;</span></span>: [
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>       <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">812 123-1234</span><span style="color:#710">&quot;</span></span>,
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>       <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">916 123-4567</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>   ]
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>}
+</pre></div>
+</div>
+</div>
+
+<h4 id="добавление-username-в-наш-блог-и-вставка-вместо-поля-автора-комментария-username-залогиненого-пользователя">Добавление username в наш блог, и вставка вместо поля автора комментария, username залогиненого пользователя:</h4>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g migration add_username
+</pre></div>
+</div>
+</div>
+
+<p>Добавим в существующую таблицу новый столбец.</p>
+
+<blockquote>
+  <p>https://api.rubyonrails.org/classes/ActiveRecord/Migration.html</p>
+</blockquote>
+
+<p>/db/migrate/20190129063426_add_username.rb</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">AddUsername</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Migration</span>[<span style="color:#60E">5.2</span>]
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">change</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    add_column <span style="color:#A60">:users</span>, <span style="color:#A60">:username</span>, <span style="color:#A60">:string</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    add_index <span style="color:#A60">:users</span>, <span style="color:#A60">:username</span>, <span style="color:#606">unique</span>: <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<h4 id="индекс-add_index">Индекс add_index:</h4>
+
+<p>Индекс - увеличивается время вставки, но уменьшается время выборки по определённому полю.</p>
+
+<h4 id="devise-надо-указать-какие-дополнительные-параметры-можно-задать">Devise надо указать какие дополнительные параметры можно задать.</h4>
+
+<p>Все контроллеры наследуются от базового контроллера ApplicationController и чтобы задать для всех контроллеров один параметр, надо прописать это в ApplicationController.</p>
+
+<p>before_action (в ранних версиях Rails это было before_filter), фильтрует методы в контроллерах до того как их обработать.</p>
+
+<p>/app/controllers/application_controller.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">ApplicationController</span> &lt; <span style="color:#036;font-weight:bold">ActionController</span>::<span style="color:#036;font-weight:bold">Base</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  before_action <span style="color:#A60">:configure_permitted_parameters</span>, <span style="color:#606">if</span>: <span style="color:#A60">:devise_controller?</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  protected
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">configure_permitted_parameters</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    devise_parameter_sanitizer.permit(<span style="color:#A60">:sign_up</span>, <span style="color:#606">keys</span>: [<span style="color:#A60">:username</span>])
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="далее-отредактируем-форму-регистрации-sign-up">Далее, отредактируем форму регистрации Sign Up:</h4>
+
+<p>Сгенерируем набор views:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g devise:views
+</pre></div>
+</div>
+</div>
+
+<p>Добавим в /app/views/devise/registrations/new.html.erb код поля ввода username:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;div <span style="color:#080;font-weight:bold">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">field</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> f.label :username %&gt;&lt;br /&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%</span><span style="color:#710">=</span></span> f.text_field <span style="color:#A60">:username</span>, <span style="color:#606">autocomplete</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">username</span><span style="color:#710">&quot;</span></span> %&gt;
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">div&gt;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<h4 id="и-выведем-имя-вместо-e-mail-в-appviewslayoutsapplicationhtmlerb">И, выведем имя вместо e-mail в /app/views/layouts/application.html.erb:</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">if</span><span style="color:#710"> </span></span>user_signed_in? <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  Hello, &lt;%= current_user.username %</span><span style="color:#710">&gt;</span></span> | &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to &quot;Sign Out&quot;, destroy_user_session_path, method: :delete %&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% else %&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%</span><span style="color:#710">=</span></span> link_to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sign In</span><span style="color:#710">&quot;</span></span>, new_user_session_path <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %</span><span style="color:#710">&gt;</span></span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="сделаем-так-чтобы-при-комментировании-статьи-автор-указывался-тот-кто-залогинен">Сделаем так, чтобы при комментировании статьи автор указывался тот, кто залогинен</h4>
+
+<p>Авторизация только для создания и редактирования статьи /app/controllers/articles_controller.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>before_action <span style="color:#A60">:authenticate_user!</span>, <span style="color:#A60">:only</span> =&gt; [<span style="color:#A60">:new</span>, <span style="color:#A60">:create</span>, <span style="color:#A60">:edit</span>, <span style="color:#A60">:update</span>, <span style="color:#A60">:destroy</span>]
+</pre></div>
+</div>
+</div>
+
+<p>И, для комментирования /app/controllers/comments_controller.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>before_action <span style="color:#A60">:authenticate_user!</span>, <span style="color:#A60">:only</span> =&gt; [<span style="color:#A60">:create</span>]
+</pre></div>
+</div>
+</div>
+
+<p><strong>Домашнее задание:</strong></p>
+
+<ul>
+  <li>Найти и изучить, что такое индексы в БД.</li>
+  <li>Сделать так, чтобы комментарии оставлялись под именем залогиненого пользователя.</li>
+</ul>
+
+<blockquote>
+  <p>https://andreyex.ru/bazy-dannyx/uchebnoe-posobie-po-sql/sql-indeksy/</p>
+</blockquote>
+
+<blockquote>
+  <p>http://www.sql.ru/articles/mssql/03013101indexes.shtml</p>
+</blockquote>
+
+<blockquote>
+  <p>https://habr.com/ru/post/247373/</p>
+</blockquote>
+
+<blockquote>
+  <p>https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D0%B4%D0%B5%D0%BA%D1%81<em>(%D0%B1%D0%B0%D0%B7%D1%8B</em>%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85)</p>
+</blockquote>
+
+<h2 id="урок-44">Урок 44</h2>
+
+<p>На upwork.com указывать, что все fees берёт на себя заказчик. Т.е. при $30 будет отображаться $33 (пример требующий проверки).</p>
+
+<blockquote>
+  <p>Далее в этом уроке рассматривается Bootstrap. Конспекты по нему не фиксировались.</p>
+</blockquote>
+
+<p>Домашнее задание:</p>
+
+<ul>
+  <li>Читать про хелперы</li>
+  <li>Внедрить в RailsBlog - bootstrap</li>
+  <li>Убрать поле author из view комментария, и заменить на имя залогиненого (если не сделано на уроке 43)</li>
+</ul>
+
+<h2 id="урок-45">Урок 45</h2>
+
+<p>Принцип работы метода params в контроллерах: в params хранятся все параметры которые передаются из браузера в приложение.</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>private
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">article_params</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  params.require(<span style="color:#A60">:article</span>).permit(<span style="color:#A60">:title</span>, <span style="color:#A60">:text</span>)
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>https://stackoverflow.com/questions/18424671/what-is-params-requireperson-permitname-age-doing-in-rails-4</p>
+</blockquote>
+
+<blockquote>
+  <p>https://api.rubyonrails.org/classes/ActionController/Parameters.html#method-i-require</p>
+</blockquote>
+
+<blockquote>
+  <p>https://api.rubyonrails.org/classes/ActionController/Parameters.html#method-i-permit</p>
+</blockquote>
+
+<blockquote>
+  <p>https://api.rubyonrails.org/classes/ActionController/Parameters.html</p>
+</blockquote>
+
+<div class="language-text highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Browser ===&gt; Server ===&gt; Controller ===&gt; ActiveRecord ===&gt; Database
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>                                             ||
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>                                             ===&gt; Error
+</pre></div>
+</div>
+</div>
+
+<p><strong>Правило:</strong> никогда не верьте тому, что передаёт клиент.</p>
+
+<h4 id="are-redirect_to-and-render-exchangeable">Are redirect_to and render exchangeable?</h4>
+
+<blockquote>
+  <p>https://stackoverflow.com/questions/7493767/are-redirect-to-and-render-exchangeable</p>
+</blockquote>
+
+<p>Если используется render когда юзер обновляет страницу, то он засабмитит предыдущий POST-запрос, это может отправить дополнительные данные.</p>
+
+<p>Если используется redirect_to, то это будет выгдядеть как редирект.</p>
+
+<p><strong>Post/Redirect/Get (PRG) pattern:</strong></p>
+
+<blockquote>
+  <p>https://en.wikipedia.org/wiki/Post/Redirect/Get</p>
+</blockquote>
+
+<h4 id="хелперы">Хелперы:</h4>
+
+<p>Все хелперы расположены в каталоге /app/helpers/</p>
+
+<p>Для каждого контроллера существует хелпер, можно вызывать различные методы из этих хелперов, из разных представлений. Хелпер - работает между контроллером и представлением. Чтобы не вставлять код в представление.</p>
+
+<p>Чтобы не дублировать код в каждом представлении.</p>
+
+<p>Логику в представлениях писать неправильно, надо выносить в хелперы. Представления предназначены для того, чтобы отображать данные. Нехорошо размазывать логику по всему приложению.</p>
+
+<p>Один хелпер создаётся для одного контроллера, но все хелперы доступны всем контроллерам.</p>
+
+<p>Существуют также <strong>встроенные хелперы</strong> в Rails, например <strong>debug</strong>, выведет список параметров.</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> debug(params) %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>Ещё посмотреть:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> simple_format(@foo) %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>И, см. автоматическая подсветка ссылок - <strong>autolinks</strong></p>
+
+<p>А, также <strong>truncate - если есть длинная строка, то обрезается под указанный размер:</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> truncate(@foo, length: 20) %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>И, уже известный нам хелпер link_to.</p>
+
+<blockquote>
+  <p>См. ещё: http://rusrails.ru/action-view-overview</p>
+</blockquote>
+
+<blockquote>
+  <p>https://guides.rubyonrails.org/form_helpers.html</p>
+</blockquote>
+
+<h4 id="как-устроен-процесс-разработки-в-компании-ci-cd">Как устроен процесс разработки в компании (CI, CD)</h4>
+
+<ul>
+  <li>CI - continuous integration - непрерывная интеграция - автотест при коммитах в общий репозиторий</li>
+  <li>CD - continuous delivery - непрерывная доставка - автозаливка на веб-сервер</li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>programmer  owner
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>   |   ______|
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>hipchat ______ github -------
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>   |__________ test server__|
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>                 |
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>                www (staging) --- <span style="color:#036;font-weight:bold">QA</span>
+</pre></div>
+</div>
+</div>
+<p>Integration tests - watir, selenium</p>
+
+<blockquote>
+  <p>https://github.com/watir/watir</p>
+</blockquote>
+
+<blockquote>
+  <p>https://github.com/SeleniumHQ/selenium</p>
+</blockquote>
+
+<blockquote>
+  <p>KANBAN-доска: http://kanbanflow.com/</p>
+</blockquote>
+
+<blockquote>
+  <p>http://trello.com/</p>
+</blockquote>
+
+<h4 id="vargant">Vargant</h4>
+
+<blockquote>
+  <p>https://www.vagrantup.com/</p>
+</blockquote>
+
+<blockquote>
+  <p>https://github.com/rails/rails-dev-box</p>
+</blockquote>
+
+<p><strong>Домашнее задание:</strong></p>
+
+<ul>
+  <li>поставить Vargant</li>
+  <li>привязать сущность article в блоге к пользователю. Сделать так, чтобы другие пользователи не могли редактировать статьи.</li>
+</ul>
+
+<h2 id="содержание-конспекта">Содержание конспекта:</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-01/">Урок 01-14</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-02/">Урок 15-19</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-03/">Урок 20-25</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-04/">Урок 26-30</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-05/">Урок 31-35</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-06/">Урок 36-40</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-07/">Урок 41-45</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-08/">Урок 46-50</a></td>
+    </tr>
+  </tbody>
+</table>
+:ET

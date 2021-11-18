@@ -1,0 +1,1399 @@
+I"�]<h1 id="конспект-лекций-курса-по-rubysinatraruby-on-rails-часть-2">Конспект лекций курса по Ruby/Sinatra/Ruby on Rails (часть 2)</h1>
+
+<p><img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby-red.svg" alt="ruby" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby%20on%20Rails-red.svg" alt="ror" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Sinatra-red.svg" alt="sinatra" /></p>
+
+<p><strong>Конспект составил:</strong> Алексей Цаплин-Купайсинов (Ruby-программист) - <a href="https://github.com/krdprog">https://github.com/krdprog</a></p>
+
+<p><strong>Курс:</strong> <a href="http://rubyschool.us/">http://rubyschool.us/</a></p>
+
+<p><strong>Автор курса:</strong> Роман Пушкин (программист из Сан-Франциско)</p>
+
+<h2 id="урок-15">Урок 15</h2>
+
+<h4 id="атрибуты-свойства-класса">Атрибуты (свойства класса):</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>attr_reader
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>attr_writer
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>attr_accessor
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Some</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  attr_writer <span style="color:#A60">:foo</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>bar = <span style="color:#036;font-weight:bold">Some</span>.new
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>bar.foo = <span style="color:#00D">12</span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>puts bar.foo
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Song</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  attr_accessor <span style="color:#A60">:name</span>, <span style="color:#A60">:duration</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span> name, duration
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    <span style="color:#33B">@duration</span> = duration
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>song1 = <span style="color:#036;font-weight:bold">Song</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Obla-di, obla-da</span><span style="color:#710">'</span></span>, <span style="color:#00D">6</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>puts song1.name
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Airport</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  attr_reader <span style="color:#A60">:name</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span> name
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Airplane</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  attr_reader <span style="color:#A60">:model</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span> model
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    <span style="color:#33B">@model</span> = model
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>1 аэропорт содержит много самолётов (*):</p>
+
+<h4 id="задача-аэропорты-и-самолёты-в-них">Задача Аэропорты и самолёты в них:</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># 1. создать 2 аэропорта с 3 самолётами в каждом</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#777"># 2. вывести на экран название аэропортов и какие в нём самолёты</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Airport</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  attr_reader <span style="color:#A60">:name</span>, <span style="color:#A60">:planes</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(name)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#33B">@planes</span> = []
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">add_plane</span> plane
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    <span style="color:#33B">@planes</span> &lt;&lt; plane
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Plane</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  attr_reader <span style="color:#A60">:model</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(model)
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>    <span style="color:#33B">@model</span> = model
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span><span style="color:#777"># массив для хранения аэропортов</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>airports = []
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span><span style="color:#777"># создадим 2 аэропорта</span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>airport1 = <span style="color:#036;font-weight:bold">Airport</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">SVO</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>airport2 = <span style="color:#036;font-weight:bold">Airport</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">VKO</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span><span style="color:#777"># запишем их в массив аэропортов</span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>airports &lt;&lt; airport1
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>airports &lt;&lt; airport2
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span><span style="color:#777"># add plane in airport1</span>
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>plane1 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Airbus</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>plane2 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Boeing</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>plane3 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">IL-76</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>airport1.add_plane plane1
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>airport1.add_plane plane2
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>airport1.add_plane plane3
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span><span style="color:#777"># add plane in airport2</span>
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>plane2_1 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">DoooDdoo</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>plane2_2 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foofo</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>plane2_3 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">FafoooFf</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>plane2_4 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Booooou</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span>airport2.add_plane plane2_1
+<span class="line-numbers"><a href="#n52" name="n52">52</a></span>airport2.add_plane plane2_2
+<span class="line-numbers"><a href="#n53" name="n53">53</a></span>airport2.add_plane plane2_3
+<span class="line-numbers"><a href="#n54" name="n54">54</a></span>airport2.add_plane plane2_4
+<span class="line-numbers"><a href="#n55" name="n55">55</a></span>
+<span class="line-numbers"><a href="#n56" name="n56">56</a></span><span style="color:#777"># выведем информацию об аэропортах и самолётах в них:</span>
+<span class="line-numbers"><a href="#n57" name="n57">57</a></span>airports.each <span style="color:#080;font-weight:bold">do</span> |airport|
+<span class="line-numbers"><a href="#n58" name="n58">58</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>airport.name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n59" name="n59">59</a></span>
+<span class="line-numbers"><strong><a href="#n60" name="n60">60</a></strong></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Planes in this airport:</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n61" name="n61">61</a></span>  airport.planes.each <span style="color:#080;font-weight:bold">do</span> |plane|
+<span class="line-numbers"><a href="#n62" name="n62">62</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>plane.model<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n63" name="n63">63</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n64" name="n64">64</a></span>
+<span class="line-numbers"><a href="#n65" name="n65">65</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">=========================</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n66" name="n66">66</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="вариант-задачи-аэропорт-самолёты-со-страной">Вариант задачи Аэропорт-Самолёты со Страной:</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Country</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  attr_reader <span style="color:#A60">:name</span>, <span style="color:#A60">:airports</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(name)
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    <span style="color:#33B">@airports</span> = []
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">add_airport</span> airport
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#33B">@airports</span> &lt;&lt; airport
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Airport</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  attr_reader <span style="color:#A60">:name</span>, <span style="color:#A60">:planes</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(name)
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>    <span style="color:#33B">@planes</span> = []
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">add_plane</span> plane
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>    <span style="color:#33B">@planes</span> &lt;&lt; plane
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Plane</span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>  attr_reader <span style="color:#A60">:model</span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(model)
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>    <span style="color:#33B">@model</span> = model
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span><span style="color:#777"># массив стран</span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>countries = []
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span><span style="color:#777"># создадим 2 страны</span>
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>russia = <span style="color:#036;font-weight:bold">Country</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Russia</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>germany = <span style="color:#036;font-weight:bold">Country</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Germany</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span><span style="color:#777"># добавим в массив стран</span>
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>countries &lt;&lt; russia
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>countries &lt;&lt; germany
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span><span style="color:#777"># создадим 2 аэропорта</span>
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>airport1 = <span style="color:#036;font-weight:bold">Airport</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">MOSCOW</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>airport2 = <span style="color:#036;font-weight:bold">Airport</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">BERLIN</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span><span style="color:#777"># добавим аэропорты в страну</span>
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span>russia.add_airport airport1
+<span class="line-numbers"><a href="#n52" name="n52">52</a></span>germany.add_airport airport2
+<span class="line-numbers"><a href="#n53" name="n53">53</a></span>
+<span class="line-numbers"><a href="#n54" name="n54">54</a></span><span style="color:#777"># add plane in airport1</span>
+<span class="line-numbers"><a href="#n55" name="n55">55</a></span>plane1 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Airbus</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n56" name="n56">56</a></span>plane2 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Boeing</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n57" name="n57">57</a></span>plane3 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">IL-76</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n58" name="n58">58</a></span>
+<span class="line-numbers"><a href="#n59" name="n59">59</a></span>airport1.add_plane plane1
+<span class="line-numbers"><strong><a href="#n60" name="n60">60</a></strong></span>airport1.add_plane plane2
+<span class="line-numbers"><a href="#n61" name="n61">61</a></span>airport1.add_plane plane3
+<span class="line-numbers"><a href="#n62" name="n62">62</a></span>
+<span class="line-numbers"><a href="#n63" name="n63">63</a></span><span style="color:#777"># add plane in airport2</span>
+<span class="line-numbers"><a href="#n64" name="n64">64</a></span>plane2_1 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">DoooDdoo</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n65" name="n65">65</a></span>plane2_2 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foofo</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n66" name="n66">66</a></span>plane2_3 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">FafoooFf</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n67" name="n67">67</a></span>plane2_4 = <span style="color:#036;font-weight:bold">Plane</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Booooou</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n68" name="n68">68</a></span>
+<span class="line-numbers"><a href="#n69" name="n69">69</a></span>airport2.add_plane plane2_1
+<span class="line-numbers"><strong><a href="#n70" name="n70">70</a></strong></span>airport2.add_plane plane2_2
+<span class="line-numbers"><a href="#n71" name="n71">71</a></span>airport2.add_plane plane2_3
+<span class="line-numbers"><a href="#n72" name="n72">72</a></span>airport2.add_plane plane2_4
+<span class="line-numbers"><a href="#n73" name="n73">73</a></span>
+<span class="line-numbers"><a href="#n74" name="n74">74</a></span><span style="color:#777"># выведем информацию о странах, аэропортах и самолётах в них:</span>
+<span class="line-numbers"><a href="#n75" name="n75">75</a></span>
+<span class="line-numbers"><a href="#n76" name="n76">76</a></span>countries.each <span style="color:#080;font-weight:bold">do</span> |country|
+<span class="line-numbers"><a href="#n77" name="n77">77</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Airports From </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>country.name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">:</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n78" name="n78">78</a></span>  country.airports.each <span style="color:#080;font-weight:bold">do</span> |airport|
+<span class="line-numbers"><a href="#n79" name="n79">79</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">- Airport </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>airport.name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n80" name="n80">80</a></strong></span>
+<span class="line-numbers"><a href="#n81" name="n81">81</a></span>      puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">-- Planes in this airport:</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n82" name="n82">82</a></span>      airport.planes.each <span style="color:#080;font-weight:bold">do</span> |plane|
+<span class="line-numbers"><a href="#n83" name="n83">83</a></span>        puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">-- </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>plane.model<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n84" name="n84">84</a></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n85" name="n85">85</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n86" name="n86">86</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">==================</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n87" name="n87">87</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<h4 id="задача-альбом-с-песнями">Задача: альбом с песнями</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># add album and 3 song</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Album</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  attr_reader <span style="color:#A60">:name</span>, <span style="color:#A60">:songs</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(name)
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    <span style="color:#33B">@songs</span> = []
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">add_song</span> song
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#33B">@songs</span> &lt;&lt; song
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Song</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  attr_reader <span style="color:#A60">:name</span>, <span style="color:#A60">:duration</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(name, duration)
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>    <span style="color:#33B">@duration</span> = duration
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span><span style="color:#777"># add massive with albums</span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>albums = []
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>abba = <span style="color:#036;font-weight:bold">Album</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Abba</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>albums &lt;&lt; abba
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>song1 = <span style="color:#036;font-weight:bold">Song</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foooo Barrrr!</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">1:44</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>song2 = <span style="color:#036;font-weight:bold">Song</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Baz Baz Baz!</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">4:30</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>song3 = <span style="color:#036;font-weight:bold">Song</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Yahooou!</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2:32</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>abba.add_song song1
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>abba.add_song song2
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>abba.add_song song3
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>albums.each <span style="color:#080;font-weight:bold">do</span> |album|
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Album: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>album.name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>  album.songs.each <span style="color:#080;font-weight:bold">do</span> |song|
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Song: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>song.name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> -- duration: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>song.duration<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h3 id="наследование-inheritance">Наследование (inheritance):</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Parent</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">foo</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">foo</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Child</span> &lt; <span style="color:#036;font-weight:bold">Parent</span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="наследование-от-суперкласса-метода-initialize---через-super">Наследование от суперкласса метода initialize - через super:</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Animal</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(name)
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">jump</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@name</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> is jumping...</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Cat</span> &lt; <span style="color:#036;font-weight:bold">Animal</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    <span style="color:#080;font-weight:bold">super</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Murzik</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">say_meow</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@name</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> Meowww!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Dog</span> &lt; <span style="color:#036;font-weight:bold">Animal</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>    <span style="color:#080;font-weight:bold">super</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Sharik</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">say_gav</span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@name</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> Gavvv!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>cat = <span style="color:#036;font-weight:bold">Cat</span>.new
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>dog = <span style="color:#036;font-weight:bold">Dog</span>.new
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>cat.jump
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>cat.say_meow
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>dog.jump
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>dog.say_gav
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>изучи ссылку <a href="http://phrogz.net/programmingruby/tut_classes.html">Classes, Objects, and Variables</a></p>
+</blockquote>
+
+<h2 id="урок-16">Урок 16</h2>
+
+<h3 id="существует-3-уровня-доступа-к-методам-методы-бывают">Существует 3 уровня доступа к методам. Методы бывают:</h3>
+
+<ul>
+  <li>открытый (public) интерфейс — общий интерфейс для всех пользователей данного класса;</li>
+  <li>защищённый (protected) интерфейс — внутренний интерфейс для всех наследников данного класса;</li>
+  <li>закрытый (private) интерфейс — интерфейс, доступный только изнутри данного класса.</li>
+</ul>
+
+<h3 id="class-api">class API</h3>
+
+<h4 id="private---можно-вызывать-только-из-методов-класса-но-не-отдельно-ограничивает-доступ-только-внутри-класса">Private - можно вызывать только из методов класса, но не отдельно (ограничивает доступ только внутри класса):</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Animal</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  attr_reader <span style="color:#A60">:name</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(name)
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    <span style="color:#33B">@name</span> = name
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">jump</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    eat
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">: I am jumping...</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    sleep
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  private
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">eat</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">: I am eating...</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">sleep</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">I am sleeping...</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>cat = <span style="color:#036;font-weight:bold">Animal</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Murzik</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>cat.jump
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span><span style="color:#777"># cat.eat # будет ошибка</span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span><span style="color:#777"># cat.sleep # тоже ошибка</span>
+</pre></div>
+</div>
+</div>
+
+<h3 id="статические-методы---self">Статические методы - self</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Man</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">say_hi</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hi!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>man = <span style="color:#036;font-weight:bold">Man</span>.new
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>man.say_hi
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#777"># or</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Man</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#069">self</span>.<span style="color:#06B;font-weight:bold">say_hi</span> <span style="color:#777"># !!!</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hi!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="color:#036;font-weight:bold">Man</span>.say_hi
+</pre></div>
+</div>
+</div>
+
+<h3 id="yield---вызов">yield - вызов</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">run_5_times</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#00D">5</span>.times <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    <span style="color:#080;font-weight:bold">yield</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>run_5_times { puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foooo!!!</span><span style="color:#710">&quot;</span></span> }
+</pre></div>
+</div>
+</div>
+
+<h4 id="можно-передать-параметр">Можно передать параметр:</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">run_5_times</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  x = <span style="color:#00D">0</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">while</span> x &lt; <span style="color:#00D">5</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    <span style="color:#080;font-weight:bold">yield</span> x
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    x += <span style="color:#00D">1</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>run_5_times { |i| puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo! Index: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>i<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span> }
+</pre></div>
+</div>
+</div>
+<h4 id="можно-передать-несколько-параметров">Можно передать несколько параметров:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">run_5_times</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  x = <span style="color:#00D">0</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">while</span> x &lt; <span style="color:#00D">5</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    <span style="color:#080;font-weight:bold">yield</span> x, <span style="color:#00D">55</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    x += <span style="color:#00D">1</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>run_5_times { |i, v| puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo! Index: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>i<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">. Value: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>v<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span> }
+</pre></div>
+</div>
+</div>
+
+<h3 id="лямбда-lambda---это-указатель-на-функцию">Лямбда (lambda) - это указатель на функцию:</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>x = lambda { <span style="color:#777">#some code }</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>x = lambda <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#777">#some code</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>x.call <span style="color:#777"># вызов</span>
+</pre></div>
+</div>
+</div>
+<h4 id="параметры-в-lambda-выражениях">Параметры в lambda-выражениях:</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>x = lambda { |a| puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>a<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span> }
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>x.call <span style="color:#00D">55</span>
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>x = lambda { |a, b| puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>a+b<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span> }
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>x.call <span style="color:#00D">3</span>, <span style="color:#00D">22</span>
+</pre></div>
+</div>
+</div>
+<h4 id="работа-с-массивами">Работа с массивами:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>say_hi = lambda { puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hi!</span><span style="color:#710">&quot;</span></span> }
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>say_bye = lambda { puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Bye!</span><span style="color:#710">&quot;</span></span> }
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>week = [ say_hi, say_hi, say_hi, say_hi, say_hi, say_bye, say_bye ]
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>week.each <span style="color:#080;font-weight:bold">do</span> |f|
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  f.call
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>return, но можно не писать:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sub_10 = lambda <span style="color:#080;font-weight:bold">do</span> |x|
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">return</span> x - <span style="color:#00D">10</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>a = sub_10.call <span style="color:#00D">1000</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>puts a
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sub_10 = lambda { |x| <span style="color:#080;font-weight:bold">return</span> x - <span style="color:#00D">10</span> }
+</pre></div>
+</div>
+</div>
+
+<p>lambda и работа с хешем:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># прибавляет 10</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#777"># прибавляет 20</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#777"># отнимает 5</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>add_10 = lambda { |x| x+<span style="color:#00D">10</span> }
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>add_20 = lambda { |x| x+<span style="color:#00D">20</span> }
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>sub_5 = lambda { |x| x-<span style="color:#00D">5</span> }
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#777"># если до 300 - прибавлять 10</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#777"># если до 600 - прибавлять 20</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#777"># если больше 600 - вычитать 5</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>balance = <span style="color:#00D">1000</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>hh = { <span style="color:#00D">111</span> =&gt; add_10, <span style="color:#00D">222</span> =&gt; add_10, <span style="color:#00D">333</span> =&gt; add_20, <span style="color:#00D">444</span> =&gt; add_20, <span style="color:#00D">555</span> =&gt; add_20, <span style="color:#00D">666</span> =&gt; sub_5, <span style="color:#00D">777</span> =&gt; sub_5 }
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">while</span> <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  x = rand(<span style="color:#00D">100</span>..<span style="color:#00D">999</span>)
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Combination: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>x<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>  <span style="color:#080;font-weight:bold">if</span> hh[x]
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>    f = hh[x]
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>    balance = f.call balance
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Lambda called.</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>  <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>    balance = sub_5.call balance
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Balance: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>balance<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Press Enter to continue...</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>  gets
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h3 id="module---модули">Module - модули</h3>
+
+<blockquote>
+  <p>module = namespace = пространство имён</p>
+</blockquote>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Foo</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Bar</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    <span style="color:#777">#somecode</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>baz = <span style="color:#036;font-weight:bold">Foo</span>::<span style="color:#036;font-weight:bold">Bar</span>.new
+</pre></div>
+</div>
+</div>
+<p>Пример:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Humans</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Manager</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">say_hi</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Hipster</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">say_hi</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Yoooouuuuu! Hi!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Alisha</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">say_hi</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>      puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Nihau!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>hipster = <span style="color:#036;font-weight:bold">Humans</span>::<span style="color:#036;font-weight:bold">Hipster</span>.new
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>hipster.say_hi
+</pre></div>
+</div>
+</div>
+
+<h4 id="встраивание-модуля-в-класс">Встраивание модуля в класс</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Animal</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">say</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    <span style="color:#777"># some code</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Cat</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  include <span style="color:#036;font-weight:bold">Animal</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">eat</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#777">#some code</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="mixins">Mixins</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">A</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>   <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">a1</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>   <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>   <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">a2</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>   <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">B</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>   <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">b1</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>   <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>   <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">b2</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>   <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Sample</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>include <span style="color:#036;font-weight:bold">A</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>include <span style="color:#036;font-weight:bold">B</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>   <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">s1</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>   <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>samp = <span style="color:#036;font-weight:bold">Sample</span>.new
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>samp.a1
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>samp.a2
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>samp.b1
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>samp.b2
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>samp.s1
+</pre></div>
+</div>
+</div>
+
+<h4 id="подключение-модуля-из-другого-файла">Подключение модуля из другого файла:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">./foo.rb</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="типы-переменных">Типы переменных:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">CONSTANT</span> = <span style="color:#60E">3.14</span> <span style="color:#777"># константа</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#d70">$global_var</span> <span style="color:#777"># глобальная переменная</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#33B">@instance_var</span> <span style="color:#777"># переменная экземпляра</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#369">@@class_var</span> <span style="color:#777"># переменная класса (сохраняет своё значение во всех экземплярах класса)</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>local_var <span style="color:#777"># переменная доступная внутри метода</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Song</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#369">@@plays</span> = <span style="color:#00D">0</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">play</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#369">@@plays</span> += <span style="color:#00D">1</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">total_plays</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    puts <span style="color:#369">@@plays</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>song1 = <span style="color:#036;font-weight:bold">Song</span>.new
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>song2 = <span style="color:#036;font-weight:bold">Song</span>.new
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>song3 = <span style="color:#036;font-weight:bold">Song</span>.new
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>song1.play
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>song2.play
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>song3.play
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>song3.total_plays
+</pre></div>
+</div>
+</div>
+
+<h2 id="урок-17">Урок 17</h2>
+
+<h4 id="метапрограммирование">Метапрограммирование</h4>
+
+<p>Функция send - отправить в какую-то функцию какие-то аргументы.</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">mm</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#777">#some code</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#777"># варианты вызова метода:</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>mm
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="color:#777"># metaprogram:</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>send <span style="color:#A60">:mm</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#777"># or</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>send <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">mm</span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+<h4 id="параметры-в-send">Параметры в send:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">mm</span> param
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>param<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>send <span style="color:#A60">:mm</span>, <span style="color:#00D">343</span>
+</pre></div>
+</div>
+</div>
+<h4 id="передача-хеша-в-send-в-виде-параметра">Передача хеша в send в виде параметра</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">mm</span> hash
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  hash.each { |key, value| puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>key<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> -- </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>value<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>}
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>send <span style="color:#A60">:mm</span>, <span style="color:#A60">:foo</span> =&gt; <span style="color:#00D">22</span>, <span style="color:#A60">:bar</span> =&gt; <span style="color:#00D">44</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Foo</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  attr_accessor <span style="color:#A60">:name</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    send(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name=</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Mike</span><span style="color:#710">&quot;</span></span>) <span style="color:#777"># аналог @name = &quot;Mike&quot;</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>bar = <span style="color:#036;font-weight:bold">Foo</span>.new
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>puts bar.name
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Foo</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  attr_accessor <span style="color:#A60">:x</span>, <span style="color:#A60">:y</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span> hash
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    hash.each <span style="color:#080;font-weight:bold">do</span> |key, value|
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>      send <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>key<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">=</span><span style="color:#710">&quot;</span></span>, value
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>s = <span style="color:#036;font-weight:bold">Foo</span>.new <span style="color:#A60">:x</span> =&gt; <span style="color:#00D">1</span>, <span style="color:#A60">:y</span> =&gt; <span style="color:#00D">5</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>puts s.x
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>puts s.y
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Foo</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  attr_accessor <span style="color:#A60">:name</span>, <span style="color:#A60">:age</span>, <span style="color:#A60">:country</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span> hash
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    hash.each <span style="color:#080;font-weight:bold">do</span> |key, value|
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>      send(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>key<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">=</span><span style="color:#710">&quot;</span></span>, value)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>bar = <span style="color:#036;font-weight:bold">Foo</span>.new <span style="color:#A60">:name</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Mike</span><span style="color:#710">&quot;</span></span>, <span style="color:#A60">:age</span> =&gt; <span style="color:#00D">60</span>, <span style="color:#A60">:country</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">USA</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>p bar
+</pre></div>
+</div>
+</div>
+
+<h3 id="method_missing---метод-о-несуществовании-метода">method_missing - метод о несуществовании метода</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Foo</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">method_missing</span> name
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Метода </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> не существует</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>bar = <span style="color:#036;font-weight:bold">Foo</span>.new
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span>bar.fjsdahuefd
+</pre></div>
+</div>
+</div>
+
+<p>Ещё пример:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Albu</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(actions)
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    <span style="color:#33B">@actions</span> = actions
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">method_missing</span> name
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    value = <span style="color:#33B">@actions</span>[name]
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">If you want to </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>name<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">, you must call </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>value<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">.</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>a = <span style="color:#036;font-weight:bold">Albu</span>.new <span style="color:#A60">:cook</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Joe</span><span style="color:#710">&quot;</span></span>, <span style="color:#A60">:take_a_ride</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Jessie</span><span style="color:#710">&quot;</span></span>, <span style="color:#A60">:die</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Gus</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>a.cook
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>a.take_a_ride
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>a.die
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>ИЗУЧИ ССЫЛКУ http://www.tutorialspoint.com/ruby/ruby_modules.htm</p>
+</blockquote>
+
+<h3 id="немного-хитростей-и-приёмов">Немного хитростей и приёмов:</h3>
+
+<p>Лежит ли число в определённом диапазоне чисел:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a = <span style="color:#00D">12</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>a.between?(<span style="color:#00D">10</span>, <span style="color:#00D">22</span>)
+</pre></div>
+</div>
+</div>
+<p>Зацикленный вывод:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a = [<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">a</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">b</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">c</span><span style="color:#710">&quot;</span></span>]
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>a.cycle { |x| puts x }
+</pre></div>
+</div>
+</div>
+<h4 id="ruby---разбить-длинную-строку-можно-указав-обратный-слэш">ruby - разбить длинную строку можно указав обратный слэш:</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20"> ... </span><span style="color:#710">'</span></span> \
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20"> ... </span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>rubymine - заменить имя переменной сразу везде: выделить и нажать shift+f6</p>
+</blockquote>
+
+<h4 id="обнаружение-в-массиве-метод-detect---первый-select---подмассив-найденных">Обнаружение в массиве (метод detect - первый, select - подмассив найденных):</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>arr = [<span style="color:#00D">1</span>, <span style="color:#00D">2</span>, <span style="color:#00D">4</span>, <span style="color:#00D">6</span>, <span style="color:#00D">12</span>, <span style="color:#00D">2</span>]
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>arr.detect { |x| x == <span style="color:#00D">4</span> }
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>arr.detect { |x| x &lt; <span style="color:#00D">7</span> }
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>arr.select { |x| x &lt; <span style="color:#00D">7</span> }
+</pre></div>
+</div>
+</div>
+
+<h4 id="метод-map">Метод .map</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>arr.map { |x| x*<span style="color:#00D">2</span> }
+</pre></div>
+</div>
+</div>
+
+<h3 id="define_method">define_method</h3>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>send <span style="color:#A60">:define_method</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">aaa</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello, I`m new method</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>aaa
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#777"># аналог</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="color:#777"># def aaa</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#777">#   ...</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#777"># end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>print <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Name of method to define: </span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>method_name = gets.strip
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>send <span style="color:#A60">:define_method</span>, method_name <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello, I`m new method</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span>send method_name
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Преимущество такого подхода в том, что метод вызывается по его имени.</p>
+</blockquote>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">left</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Robot goes left</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">right</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Robot goes right</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>print <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Enter your method call: </span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>my_method = gets.strip
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>send my_method
+</pre></div>
+</div>
+</div>
+<h4 id="в-параметрах-к-методу-хеш-должен-ставиться-последним-тк-мы-не-знаем-количество-элементов-хеша">В параметрах к методу хеш должен ставиться последним, т.к. мы не знаем количество элементов хеша.</h4>
+
+<h3 id="split---строку-в-массив">split - строку в массив:</h3>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">January, 10, Bob, Alisha, Mike, 44</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>p a.split(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">,</span><span style="color:#710">&quot;</span></span>)
+</pre></div>
+</div>
+</div>
+<h3 id="разберём-текст-по-буквам">Разберём текст по буквам:</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello How are you</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>p a.split(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>)
+</pre></div>
+</div>
+</div>
+<h3 id="по-словам">По словам:</h3>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello How are you</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>p a.split(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> </span><span style="color:#710">&quot;</span></span>)
+</pre></div>
+</div>
+</div>
+<h4 id="количество-уникальных-букв">Количество уникальных букв:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello How are you</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>p a.split(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>).uniq.size
+</pre></div>
+</div>
+</div>
+
+<h3 id="работа-с-файлами">Работа с файлами:</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># чтение из файла</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>input = <span style="color:#036;font-weight:bold">File</span>.open(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">test.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">r</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>puts input.read
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="color:#777"># запись в файл</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>output = <span style="color:#036;font-weight:bold">File</span>.open(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">output.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">w</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>output.write <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo Bar Baz!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>output.close
+</pre></div>
+</div>
+</div>
+
+<h4 id="режимы-работы-с-файлами">Режимы работы с файлами:</h4>
+
+<ul>
+  <li><strong>r</strong> - режим <strong>“только для чтения”</strong>: указатель файла находится в начале файла. Это режим “по-умолчанию”. Если файла не существует - выпадет ошибка.</li>
+  <li><strong>w</strong> - режим <strong>“только для записи”</strong>: перезаписывает файл, если файл существует. Если файл не существует, создаёт новый файл для записи.</li>
+  <li><strong>r+</strong> - режим <strong>“чтения и записи”</strong>: указатель файла будет в начале файла. При осуществлении записи будет затирать уже существующие строки в начале файла. Если файла не существует - выпадет ошибка.</li>
+  <li><strong>w+</strong> - режим <strong>“чтения и записи”</strong>: перезаписывает существующий файл, если файл существует. Если файл не существует, создаёт новый файл для чтения и записи.</li>
+  <li><strong>a</strong> - append, добавить в конец файла. Режим <strong>“только для записи”</strong>. Указатель файла находится в конце файла, если файл существует. То есть файл находится в режиме добавления. Если файл не существует, он создаёт новый файл для записи.</li>
+  <li><strong>a+</strong> - режим <strong>“чтения и записи”</strong>. Указатель файла находится в конце файла, если файл существует. Файл открывается в режиме добавления. Если файл не существует, он создаёт новый файл для чтения и записи.</li>
+</ul>
+
+<h4 id="про-режим-a">Про режим a+</h4>
+
+<p>text.txt:</p>
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Foo!
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>Bar!
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>Baz!
+</pre></div>
+</div>
+</div>
+
+<p>app.rb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>file = <span style="color:#036;font-weight:bold">File</span>.open(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">a+</span><span style="color:#710">&quot;</span></span>) <span style="color:#777"># откроем файл для добавления и чтения</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>puts file.read <span style="color:#777"># прочитаем содержимое файла</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>file.write <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Karamba!</span><span style="color:#710">&quot;</span></span> <span style="color:#777"># добавим в файл</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>file.rewind 
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>puts file.read <span style="color:#777"># прочитаем ещё раз файл</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>file.close <span style="color:#777"># закроем файл</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="чтение-файла-строка-за-строкой">Чтение файла строка за строкой:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># чтение файла строка за строкой:</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>input = <span style="color:#036;font-weight:bold">File</span>.open(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">test.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">r</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>n = <span style="color:#00D">1</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="color:#080;font-weight:bold">while</span> line = input.gets
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>n<span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>line<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  n += <span style="color:#00D">1</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#777"># or</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">while</span> line = input.gets
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  puts line
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="решение-задачи-с-чтением-файла-и-подсчётом-суммы">Решение задачи с чтением файла и подсчётом суммы:</h4>
+
+<pre><code class="language-task.txt">Январь,100
+Февраль,20
+Март,30
+Апрель,20
+Май,300
+Июнь,100
+Июль,22
+Август,50
+Сентябрь,40
+Октябрь,50
+Ноябрь,80
+Декабрь,0
+</code></pre>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>input = <span style="color:#036;font-weight:bold">File</span>.open(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">task.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">r</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>total = <span style="color:#00D">0</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">while</span> line = input.gets
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  total += line.split(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">,</span><span style="color:#710">&quot;</span></span>)[<span style="color:#00D">1</span>].to_i
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>input.close
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Total: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>total<span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="переименование-файла">Переименование файла:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">File</span>.rename(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">file.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">file_foo.txt</span><span style="color:#710">&quot;</span></span>)
+</pre></div>
+</div>
+</div>
+
+<h4 id="chmod-в-ruby">chmod в Ruby</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">File</span>.chmod(<span style="color:#00D">0644</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/foo.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">out</span><span style="color:#710">&quot;</span></span>)
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>puts <span style="color:#036;font-weight:bold">Dir</span>.pwd
+</pre></div>
+</div>
+</div>
+
+<p>cd в Ruby:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">Dir</span>.chdir <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/home/alex/</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Массив всех каталогов и файлов по заданному пути:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">Dir</span>.entries <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/foo/bar/</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>ДЗ: написать программу, которая ищет файл на диске</p>
+</blockquote>
+
+<h2 id="урок-18">Урок 18</h2>
+
+<h4 id="задача-с-password">Задача с password:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># прочитать строки из файла password.txt</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>input = <span style="color:#036;font-weight:bold">File</span>.open(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">password.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">r</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>output = <span style="color:#036;font-weight:bold">File</span>.open(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">password_2.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">w</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#777"># вывести на экран пароли длиной 6 символов</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="color:#777"># записать это в отдельный файл</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="color:#080;font-weight:bold">while</span> (line = input.gets)
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  line.strip!
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#080;font-weight:bold">if</span> line.size == <span style="color:#00D">6</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    puts line
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    output.write <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>line<span style="font-weight:bold;color:#666">}</span></span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>input.close
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>output.close
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># вывести на экран пароли длиной 6 символов</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#777"># записать это в отдельный файл</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>input = <span style="color:#036;font-weight:bold">File</span>.open(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">password_2.txt</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">r</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="color:#777"># Enter your password</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>print <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Enter your password: </span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>password = gets.strip
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#777"># Your password is weak / not weak</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">while</span> (line = input.gets)
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  line.strip!
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  <span style="color:#080;font-weight:bold">if</span> line == password
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Your password is weak!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    exit
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Your password is hard!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>input.close
+</pre></div>
+</div>
+</div>
+
+<p>GET - получить (браузер)
+POST - отправить (браузер)</p>
+
+<blockquote>
+  <p>Изучи ссылку: RFC HTTP
+ http://lib.ru/WEBMASTER/rfc2068/</p>
+</blockquote>
+
+<h4 id="использование-библиотеки-nethttp">Использование библиотеки Net::HTTP</h4>
+
+<blockquote>
+  <p>Изучи ссылку: Class: Net::HTTP (Ruby 2.4.1)
+https://ruby-doc.org/stdlib-2.4.1/libdoc/net/http/rdoc/Net/HTTP.html</p>
+</blockquote>
+
+<p>Загрузить страницу:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">net/http</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>page = <span style="color:#036;font-weight:bold">Net</span>::<span style="color:#036;font-weight:bold">HTTP</span>.get(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">krdprog.ru</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/index.html</span><span style="color:#710">'</span></span>)
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>puts page
+</pre></div>
+</div>
+</div>
+<p>Вариант 2:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">net/http</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">uri</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>uri = <span style="color:#036;font-weight:bold">URI</span>.parse <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">http://krdprog.ru/index.html</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>response = <span style="color:#036;font-weight:bold">Net</span>::<span style="color:#036;font-weight:bold">HTTP</span>.get uri
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>puts response
+</pre></div>
+</div>
+</div>
+
+<h4 id="метод-post_form">Метод post_form</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">net/http</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">uri</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#036;font-weight:bold">Net</span>::<span style="color:#036;font-weight:bold">HTTP</span>.post_form URI(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">http://www.example.com/search.cgi</span><span style="color:#710">'</span></span>),
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>{ <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">q</span><span style="color:#710">&quot;</span></span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ruby</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">max</span><span style="color:#710">&quot;</span></span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">50</span><span style="color:#710">&quot;</span></span> }
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Class: Net::HTTP (Ruby 2.4.1) post_form
+https://ruby-doc.org/stdlib-2.4.1/libdoc/net/http/rdoc/Net/HTTP.html#method-c-post_form</p>
+</blockquote>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">net/http</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">uri</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>uri = <span style="color:#036;font-weight:bold">URI</span>.parse <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">https://duckduckgo.com/index.html</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>response = <span style="color:#036;font-weight:bold">Net</span>::<span style="color:#036;font-weight:bold">HTTP</span>.post_form uri, <span style="color:#A60">:x</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ruby</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>puts response
+</pre></div>
+</div>
+</div>
+<h2 id="урок-19">Урок 19</h2>
+
+<h4 id="sinatra">Sinatra</h4>
+
+<div class="language-sh highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install sinatra
+</pre></div>
+</div>
+</div>
+
+<p>first program:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>Создадим каталог views</p>
+<div class="language-sh highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkdir views
+</pre></div>
+</div>
+</div>
+<p>Создадим файл views/index.erb</p>
+<div class="language-sh highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>touch views/index.erb
+</pre></div>
+</div>
+</div>
+<p>Поправим наш файл:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="пример-с-post">Пример с POST:</h4>
+
+<p>app.rb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#33B">@login</span> = params[<span style="color:#A60">:login</span>]
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>views/index.erb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;h1&gt;<span style="color:#036;font-weight:bold">Foo</span> <span style="color:#036;font-weight:bold">Bar</span> <span style="color:#036;font-weight:bold">Baz</span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;You typed: &lt;%= @login %&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>&lt;form action=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/</span><span style="color:#710">&quot;</span></span> method=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">POST</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  &lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">login</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  &lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">password</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">pass</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  &lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">submit</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">form&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<h4 id="расширим">Расширим:</h4>
+
+<p>app.rb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#33B">@login</span> = params[<span style="color:#A60">:login</span>]
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#33B">@password</span> = params[<span style="color:#A60">:pass</span>]
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@login</span> == <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">admin</span><span style="color:#710">'</span></span> &amp;&amp; <span style="color:#33B">@password</span> == <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">12345</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    erb <span style="color:#A60">:welcome</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    <span style="color:#33B">@if_stop</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">STOP!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    erb <span style="color:#A60">:index</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/contacts</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Contacts: +7 000 000-00-00</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>views/index.erb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;h1&gt;<span style="color:#036;font-weight:bold">Foo</span> <span style="color:#036;font-weight:bold">Bar</span> <span style="color:#036;font-weight:bold">Baz</span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;You typed: &lt;%= @login %&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>&lt;p&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @if_stop %&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;form action</span><span style="color:#710">=</span></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/</span><span style="color:#710">&quot;</span></span> method=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">POST</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  &lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">login</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  &lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">password</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">pass</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  &lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">submit</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">form&gt;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+<p>views/welcome.erb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h1&gt;Welcome!&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;You login in system.&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>&lt;p&gt;&lt;a href=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/contacts</span><span style="color:#710">&quot;</span></span>&gt;<span style="color:#036;font-weight:bold">Contacts</span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">a&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Отдельная область программирования scraping - парсинг информации</p>
+</blockquote>
+
+<h2 id="содержание-конспекта">Содержание конспекта:</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-01/">Урок 01-14</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-02/">Урок 15-19</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-03/">Урок 20-25</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-04/">Урок 26-30</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-05/">Урок 31-35</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-06/">Урок 36-40</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-07/">Урок 41-45</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-08/">Урок 46-50</a></td>
+    </tr>
+  </tbody>
+</table>
+:ET

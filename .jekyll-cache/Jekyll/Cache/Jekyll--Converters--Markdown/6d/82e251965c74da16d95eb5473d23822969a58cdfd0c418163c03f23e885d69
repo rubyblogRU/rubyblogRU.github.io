@@ -1,0 +1,66 @@
+I"�<h1 id="конспект-лекций-курса-по-rubysinatraruby-on-rails">Конспект лекций курса по Ruby/Sinatra/Ruby on Rails</h1>
+
+<p>Rubyschool.us - 50 уроков по Ruby/Sinatra/RoR. Курс от 2014 года. В репозитории размещены конспекты данного курса, записанные при его прохождении.</p>
+
+<p><img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby-red.svg" alt="ruby" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby%20on%20Rails-red.svg" alt="ror" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Sinatra-red.svg" alt="sinatra" /></p>
+
+<p><strong>Конспект составил:</strong> Алексей Цаплин-Купайсинов (Ruby-программист) - <a href="https://github.com/krdprog">https://github.com/krdprog</a></p>
+
+<p><strong>Курс:</strong> <a href="http://rubyschool.us/">http://rubyschool.us/</a></p>
+
+<p><strong>Автор курса:</strong> Роман Пушкин (программист из Сан-Франциско)</p>
+
+<h2 id="содержание-конспекта">Содержание конспекта:</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-01/">Урок 01-14</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-02/">Урок 15-19</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-03/">Урок 20-25</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-04/">Урок 26-30</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-05/">Урок 31-35</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-06/">Урок 36-40</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-07/">Урок 41-45</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-08/">Урок 46-50</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="дополнительно">Дополнительно:</h2>
+
+<ul>
+  <li><a href="https://github.com/krdprog/rubyschool-notes/blob/master/additional-links-in-course.md">Дополнительные ссылки, которые надо изучить (эти ссылки давались на протяжении всего курса и были даны для дополнительной проработки материала)</a></li>
+  <li><a href="https://github.com/krdprog/rubyschool-notes/blob/master/additional-links-from-the-community.md">Дополнительные полезные ссылки от сообщества рубистов</a></li>
+  <li><a href="https://github.com/krdprog/sqlite-3-rus-howto/blob/master/README.md">Шпаргалка по SQLite3</a></li>
+</ul>
+
+<h2 id="благодарности">Благодарности:</h2>
+
+<p>Спасибо автору курса <a href="http://rubyschool.us/">http://rubyschool.us/</a> - Роману Пушкину (программисту из Сан-Франциско)</p>
+
+<h2 id="лицензия">Лицензия:</h2>
+
+<p>This is free and unencumbered software released into the public domain.</p>
+
+<p>Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.</p>
+
+<p>To the extent possible under law, <a href="https://github.com/krdprog">Alexey Tsaplin-Kupaysinov</a> has waived all copyright and related or neighboring rights to this work.</p>
+
+<p><img src="https://img.shields.io/badge/License%3A%20-The%20Unlicense-green.svg" alt="license" /></p>
+
+<p><strong>Read License:</strong> <a href="https://github.com/krdprog/rubyschool-notes/blob/master/LICENSE">https://github.com/krdprog/rubyschool-notes/blob/master/LICENSE</a></p>
+:ET

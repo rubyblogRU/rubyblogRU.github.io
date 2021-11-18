@@ -1,0 +1,48 @@
+I"L<ul>
+  <li>C-h t - открыть туториал</li>
+  <li>C-x C-c - закрыть Emacs</li>
+  <li>C-g - прервать частично набранную команду</li>
+  <li>C-v - просмотр следующего экрана</li>
+  <li>M-v - просмотр предыдущего экрана</li>
+  <li>C-l - просмотр экрана, когда строка под курсором встаёт посередине, если нажать
+ещё раз, экран переместится наверх, строка под курсором станет первой</li>
+  <li>C-p - предыдущая строка</li>
+  <li>C-n - следующая строка</li>
+  <li>C-b - назад по строке</li>
+  <li>C-f - вперёд по строке</li>
+  <li>C-a - перейти в начало строки</li>
+  <li>
+    <p>C-e - перейти в конец строки</p>
+  </li>
+  <li>C-u - удалить до начала строки</li>
+  <li>C-k - удалить до конца строки</li>
+  <li>
+    <p>C-/ - отменить действие (undo)</p>
+  </li>
+  <li>C-x b -</li>
+  <li>C-x 2 - разделить экран по вертикали на 2 буфера</li>
+  <li>C-x 3 - разделить экран по горизонтали на 2 буфера</li>
+  <li>C-x o - переключиться на соседний буфер</li>
+  <li>C-x 0 - закрыть текущий буфер</li>
+  <li>C-x 1 - закрыть все буферы</li>
+</ul>
+
+<h3 id="ссылки-по-теме">Ссылки по теме:</h3>
+
+<ul>
+  <li>http://orgmode.org/</li>
+  <li>https://www.emacswiki.org/emacs/CategoryMail</li>
+  <li>http://www.unix-lab.org/posts/emacs/</li>
+  <li>http://www.unix-lab.org/posts/emacs-ide/ - настройка окружения, в т.ч. руби</li>
+  <li>http://www.unix-lab.org/posts/emacs-snippets/</li>
+</ul>
+
+<p>Пакеты для установки:</p>
+
+<ul>
+  <li>http://elpa.gnu.org/</li>
+  <li>http://tromey.com/elpa/</li>
+  <li>http://marmalade-repo.org/</li>
+  <li>http://melpa.milkbox.net/</li>
+</ul>
+:ET

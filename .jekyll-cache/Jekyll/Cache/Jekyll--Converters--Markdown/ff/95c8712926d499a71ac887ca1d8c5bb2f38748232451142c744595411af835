@@ -1,0 +1,203 @@
+I"9J<p>1.</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g model Post title:string body:text
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<ol>
+  <li>/config/routes.rb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>resources <span style="color:#A60">:posts</span>
+</pre></div>
+</div>
+</div>
+
+<p>3.</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g controller Posts
+</pre></div>
+</div>
+</div>
+
+<ol>
+  <li>/app/controllers/post_controllers.rb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">PostController</span> &lt; <span style="color:#036;font-weight:bold">ApplicationController</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  before_action <span style="color:#A60">:set_post</span>, <span style="color:#606">only</span>: [<span style="color:#A60">:show</span>, <span style="color:#A60">:edit</span>, <span style="color:#A60">:update</span>, <span style="color:#A60">:destroy</span>]
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">index</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#33B">@posts</span> = <span style="color:#036;font-weight:bold">Post</span>.all
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">new</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#33B">@post</span> = <span style="color:#036;font-weight:bold">Post</span>.new
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">edit</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">create</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>    <span style="color:#33B">@post</span> = <span style="color:#036;font-weight:bold">Post</span>.new(post_params)
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>    <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@post</span>.valid?
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>      <span style="color:#33B">@post</span>.save
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>      redirect_to <span style="color:#33B">@post</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>    <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>      render <span style="color:#A60">:new</span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">update</span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>    <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@post</span>.update(post_params)
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>      redirect_to <span style="color:#33B">@post</span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>    <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>      render <span style="color:#A60">:edit</span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">destroy</span>
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>    <span style="color:#33B">@post</span>.destroy
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>    redirect_to posts_path
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>  private
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">set_post</span>
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>    <span style="color:#33B">@post</span> = <span style="color:#036;font-weight:bold">Post</span>.find(params[<span style="color:#A60">:id</span>])
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">post_params</span>
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>    params.require(<span style="color:#A60">:post</span>).permit(<span style="color:#A60">:title</span>, <span style="color:#A60">:body</span>)
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>5.</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>cd app/views/posts/
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>touch index.html.erb show.html.erb new.html.erb edit.html.erb _post.html.erb _form.html.erb
+</pre></div>
+</div>
+</div>
+
+<ol>
+  <li>index.html.erb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h1&gt;<span style="color:#036;font-weight:bold">Posts</span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= 'No posts' if @posts.empty? %&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= render @posts %&gt;</span></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<ol>
+  <li>_post.html.erb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h3&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to post.title, post_path(post) %&gt;&lt;/h3&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<ol>
+  <li>show.html.erb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;h1&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @post.title %&gt;&lt;/h1&gt;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;p&gt;&lt;%</span><span style="color:#710">=</span></span> <span style="color:#33B">@post</span>.body <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/p</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>&lt;p&gt;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Edit post', edit_post_path(@post) %&gt; |</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%</span><span style="color:#710">=</span></span> link_to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Delete post</span><span style="color:#710">'</span></span>, post_path(<span style="color:#33B">@post</span>), <span style="color:#606">method</span>: <span style="color:#A60">:delete</span>, <span style="color:#606">data</span>: { <span style="color:#606">confirm</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Really?</span><span style="color:#710">'</span></span> } %&gt;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<ol>
+  <li>new.html.erb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h1&gt;<span style="color:#036;font-weight:bold">New</span> post&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= render 'form' %&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<ol>
+  <li>edit.html.erb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h1&gt;<span style="color:#036;font-weight:bold">Edit</span> post&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= render 'form' %&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<ol>
+  <li>_form.html.erb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> form_for @post do |f| %&gt;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> f.label <span style="color:#A60">:title</span> %&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> f.text_field :title %&gt;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> f.label <span style="color:#A60">:body</span> %&gt;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> f.text_area :body %&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> f.submit <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Save</span><span style="color:#710">'</span></span> %&gt; |
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Cancel', posts_path %&gt;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %&gt;</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<ol>
+  <li>app/models/post.rb</li>
+</ol>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Post</span> &lt; <span style="color:#036;font-weight:bold">ApplicationRecord</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  validates <span style="color:#A60">:title</span>, <span style="color:#A60">:body</span>, <span style="color:#606">presence</span>: <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+:ET

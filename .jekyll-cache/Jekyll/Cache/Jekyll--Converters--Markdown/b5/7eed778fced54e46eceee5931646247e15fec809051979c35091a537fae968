@@ -1,0 +1,218 @@
+I"d<p><strong>Create model:</strong></p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g model Project title:string body:text
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<p><strong>Create controller:</strong></p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g controller Projects
+</pre></div>
+</div>
+</div>
+
+<p><strong>Write route in flie /config/routes.rb:</strong></p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>resources <span style="color:#A60">:projects</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Create files for views in /app/views/projects:</strong></p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>touch index.html.erb show.html.erb new.html.erb edit.html.erb _form.html.erb _project.html.erb
+</pre></div>
+</div>
+</div>
+
+<p><strong>Create actions in controller /app/controllers/projects_controller.rb:</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">ProjectsController</span> &lt; <span style="color:#036;font-weight:bold">ApplicationController</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  before_action <span style="color:#A60">:set_project</span>, <span style="color:#606">only</span>: [<span style="color:#A60">:show</span>, <span style="color:#A60">:edit</span>, <span style="color:#A60">:update</span>, <span style="color:#A60">:destroy</span>]
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">index</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#33B">@projects</span> = <span style="color:#036;font-weight:bold">Project</span>.all
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">new</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#33B">@project</span> = <span style="color:#036;font-weight:bold">Project</span>.new
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">edit</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">create</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>    <span style="color:#33B">@project</span> = <span style="color:#036;font-weight:bold">Project</span>.new(project_params)
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>    <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@project</span>.valid?
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>      <span style="color:#33B">@project</span>.save
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>      redirect_to <span style="color:#33B">@project</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>    <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>      render <span style="color:#A60">:new</span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">update</span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>    <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@project</span>.update(project_params)
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>      redirect_to <span style="color:#33B">@project</span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>    <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>      render <span style="color:#A60">:edit</span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">destroy</span>
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>    <span style="color:#33B">@project</span>.destroy
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>    redirect_to projects_path
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>  private
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">set_project</span>
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>    <span style="color:#33B">@project</span> = <span style="color:#036;font-weight:bold">Project</span>.find(params[<span style="color:#A60">:id</span>])
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">project_params</span>
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>    params.require(<span style="color:#A60">:project</span>).permit(<span style="color:#A60">:title</span>, <span style="color:#A60">:body</span>)
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Edit files with views in /app/views/projects:</strong></p>
+
+<p><strong>index.html.erb</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Создать новый проект', new_project_path %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;hr&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;h1&gt;Проекты&lt;/h1&gt;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;%</span><span style="color:#710">=</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">В текущей ленте нет проектов</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@projects</span>.empty? <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;%= render @projects %</span><span style="color:#710">&gt;</span></span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>_project.html.erb</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h3&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to project.title, project_path(project) %&gt;&lt;/h3&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>Файл _project.html.erb вместо кода в index.html.erb, заменяет цикл:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">@projects.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |project| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;h3</span><span style="color:#710">&gt;</span></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to project.title, project_path(project) %&gt;&lt;/h3&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p><strong>show.html.erb</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Все проекты', projects_path %&gt;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">|</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;%</span><span style="color:#710">=</span></span> link_to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Создать новый проект</span><span style="color:#710">'</span></span>, new_project_path <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">|</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;%= link_to 'Редактировать текущий проект', edit_project_path(@project) %</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>|
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Удалить текущий проект', project_path(@project), method: :delete, data: { confirm: 'Действительно удалить?'} %&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;hr&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;h1&gt;&lt;%</span><span style="color:#710">=</span></span> <span style="color:#33B">@project</span>.title <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/h1</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>&lt;p&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @project.body %&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p><strong>new.html.erb</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h1&gt;Создать <span style="color:#606">проект</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= render 'form' %&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<p><strong>edit.html.erb</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h1&gt;Редактировать <span style="color:#606">проект</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= render 'form' %&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+<p><strong>_form.html.erb</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">if</span><span style="color:#710"> </span></span><span style="color:#33B">@project</span>.errors.any? <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%= t('common.errors') %</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  &lt;ul&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">@project.errors.full_messages.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |message| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &lt;li</span><span style="color:#710">&gt;</span></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> message %&gt;&lt;/li&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;% end %&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/ul&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;%</span><span style="color:#710">=</span></span> form_for <span style="color:#33B">@project</span> <span style="color:#080;font-weight:bold">do</span> |f| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> f.label :title, 'Заголовок страницы:' %&gt;&lt;br /&gt;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> f.text_field <span style="color:#A60">:title</span> %&gt;
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;p&gt;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;%= f.label :body, 'Текст страницы:' %&gt;&lt;br </span><span style="color:#404">/</span></span>&gt;
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> f.text_area :body %&gt;</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;&lt;%</span><span style="color:#710">=</span></span> f.submit <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Сохранить</span><span style="color:#710">'</span></span> %&gt; | &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Отмена', projects_path %&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %&gt;</span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p><strong>Добавим валидацию в Модель app/models/project.rb:</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Project</span> &lt; <span style="color:#036;font-weight:bold">ApplicationRecord</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  validates <span style="color:#A60">:title</span>, <span style="color:#A60">:body</span>, <span style="color:#606">presence</span>: <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Добавим в стили:</p>
+
+<div class="language-css highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#B06;font-weight:bold">.field_with_errors</span> <span style="color:#070;font-weight:bold">label</span> {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#606">color</span>: <span style="color:#0A0">#d01612</span>;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>}
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#B06;font-weight:bold">.field_with_errors</span> <span style="color:#070;font-weight:bold">input</span>, <span style="color:#B06;font-weight:bold">.field_with_errors</span> <span style="color:#070;font-weight:bold">textarea</span> {
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  <span style="color:#606">border</span>: <span style="color:#60E">2px</span> <span style="color:#088">solid</span> <span style="color:#0A0">#d01612</span>;
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>}
+</pre></div>
+</div>
+</div>
+:ET

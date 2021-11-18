@@ -1,0 +1,69 @@
+I"C<p>Предположим, что у нас уже есть модели <code>Article</code> и <code>Comment</code>.</p>
+
+<p><strong>Задача:</strong> выводить счётчик комментариев к статье.</p>
+
+<h3 id="сделаем-следующее">Сделаем следующее:</h3>
+
+<p>1). Создадим миграцию:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">AddCommentsCountToArticles</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Migration</span>[<span style="color:#60E">6.0</span>]
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">change</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    add_column <span style="color:#A60">:articles</span>, <span style="color:#A60">:comments_count</span>, <span style="color:#A60">:integer</span>, <span style="color:#606">default</span>: <span style="color:#00D">0</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>2). Прогоним миграцию <code>rails db:migrate</code></p>
+
+<p>3). Создадим <code>rake task</code>:</p>
+
+<p>Создайте файл <code>lib/tasks/update_comments_count.rake</code></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>namespace <span style="color:#A60">:db</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  desc <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Update comments count</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  task <span style="color:#606">update_comments_count</span>: <span style="color:#A60">:environment</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    <span style="color:#036;font-weight:bold">Article</span>.reset_column_information
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#036;font-weight:bold">Article</span>.all.each <span style="color:#080;font-weight:bold">do</span> |article|
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>      <span style="color:#036;font-weight:bold">Article</span>.update_counters article.id, <span style="color:#606">comments_count</span>: article.comments.length
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>4). Добавим <code>counter_cache</code> для связи в модели <code>Comment</code>:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Comment</span> &lt; <span style="color:#036;font-weight:bold">ApplicationRecord</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  belongs_to <span style="color:#A60">:article</span>, <span style="color:#606">counter_cache</span>: <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>5). Запустим таск:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails db:update_comments_count
+</pre></div>
+</div>
+</div>
+
+<p>6). Добавим во view <code>app/views/articles/show.html.erb</code></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h2&gt;<span style="color:#036;font-weight:bold">Comments</span> (&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @article.comments_count %&gt;) :&lt;/h2&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>Запустим приложение <code>rails s</code>, добавим комментарий, и счётчик обновится автоматически.</p>
+
+<hr />
+<p>Yeah! Удачи. Автор статьи: <a href="https://github.com/krdprog/">@krdprog</a></p>
+:ET

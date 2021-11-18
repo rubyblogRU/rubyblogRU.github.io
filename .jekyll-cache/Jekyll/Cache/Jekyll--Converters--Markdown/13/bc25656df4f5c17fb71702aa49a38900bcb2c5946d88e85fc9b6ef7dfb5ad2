@@ -1,0 +1,1270 @@
+I"o<h1 id="конспект-лекций-курса-по-rubysinatraruby-on-rails-часть-4">Конспект лекций курса по Ruby/Sinatra/Ruby on Rails (часть 4)</h1>
+
+<p><img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby-red.svg" alt="ruby" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Ruby%20on%20Rails-red.svg" alt="ror" /> <img src="https://img.shields.io/badge/Made%20with%3A%20-Sinatra-red.svg" alt="sinatra" /></p>
+
+<p><strong>Конспект составил:</strong> Алексей Цаплин-Купайсинов (Ruby-программист) - <a href="https://github.com/krdprog">https://github.com/krdprog</a></p>
+
+<p><strong>Курс:</strong> <a href="http://rubyschool.us/">http://rubyschool.us/</a></p>
+
+<p><strong>Автор курса:</strong> Роман Пушкин (программист из Сан-Франциско)</p>
+
+<h2 id="урок-26">Урок 26</h2>
+
+<p>Как сохранять введённые данные в поле selected (html):</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;option value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Опция 1</span><span style="color:#710">&quot;</span></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @option </span><span style="color:#710">=</span></span>= <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Опция 1</span><span style="color:#710">'</span></span> ? <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20"> selected</span><span style="color:#710">'</span></span> %&gt;&gt;Опция <span style="color:#00D">1</span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">option&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+<p>app.rb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sqlite3</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>db = <span style="color:#036;font-weight:bold">SQLite3</span>::<span style="color:#036;font-weight:bold">Database</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">base.sqlite</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+</pre></div>
+</div>
+</div>
+<p>В SQLite использовать тип TEXT, поправка к предыдущему уроку.</p>
+
+<h4 id="sql">SQL:</h4>
+
+<h5 id="такой-способ-записи-будем-применять-для-создания-базы-данных-и-таблиц-в-ней-при-инициализации-приложения">Такой способ записи будем применять для создания базы данных и таблиц в ней при инициализации приложения:</h5>
+<div class="language-sql highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#B06;font-weight:bold">CREATE</span> <span style="color:#339;font-weight:bold">TABLE</span> <span style="color:#080;font-weight:bold">IF</span> <span style="color:#080;font-weight:bold">NOT</span> <span style="color:#080;font-weight:bold">EXISTS</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Users</span><span style="color:#710">&quot;</span></span> (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Id</span><span style="color:#710">&quot;</span></span> <span style="color:#0a8;font-weight:bold">INTEGER</span> <span style="color:#088;font-weight:bold">PRIMARY</span> <span style="color:#339;font-weight:bold">KEY</span> AUTOINCREMENT, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Username</span><span style="color:#710">&quot;</span></span> <span style="color:#0a8;font-weight:bold">TEXT</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Phone</span><span style="color:#710">&quot;</span></span> <span style="color:#0a8;font-weight:bold">TEXT</span>);
+</pre></div>
+</div>
+</div>
+<p>Удалить таблицу:</p>
+
+<div class="language-sql highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#B06;font-weight:bold">DROP</span> <span style="color:#339;font-weight:bold">TABLE</span> Users;
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Ссылка: Шпаргалка по SQLite3 (русская версия)
+ https://github.com/krdprog/sqlite-3-rus-howto</p>
+</blockquote>
+
+<blockquote>
+  <p>Базу данных не принято коммитить в репозиторий и мешать с исходным кодом. Базу данных надо добавлять в .gitignore</p>
+</blockquote>
+
+<h5 id="в-sinatra-есть-специальная-команда-которая-запускается-при-инициализации-приложения">В Sinatra есть специальная команда, которая запускается при инициализации приложения:</h5>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>configure <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#777"># some code</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<h5 id="создадим-базу-данных-при-инициализации-приложения">Создадим базу данных при инициализации приложения:</h5>
+
+<p>При этом у нас подключены гемы:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sqlite3</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>configure <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#33B">@db</span> = <span style="color:#036;font-weight:bold">SQLite3</span>::<span style="color:#036;font-weight:bold">Database</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">base.db</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#33B">@db</span>.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">CREATE TABLE IF NOT EXISTS &quot;Messages&quot;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    (</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;id&quot; INTEGER PRIMARY KEY AUTOINCREMENT,</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;username&quot; TEXT,</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;phone&quot; TEXT,</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;email&quot; TEXT,</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;option&quot; TEXT,</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;comment&quot; TEXT</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    )</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#777"># db.close (надо?)</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>или в одну строку, но менее читаемо:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>configure <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#33B">@db</span> = <span style="color:#036;font-weight:bold">SQLite3</span>::<span style="color:#036;font-weight:bold">Database</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">base.db</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#33B">@db</span>.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">CREATE TABLE IF NOT EXISTS &quot;Messages&quot; (&quot;id&quot; INTEGER PRIMARY KEY AUTOINCREMENT, &quot;username&quot; TEXT, &quot;phone&quot; TEXT, &quot;email&quot; TEXT, &quot;option&quot; TEXT, &quot;comment&quot; TEXT)</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  <span style="color:#777"># @db.close (надо?)</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Ссылка: Escaping Strings For Ruby SQLite Insert
+https://stackoverflow.com/questions/9614236/escaping-strings-for-ruby-sqlite-insert</p>
+</blockquote>
+
+<blockquote>
+  <p>Prepare:
+https://www.rubydoc.info/github/luislavena/sqlite3-ruby/SQLite3/Database#prepare-instance_method</p>
+</blockquote>
+
+<blockquote>
+  <p>Про вставку данных:
+https://stackoverflow.com/questions/13462112/inserting-ruby-string-into-sqlite</p>
+</blockquote>
+
+<blockquote>
+  <p>Документация:
+https://www.rubydoc.info/github/luislavena/sqlite3-ruby</p>
+
+  <p>https://www.rubydoc.info/github/luislavena/sqlite3-ruby/SQLite3/Database</p>
+</blockquote>
+
+<h4 id="вставка-данных-в-бд-в-sinatra-app">Вставка данных в БД в Sinatra app:</h4>
+
+<p>Переменная @db не сработала, сделали через db</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sqlite3</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">get_db</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">return</span> <span style="color:#036;font-weight:bold">SQLite3</span>::<span style="color:#036;font-weight:bold">Database</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">base.db</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>configure <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  db = get_db
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  db.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">CREATE TABLE IF NOT EXISTS &quot;Messages&quot;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    (</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;id&quot; INTEGER PRIMARY KEY AUTOINCREMENT,</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;username&quot; TEXT,</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;phone&quot; TEXT,</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;email&quot; TEXT,</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;option&quot; TEXT,</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;comment&quot; TEXT</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    )</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  db.close
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">save_form_data_to_database</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>  db = get_db
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>  db.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">INSERT INTO Messages (username, phone, email, option, comment)</span></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  VALUES (?, ?, ?, ?, ?)</span><span style="color:#710">'</span></span>, [<span style="color:#33B">@username</span>, <span style="color:#33B">@phone</span>, <span style="color:#33B">@email</span>, <span style="color:#33B">@option</span>, <span style="color:#33B">@comment</span>]
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>  db.close
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>  <span style="color:#33B">@title</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Форма заявки для Sinatra (Ruby)</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>  <span style="color:#33B">@username</span> = params[<span style="color:#A60">:username</span>]
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>  <span style="color:#33B">@phone</span> = params[<span style="color:#A60">:phone</span>]
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>  <span style="color:#33B">@email</span> = params[<span style="color:#A60">:email</span>]
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>  <span style="color:#33B">@option</span> = params[<span style="color:#A60">:option</span>]
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>  <span style="color:#33B">@comment</span> = params[<span style="color:#A60">:comment</span>]
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>  save_form_data_to_database
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>  <span style="color:#33B">@title</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Спасибо, ваше сообщение отправлено</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>  erb <span style="color:#A60">:sent</span>
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Полная работающая версия формы со всеми файлами тут:
+https://github.com/krdprog/contact-form-for-sinatra-ruby-rus</p>
+</blockquote>
+
+<p>К полю выбора даты можно подключить плагин:</p>
+
+<blockquote>
+  <p>Плагин для выбора даты (js)
+https://github.com/xdan/datetimepicker</p>
+</blockquote>
+
+<h4 id="вывод-результатов-данных-из-базы-данных">Вывод результатов (данных) из базы данных:</h4>
+
+<p>Чтобы выводить результаты в виде хеша, надо добавить:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>db.results_as_hash = <span style="color:#069">true</span>
+</pre></div>
+</div>
+</div>
+<p>Добавим в ранее созданный метод и переделаем app.rb:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">get_db</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  db = <span style="color:#036;font-weight:bold">SQLite3</span>::<span style="color:#036;font-weight:bold">Database</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">base.db</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  db.results_as_hash = <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">return</span> db
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="домашнее-задание">Домашнее задание:</h4>
+<ol>
+  <li>сделать страницу показа результата из базы данных используя запрос</li>
+</ol>
+
+<div class="language-sql highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#B06;font-weight:bold">SELECT</span> * <span style="color:#080;font-weight:bold">FROM</span> Users <span style="color:#080;font-weight:bold">ORDER</span> <span style="color:#080;font-weight:bold">BY</span> id <span style="color:#088;font-weight:bold">DESC</span>
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Ссылка SQLite ORDER BY:
+http://www.tutorialspoint.com/sqlite/sqlite_order_by.htm</p>
+</blockquote>
+
+<ol>
+  <li>
+    <p>В configure сделать дополнительную таблицу Barbers со списком парикмахеров. Загружать список парикмахеров в configure (вставка в таблицу 1 раз).</p>
+  </li>
+  <li>
+    <p>Загрузить данные из таблицы Barbers в форму в выпадающий список select.</p>
+  </li>
+</ol>
+
+<h2 id="урок-27">Урок 27</h2>
+
+<blockquote>
+  <p>Отделить логику от представления.</p>
+</blockquote>
+
+<p>Синтаксис в erb, будет выполнено, но ничего не будет выводиться:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">%&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+<p>Будет выводиться в месте, где стоит:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+<h4 id="отображение-на-веб-странице-данных-из-базы-данных">Отображение на веб-странице данных из базы данных:</h4>
+
+<p>Добавить в app.rb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># Method connect with database</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">get_db</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#33B">@db</span> = <span style="color:#036;font-weight:bold">SQLite3</span>::<span style="color:#036;font-weight:bold">Database</span>.new <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">base.db</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#33B">@db</span>.results_as_hash = <span style="color:#069">true</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">return</span> <span style="color:#33B">@db</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="color:#777"># Show result in admin panel</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/admin/show</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  get_db
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#33B">@results</span> = <span style="color:#33B">@db</span>.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">SELECT * FROM Messages ORDER BY id DESC</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#33B">@db</span>.close
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  erb <span style="color:#A60">:show</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>views/show.erb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;table border=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">1</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  &lt;tr&gt;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    &lt;th&gt;Имя&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">th&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;th&gt;Телефон&lt;</span><span style="color:#404">/</span></span>th&gt;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    &lt;th&gt;<span style="color:#036;font-weight:bold">E</span>-mail&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">th&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;th&gt;Опция&lt;</span><span style="color:#404">/</span></span>th&gt;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    &lt;th&gt;Комментарий&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">th&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;</span><span style="color:#404">/</span></span>tr&gt;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">@results.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |row| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;tr</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    &lt;td&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> row['username'] %&gt;&lt;/td&gt;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;td&gt;&lt;%</span><span style="color:#710">=</span></span> row[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">phone</span><span style="color:#710">'</span></span>] %&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">td&gt;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;td&gt;&lt;%= row['email'] %&gt;&lt;</span><span style="color:#404">/</span></span>td&gt;
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    &lt;td&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> row['option'] %&gt;&lt;/td&gt;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;td&gt;&lt;%</span><span style="color:#710">=</span></span> row[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">comment</span><span style="color:#710">'</span></span>] %&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">td&gt;</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;</span><span style="color:#404">/</span></span>tr&gt;
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">table&gt;</span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+<p>Покрасим в красный цвет первую запись:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> &quot;style</span><span style="color:#710">=</span></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">background-color: red; color: white;</span><span style="color:#710">'</span></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> if row == @results.first %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>erb:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">@results.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |row| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;tr &lt;%= &quot;style='background-color: red; color: white;'&quot; if row == @results.first %</span><span style="color:#710">&gt;</span></span>&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    &lt;td&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> row['username'] %&gt;&lt;/td&gt;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;td&gt;&lt;%</span><span style="color:#710">=</span></span> row[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">phone</span><span style="color:#710">'</span></span>] %&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">td&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;td&gt;&lt;%= row['email'] %&gt;&lt;</span><span style="color:#404">/</span></span>td&gt;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    &lt;td&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> row['option'] %&gt;&lt;/td&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;td&gt;&lt;%</span><span style="color:#710">=</span></span> row[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">comment</span><span style="color:#710">'</span></span>] %&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">td&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;</span><span style="color:#404">/</span></span>tr&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+</pre></div>
+</div>
+</div>
+<h4 id="решение-задания">Решение задания:</h4>
+<blockquote>
+  <p>В configure сделать дополнительную таблицу Barbers со списком парикмахеров. Загружать список парикмахеров в configure (вставка в таблицу 1 раз) - сделаю для контактной формы для поля Options:</p>
+</blockquote>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># Method validation data Options table in database</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">is_option_exists?</span> base, param
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  base.execute(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">SELECT * FROM Options WHERE option=?</span><span style="color:#710">'</span></span>, [param]).length &gt; <span style="color:#00D">0</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="color:#777"># Method add data to table in database</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">seed_db</span> base, options
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  options.each <span style="color:#080;font-weight:bold">do</span> |option|
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#080;font-weight:bold">if</span> !is_option_exists? <span style="color:#33B">@db</span>, option
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      base.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">INSERT INTO Options (option) VALUES (?)</span><span style="color:#710">'</span></span>, [option]
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># Configure application</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>configure <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  get_db
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#777"># create table Messages in database</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#33B">@db</span>.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">CREATE TABLE IF NOT EXISTS &quot;Messages&quot;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    (</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;id&quot; INTEGER PRIMARY KEY AUTOINCREMENT,</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;username&quot; TEXT,</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;phone&quot; TEXT,</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;email&quot; TEXT,</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;option&quot; TEXT,</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;comment&quot; TEXT</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    )</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#777"># create table Options in database</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  <span style="color:#33B">@db</span>.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">CREATE TABLE IF NOT EXISTS &quot;Options&quot;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    (</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;id&quot; INTEGER PRIMARY KEY AUTOINCREMENT,</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &quot;option&quot; TEXT</span></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    )</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>  <span style="color:#777"># add data to table</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>  seed_db <span style="color:#33B">@db</span>, [<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Foo</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Faa</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Moo</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Zoo</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Faz</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Maz</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Kraz</span><span style="color:#710">'</span></span>]
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>  <span style="color:#33B">@db</span>.close
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>seed_db - seed устоявшееся выражение - наполнить</p>
+
+<h4 id="понятие-миграция-база-данных">Понятие миграция (база данных).</h4>
+
+<p>Механизмы миграции, чтобы версия базы данных всегда совпадала с версией кода.</p>
+
+<p>to keep up to date - держать в актуальном состоянии</p>
+
+<p>Откат БД вместе с программным кодом.</p>
+
+<p>Дальше будем проходить наполнение и миграции. База наполняется из програмного кода.</p>
+
+<h4 id="синтаксис-before-в-sinatra---исполняет-код-перед-запросом---будет-доступно-во-всех-представлениях">Синтаксис before (в sinatra) - исполняет код перед запросом - будет доступно во всех представлениях</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>before <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#777"># some code</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h4 id="как-загружать-варианты-в-select-формы-из-базы-данных">Как загружать варианты в select формы из базы данных:</h4>
+<p>В app.rb добавим часть кода:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># Index page with form</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#777"># Write to array data from database table Options</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  get_db
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#33B">@options</span> = <span style="color:#33B">@db</span>.execute <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">SELECT * FROM Options</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#33B">@db</span>.close
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#33B">@title</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Форма заявки для Sinatra (Ruby)</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>в views/index.erb в форме заменим статические данные на :</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;p&gt;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  &lt;select name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">option</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    &lt;option value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span> selected&gt;Выбрать опцию...&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">option&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;% @options.each do |item| %&gt;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;option value=&quot;&lt;%= item['option'] %&gt;&quot;&gt;&lt;%= item['option'] %&gt;&lt;</span><span style="color:#404">/</span><span style="color:#C2C">o</span></span>ption&gt;
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">select&gt;</span></span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;</span><span style="color:#404">/</span></span>p&gt;
+</pre></div>
+</div>
+</div>
+
+<p>Вставка, чтобы сделать select - selected</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;option &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @barber </span><span style="color:#710">=</span></span>= item[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">name</span><span style="color:#710">'</span></span>] ? <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">selected</span><span style="color:#710">'</span></span> : <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#710">'</span></span> %&gt;&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> item['name'] %&gt;&lt;/option&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>configure - при запуске программы
+before - при каждом обращении к программе</p>
+
+<h2 id="урок-28">Урок 28</h2>
+
+<blockquote>
+  <p>Мой вариант Sinatra Blog:
+https://github.com/krdprog/sinatra-blog</p>
+</blockquote>
+
+<h4 id="перенаправление">Перенаправление:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/new</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#777"># some code</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  redirect to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  redirect to (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/post/</span><span style="color:#710">'</span></span> + <span style="color:#33B">@post_id</span>)
+</pre></div>
+</div>
+</div>
+
+<h4 id="id-поста">id поста:</h4>
+<p>app.rb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/post/:post_id</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#33B">@post_id</span> = params[<span style="color:#A60">:post_id</span>]
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  erb <span style="color:#A60">:post</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>views/post.erb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">This</span> is <span style="color:#606">post</span>: &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @post_id %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<h4 id="домашнее-задание-1">Домашнее задание:</h4>
+<ol>
+  <li>Авторизация для автора</li>
+  <li>Валидация поля комментария</li>
+</ol>
+
+<h4 id="ссылка-на-документацию-sinatra">Ссылка на документацию Sinatra:</h4>
+<ul>
+  <li><a href="https://github.com/sinatra/sinatra/blob/master/README.ru.md#%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D1%8B-%D0%BE%D1%82-%D0%B0%D1%82%D0%B0%D0%BA">sinatra/README.ru.md at master · sinatra/sinatra · GitHub</a></li>
+</ul>
+
+<h2 id="урок-29---введение-в-active-record">Урок 29 - введение в Active Record</h2>
+
+<h4 id="gemfile">Gemfile</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>source <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">https://rubygems.org</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra-contrib</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sqlite3</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">activerecord</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra-activerecord</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>group <span style="color:#A60">:development</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">tux</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<h4 id="установка">Установка</h4>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle install
+</pre></div>
+</div>
+</div>
+<p>gem tux</p>
+
+<p>deploy - развёртывание</p>
+
+<h4 id="подключение-базы-и-activerecord">Подключение базы и ActiveRecord</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra/reloader</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">sinatra/activerecord</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>set <span style="color:#A60">:database</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sqlite3.my_database.db</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Создадим сущности</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Client</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Base</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>В терминале запустить гем tux</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>tux
+</pre></div>
+</div>
+</div>
+<p>Список всех сущностей в БД (набрать в tux):</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">Client</span>.all
+</pre></div>
+</div>
+</div>
+
+<h3 id="rake">rake</h3>
+
+<h4 id="создать-rakefile">Создать Rakefile</h4>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>touch Rakefile
+</pre></div>
+</div>
+</div>
+
+<p>Содержимое Rakefile:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">./app</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra/activerecord/rake</span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>У меня в Debian не заработало, выпадали ошибки. Удалил ruby и поставил всё через rvm - https://rvm.io/</p>
+</blockquote>
+
+<h3 id="install-rvm">Install RVM:</h3>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>gpg --keyserver <span style="color:#606">hkp</span>:<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#404">/</span></span>keys.gnupg.net --recv-keys <span style="color:#00D">409</span><span style="color:#036;font-weight:bold">B6B1796C275462A1703113804BB82D39DC0E3</span> <span style="color:#00D">7</span><span style="color:#036;font-weight:bold">D2BAF1CF37B13E2069D6956105BD0E739499BDB</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>curl -sSL <span style="color:#606">https</span>:<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#404">/</span></span>get.rvm.io | bash -s stable
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>source ~<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">.rvm</span><span style="color:#404">/</span><span style="color:#C2C">s</span></span>cripts/rvm
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>rvm install <span style="color:#60E">2.5</span>.<span style="color:#F00;background-color:#FAA">3</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>rvm use <span style="color:#60E">2.5</span>.<span style="color:#F00;background-color:#FAA">3</span> --default
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>ruby -v
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>LINK
+command line ruby cheat sheets: http://cheat.errtheblog.com/s/rvm</p>
+</blockquote>
+
+<p>Всё заработало, идём дальше…</p>
+
+<h4 id="список-параметров">Список параметров:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake -<span style="color:#036;font-weight:bold">T</span>
+</pre></div>
+</div>
+</div>
+<p>NOTE: Работает только при наличии Rakefile:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># Rakefile</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">./app</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sinatra/activerecord/rake</span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+<p>Rakefile произошёл от сишного Makefile</p>
+
+<h4 id="3-команды-rake">3 команды rake:</h4>
+
+<p>создаёт новую миграцию в db/migrate/:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake <span style="color:#606">db</span>:create_migration <span style="color:#036;font-weight:bold">NAME</span>=name_of_migration
+</pre></div>
+</div>
+</div>
+<p>применяет (выполняет) созданную миграцию:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake <span style="color:#606">db</span>:migrate
+</pre></div>
+</div>
+</div>
+<p>возврат к предыдущей миграции:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake <span style="color:#606">db</span>:rollback
+</pre></div>
+</div>
+</div>
+
+<h4 id="все-команды-rake">Все команды rake:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>rake <span style="color:#606">db</span>:create              <span style="color:#777"># Creates the database from DATABASE_URL or con...</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>rake <span style="color:#606">db</span>:create_migration    <span style="color:#777"># Create a migration (parameters: NAME, VERSION)</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>rake <span style="color:#606">db</span>:drop                <span style="color:#777"># Drops the database from DATABASE_URL or confi...</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>rake <span style="color:#606">db</span>:<span style="color:#606">environment</span>:set     <span style="color:#777"># Set the environment value for the database</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>rake <span style="color:#606">db</span>:<span style="color:#606">fixtures</span>:load       <span style="color:#777"># Loads fixtures into the current environment's...</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>rake <span style="color:#606">db</span>:migrate             <span style="color:#777"># Migrate the database (options: VERSION=x, VER...</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>rake <span style="color:#606">db</span>:<span style="color:#606">migrate</span>:status      <span style="color:#777"># Display status of migrations</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>rake <span style="color:#606">db</span>:rollback            <span style="color:#777"># Rolls the schema back to the previous version...</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>rake <span style="color:#606">db</span>:<span style="color:#606">schema</span>:<span style="color:#606">cache</span>:clear  <span style="color:#777"># Clears a db/schema_cache.yml file</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>rake <span style="color:#606">db</span>:<span style="color:#606">schema</span>:<span style="color:#606">cache</span>:dump   <span style="color:#777"># Creates a db/schema_cache.yml file</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>rake <span style="color:#606">db</span>:<span style="color:#606">schema</span>:dump         <span style="color:#777"># Creates a db/schema.rb file that is portable ...</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>rake <span style="color:#606">db</span>:<span style="color:#606">schema</span>:load         <span style="color:#777"># Loads a schema.rb file into the database</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>rake <span style="color:#606">db</span>:seed                <span style="color:#777"># Loads the seed data from db/seeds.rb</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>rake <span style="color:#606">db</span>:setup               <span style="color:#777"># Creates the database, loads the schema, and i...</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>rake <span style="color:#606">db</span>:<span style="color:#606">structure</span>:dump      <span style="color:#777"># Dumps the database structure to db/structure.sql</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>rake <span style="color:#606">db</span>:<span style="color:#606">structure</span>:load      <span style="color:#777"># Recreates the databases from the structure.sq...</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>rake <span style="color:#606">db</span>:version             <span style="color:#777"># Retrieves the current schema version number</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+</pre></div>
+</div>
+</div>
+<h4 id="миграция---это-очередная-версия-нашей-базы-данных">Миграция - это очередная версия нашей базы данных.</h4>
+
+<p>Создадим миграцию:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:create_migration NAME=create_clients
+</pre></div>
+</div>
+</div>
+<p>Создаётся каталог db/migrate и миграция.</p>
+
+<p>Открываем созданный файл и создаём таблицу в базе данных:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># File db/migrate/389173729_create_clients.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CreateClients</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Migration</span>[<span style="color:#60E">5.2</span>]
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">change</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    create_table <span style="color:#A60">:clients</span> <span style="color:#080;font-weight:bold">do</span> |t|
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>      t.text <span style="color:#A60">:name</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>      t.text <span style="color:#A60">:phone</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>      t.text <span style="color:#A60">:datestamp</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>      t.text <span style="color:#A60">:barber</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        t.timestamps
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>id primary key будет создан автоматически</p>
+</blockquote>
+
+<blockquote>
+  <p>t.timestamps создаст 2 дополнительных столбца created_at и updated_at
+дата создания и обновления сущности</p>
+</blockquote>
+
+<p>text -&gt; TEXT</p>
+
+<p>string -&gt; VARCHAR(255)</p>
+
+<h4 id="запустить-миграцию">Запустить миграцию:</h4>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+<p>Мы настроили mapping (ORM - Object Relational Mapper)</p>
+
+<p>Связка ООП с реляционными БД</p>
+
+<p>Добавим таблицу barbers:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + in app.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Barber</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Base</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>Создаём миграцию (bash):</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:create_migration NAME=create_barbers
+</pre></div>
+</div>
+</div>
+<p>Правим миграцию (создаём таблицу и вносим данные):</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># db/migrate/37837298_create_barbers.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CreateBarbers</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Migration</span>[<span style="color:#60E">5.2</span>]
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">change</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    create_table <span style="color:#A60">:barbers</span> <span style="color:#080;font-weight:bold">do</span> |t|
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>      t.text <span style="color:#A60">:name</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>      t.timestamps
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    <span style="color:#036;font-weight:bold">Barber</span>.create <span style="color:#A60">:name</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Joe Doe</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#036;font-weight:bold">Barber</span>.create <span style="color:#A60">:name</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Elon Musk</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    <span style="color:#036;font-weight:bold">Barber</span>.create <span style="color:#A60">:name</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Alisha Moon</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    <span style="color:#036;font-weight:bold">Barber</span>.create <span style="color:#A60">:name</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Marie Fooo-bar</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>Запустим миграцию:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Совет от @krdprog:
+чтобы в командной строке sqlite3 каждый раз не писать, показывать в столбец и с заголовками, создайте в домашней директории файл .sqliterc с содержимым:</p>
+  <div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>.headers on
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>.mode column
+</pre></div>
+</div>
+  </div>
+  <p>Теперь, это настройки по-умолчанию.</p>
+</blockquote>
+
+<p>Едем дальше…</p>
+
+<p>Откроем консоль tux</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>tux
+</pre></div>
+</div>
+</div>
+<p>И введём:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Barber.count
+</pre></div>
+</div>
+</div>
+<p>Из этой консоли можно создать дополнительные сущности.</p>
+
+<h4 id="замечание">Замечание:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">Barber</span>.create <span style="color:#777"># создаёт в БД</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>b = <span style="color:#036;font-weight:bold">Barber</span>.new <span style="color:#777"># создаёт в памяти</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>b.save <span style="color:#777"># после этого надо сделать</span>
+</pre></div>
+</div>
+</div>
+<p>Создадим в консоли tux нового парикмахера:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Barber.create :name =&gt; 'Faz Maz'
+</pre></div>
+</div>
+</div>
+<p>или через .new</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>b = Barber.new :name =&gt; 'Vasya' # создадим, но не сохраним в базе
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>b.new_record? # покажет, новый ли это объект
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>b.save # сохраним в базе
+</pre></div>
+</div>
+</div>
+<p>Все записи Barber:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Barber.all
+</pre></div>
+</div>
+</div>
+<p>rake db:migrate надо запускать в каталоге приложения, где Rakefile</p>
+
+<blockquote>
+  <p><strong>Изучи ссылку:</strong>
+Active Record Query Interface — Ruby on Rails Guides; https://guides.rubyonrails.org/active_record_querying.html</p>
+</blockquote>
+
+<p>Создадим вывод на страницу список наших парикмахеров:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + in app.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#33B">@barbers</span> = <span style="color:#036;font-weight:bold">Barber</span>.all
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  erb <span style="color:#A60">:index</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + in views/index.erb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&lt;h2&gt;Список <span style="color:#606">парикмахеров</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h2&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;ul&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;% @barbers.each do |barber| %&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;li&gt;&lt;%= barber.name %&gt;&lt;</span><span style="color:#404">/</span></span>li&gt;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">ul&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+<p>Сортировка .order:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#33B">@barbers</span> = <span style="color:#036;font-weight:bold">Barber</span>.order <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">created_at DESC</span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Домашнее задание:</p>
+<ol>
+  <li>сделать сохранение записи к парикмахеру в БД с помощью ActiveRecord</li>
+  <li>сделать сущность Contact и на странице /contacts сохранять в БД данные с помощью ActiveRecord</li>
+</ol>
+
+<h2 id="урок-30">Урок 30</h2>
+
+<h4 id="5-шагов-по-созданию-миграции">5 шагов по созданию миграции:</h4>
+<ol>
+  <li>подключаем БД
+    <div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>set <span style="color:#A60">:database</span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sqlite3.my_database.db</span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+    </div>
+  </li>
+  <li>создаём модель (класс)
+    <div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Client</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Base</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+    </div>
+  </li>
+  <li>создаём миграцию
+    <div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:create_migration NAME=create_clients
+</pre></div>
+</div>
+    </div>
+  </li>
+  <li>редактируем миграцию
+    <div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CreateClients</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Migration</span>[<span style="color:#60E">5.2</span>]
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">change</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span> create_table <span style="color:#A60">:clients</span> <span style="color:#080;font-weight:bold">do</span> |t|
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>   t.text <span style="color:#A60">:name</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>   t.text <span style="color:#A60">:phone</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>   t.text <span style="color:#A60">:datestamp</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>   t.text <span style="color:#A60">:barber</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>   t.timestamps
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span> <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+    </div>
+  </li>
+  <li>делаем миграцию
+    <div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+    </div>
+    <p>Необходимо наличие всех гемов и Rakefile</p>
+  </li>
+</ol>
+
+<h4 id="сохранение-в-бд-через-activerecord">Сохранение в БД через ActiveRecord</h4>
+
+<h5 id="ламерский-способ">Ламерский способ:</h5>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/order</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#33B">@name</span> = params[<span style="color:#A60">:name</span>]
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#33B">@phone</span> = params[<span style="color:#A60">:phone</span>]
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#33B">@datestamp</span> = params[<span style="color:#A60">:datestamp</span>]
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#33B">@barber</span> = params[<span style="color:#A60">:barber</span>]
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  c = <span style="color:#036;font-weight:bold">Client</span>.new
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  c.name = <span style="color:#33B">@name</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  c.phone = <span style="color:#33B">@phone</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  c.datestamp = <span style="color:#33B">@datestamp</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  c.barber = <span style="color:#33B">@barber</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  c.save
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  erb <span style="color:#A60">:sent</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h5 id="способ-лучше">Способ лучше:</h5>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/order</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  c = <span style="color:#036;font-weight:bold">Client</span>.new params[<span style="color:#A60">:client</span>]
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  c.save
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  erb <span style="color:#A60">:sent</span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/order.erb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&lt;form action=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/order</span><span style="color:#710">&quot;</span></span> method=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">POST</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  &lt;p&gt;&lt;label <span style="color:#080;font-weight:bold">for</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name</span><span style="color:#710">&quot;</span></span>&gt;Ваше <span style="color:#606">имя</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">label&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  &lt;p&gt;&lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">client[name]</span><span style="color:#710">&quot;</span></span> value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;p&gt;&lt;label for=&quot;phone&quot;&gt;Телефон:&lt;</span><span style="color:#404">/</span></span>label&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;p&gt;&lt;input type=&quot;text&quot; name=&quot;client[phone]&quot; value=&quot;&quot;&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  &lt;p&gt;&lt;label <span style="color:#080;font-weight:bold">for</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">datestamp</span><span style="color:#710">&quot;</span></span>&gt;Выберите <span style="color:#606">дату</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">label&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  &lt;p&gt;&lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">client[datestamp]</span><span style="color:#710">&quot;</span></span> value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;p&gt;&lt;label for=&quot;barber&quot;&gt;Парикмахер:&lt;</span><span style="color:#404">/</span></span>label&gt;
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    &lt;select name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">client[barber]</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>      &lt;option value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span> selected&gt;Выбрать парикмахера...&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">option&gt;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">      &lt;% @barbers.each do |barber| %&gt;</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">      &lt;option value=&quot;&lt;%= barber.name %&gt;&quot;&gt;&lt;%= barber.name %&gt;&lt;</span><span style="color:#404">/</span><span style="color:#C2C">o</span></span>ption&gt;
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>      &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>    &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">select&gt;</span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>  &lt;br&gt;
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>  &lt;p&gt;&lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">submit</span><span style="color:#710">&quot;</span></span> value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Отправить заявку</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;</span><span style="color:#404">/</span></span>form&gt;
+</pre></div>
+</div>
+</div>
+<p>Т.е. вместо создания переменных из params. мы сократили код до пары строк:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>c = <span style="color:#036;font-weight:bold">Contact</span>.new params[<span style="color:#A60">:contact</span>]
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>c.save
+</pre></div>
+</div>
+</div>
+<p>и в представлении:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;p&gt;&lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">contact[name]</span><span style="color:#710">&quot;</span></span> value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;&lt;textarea rows=&quot;10&quot; cols=&quot;45&quot; name=&quot;contact[comment]&quot;&gt;&lt;</span><span style="color:#404">/</span></span>textarea&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Важное замечание: метод save для новых записей проводит валидацию, если всё правильно, то возвращает true иначе false</p>
+</blockquote>
+
+<h4 id="настройка-валидации">Настройка валидации:</h4>
+
+<p>Можно проверить пустое - не пустое, можно проверить длину</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Client</span> &lt; <span style="color:#036;font-weight:bold">ActiveRecord</span>::<span style="color:#036;font-weight:bold">Base</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  validates <span style="color:#A60">:name</span>, <span style="color:#606">presence</span>: <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  validates <span style="color:#A60">:phone</span>, <span style="color:#606">presence</span>: <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  validates <span style="color:#A60">:datestamp</span>, <span style="color:#606">presence</span>: <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  validates <span style="color:#A60">:barber</span>, <span style="color:#606">presence</span>: <span style="color:#069">true</span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>Проверка в tux:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>c = Client.new
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>c.valid?
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>c.errors.count
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>c.errors.messages
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/order</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  c = <span style="color:#036;font-weight:bold">Client</span>.new params[<span style="color:#A60">:client</span>]
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  c.save
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">if</span> c.save
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    erb <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;p&gt;Thank you!&lt;/p&gt;</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    erb <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;p&gt;Error&lt;/p&gt;</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>или:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/order</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  c = <span style="color:#036;font-weight:bold">Client</span>.new params[<span style="color:#A60">:client</span>]
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  c.save
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">if</span> c.save
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    erb <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;p&gt;Thank you!&lt;/p&gt;</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#33B">@error</span> = c.errors.full_messages.first
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    erb <span style="color:#A60">:order</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + views/order.erb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>&lt;p style=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">color: red</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @error %&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+<p>Чтобы сохранять данные в поле формы после перезагрузки страницы при неправильном заполнении, надо сделать так:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/order</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#33B">@c</span> = <span style="color:#036;font-weight:bold">Client</span>.new
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  erb <span style="color:#A60">:order</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>post <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/order</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#33B">@c</span> = <span style="color:#036;font-weight:bold">Client</span>.new params[<span style="color:#A60">:client</span>]
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#33B">@c</span>.save
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@c</span>.save
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    erb <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;p&gt;Thank you!&lt;/p&gt;</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    <span style="color:#33B">@error</span> = <span style="color:#33B">@c</span>.errors.full_messages.first
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    erb <span style="color:#A60">:order</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/order.erb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>&lt;p&gt;&lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">client[name]</span><span style="color:#710">&quot;</span></span> value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;%= @c.name %&gt;</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;&lt;input type=&quot;text&quot; name=&quot;client[phone]&quot; value=&quot;&lt;%= @c.phone %&gt;&quot;&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>&lt;p&gt;&lt;input type=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">client[datestamp]</span><span style="color:#710">&quot;</span></span> value=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;%= @c.datestamp %&gt;</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+<p>Для textarea:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;p&gt;&lt;textarea rows=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">10</span><span style="color:#710">&quot;</span></span> cols=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">45</span><span style="color:#710">&quot;</span></span> name=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">contact[comment]</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @c.comment %&gt;&lt;/textarea&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Ссылка на полный проект Barbershop Sinatra with ActiveRecord:
+https://github.com/krdprog/barbershop-sinatra-with-activerecord</p>
+</blockquote>
+
+<h4 id="популярные-свойства-валидации-activerecord">Популярные свойства валидации ActiveRecord:</h4>
+
+<blockquote>
+  <p>Ссылка:
+Active Record Validations — Ruby on Rails Guides
+https://guides.rubyonrails.org/active_record_validations.html</p>
+</blockquote>
+
+<ul>
+  <li>length - length: { minimum: 3 } https://guides.rubyonrails.org/active_record_validations.html#length</li>
+  <li>numericality: true - проверка, введены ли числа</li>
+  <li>inclusion - https://guides.rubyonrails.org/active_record_validations.html#inclusion</li>
+</ul>
+
+<blockquote>
+  <p><strong>Домашнее задание:</strong> переписать блог с использованием ActiveRecord</p>
+</blockquote>
+
+<h4 id="создадим-отдельные-страницы-для-каждого-парикмахера">Создадим отдельные страницы для каждого парикмахера:</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/barber/:id</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#33B">@barber</span> = <span style="color:#036;font-weight:bold">Barber</span>.find(params[<span style="color:#A60">:id</span>])
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  erb <span style="color:#A60">:barber</span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/index.erb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&lt;h2&gt;Список <span style="color:#606">парикмахеров</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h2&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;ul&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;% @barbers.each do |barber| %&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;li&gt;&lt;a href=&quot;</span><span style="color:#404">/</span></span>barber/&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> barber.id %&gt;&quot;&gt;&lt;%</span><span style="color:#710">=</span></span> barber.name <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/a</span><span style="color:#710">&gt;</span></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">li&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;% end %&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;</span><span style="color:#404">/</span><span style="color:#C2C">u</span></span>l&gt;
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/barber.erb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>&lt;h2&gt;<span style="color:#036;font-weight:bold">Barber</span> page&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h2&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;Name: &lt;%= @barber.name %&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Find в ActiveRecord:
+https://guides.rubyonrails.org/active_record_querying.html</p>
+</blockquote>
+
+<h4 id="показать-записавшихся-в-обратном-порядке-кто-свежий---наверху">Показать записавшихся в обратном порядке (кто свежий - наверху):</h4>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to app.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/clients</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#33B">@clients</span> = <span style="color:#036;font-weight:bold">Client</span>.order(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">created_at DESC</span><span style="color:#710">'</span></span>)
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  erb <span style="color:#A60">:clients</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/clients/:id</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#33B">@client</span> = <span style="color:#036;font-weight:bold">Client</span>.find(params[<span style="color:#A60">:id</span>])
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  erb <span style="color:#A60">:client</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/clients.erb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&lt;h2&gt;Список записавшихся&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h2&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;table border=&quot;1&quot; cellpadding=&quot;10&quot; cellpadding=&quot;0&quot;&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;tr&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;th&gt;Name&lt;</span><span style="color:#404">/</span></span>th&gt;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    &lt;th&gt;<span style="color:#036;font-weight:bold">Phone</span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">th&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">    &lt;th&gt;Date&lt;</span><span style="color:#404">/</span></span>th&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    &lt;th&gt;<span style="color:#036;font-weight:bold">Barber</span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">th&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;</span><span style="color:#404">/</span></span>tr&gt;
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">@clients.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |client| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;tr</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    &lt;td&gt;&lt;a href=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/clients/&lt;%= client.id %&gt;</span><span style="color:#710">&quot;</span></span>&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> client.name %&gt;&lt;/a&gt;&lt;/td&gt;</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;td&gt;&lt;%</span><span style="color:#710">=</span></span> client.phone <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/td</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    &lt;td&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> client.datestamp %&gt;&lt;/td&gt;</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;td&gt;&lt;%</span><span style="color:#710">=</span></span> client.barber <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/td</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">tr&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;% end %&gt;</span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;</span><span style="color:#404">/</span></span>table&gt;
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># + to views/client.erb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>&lt;h2&gt;Страница <span style="color:#606">клиента</span>:&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h2&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;&lt;strong&gt;Имя:&lt;</span><span style="color:#404">/</span><span style="color:#C2C">s</span></span>trong&gt; &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @client.name %&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;p&gt;&lt;a href</span><span style="color:#710">=</span></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/clients</span><span style="color:#710">&quot;</span></span>&gt;&lt;&lt; назад к списку записавшихся&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">a&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+</pre></div>
+</div>
+</div>
+
+<h5 id="в-activerecord-есть-штука-которая-связывает-автоматически-посты-и-комментарии-домашнее-задание---найти-это-и-написать-движок-блога">В ActiveRecord есть штука, которая связывает автоматически посты и комментарии. Домашнее задание - найти это и написать движок блога.</h5>
+
+<blockquote>
+  <p>ActiveRecord “one-to-many” (отношение сущностей)
+https://guides.rubyonrails.org/association_basics.html</p>
+</blockquote>
+
+<h2 id="содержание-конспекта">Содержание конспекта:</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+      <th>N</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-01/">Урок 01-14</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-02/">Урок 15-19</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-03/">Урок 20-25</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-04/">Урок 26-30</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-05/">Урок 31-35</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-06/">Урок 36-40</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-07/">Урок 41-45</a></td>
+      <td><a href="http://rubyblog.ru/rubyschool-notes/rs-08/">Урок 46-50</a></td>
+    </tr>
+  </tbody>
+</table>
+:ET

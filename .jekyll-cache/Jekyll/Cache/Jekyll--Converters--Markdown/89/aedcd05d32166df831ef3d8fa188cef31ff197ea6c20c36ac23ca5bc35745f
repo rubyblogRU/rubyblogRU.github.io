@@ -1,0 +1,14 @@
+I"¼<ul>
+  <li><a href="https://www.postgresql.org/download/linux/ubuntu/">https://www.postgresql.org/download/linux/ubuntu/</a></li>
+</ul>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install postgresql postgresql-contrib
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>sudo apt-get install libpq-dev
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>sudo su - postgres
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>createuser --interactive
+</pre></div>
+</div>
+</div>
+:ET

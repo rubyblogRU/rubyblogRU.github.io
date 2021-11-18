@@ -1,0 +1,13 @@
+I"Ó<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git clone https://github.com/sublimehq/Packages.git
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>ln -s `pwd`/Packages/Rails ~/.config/sublime-text-3/Packages/
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>ln -s `pwd`/Packages/Ruby ~/.config/sublime-text-3/Packages/
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>ln -s `pwd`/Packages/SQL ~/.config/sublime-text-3/Packages/
+</pre></div>
+</div>
+</div>
+
+<ul>
+  <li><a href="https://github.com/sublimehq/Packages/">https://github.com/sublimehq/Packages/</a></li>
+</ul>
+:ET

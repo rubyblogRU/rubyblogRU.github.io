@@ -1,0 +1,9 @@
+I"�<ul>
+  <li>Переходим на ветку <code>new-feature-name</code></li>
+  <li>Делаем <code>git rebase master</code></li>
+  <li>Исправляем конфликты</li>
+  <li>Делаем <code>git add</code> для файла</li>
+  <li>Делаем <code>git rebase --continue</code></li>
+  <li>Отправляем изменения в ветку после git rebase: <code>git push origin new-feature-name --force-with-lease</code></li>
+</ul>
+:ET

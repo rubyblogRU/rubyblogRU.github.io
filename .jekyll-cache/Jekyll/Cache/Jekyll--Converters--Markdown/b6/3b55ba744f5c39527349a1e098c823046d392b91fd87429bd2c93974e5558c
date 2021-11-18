@@ -1,0 +1,168 @@
+I"�-<p><strong>Требуется установленный ImageMagick:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install imagemagick
+</pre></div>
+</div>
+</div>
+
+<p><strong>Подключим гемы:</strong></p>
+
+<ul>
+  <li><a href="https://github.com/carrierwaveuploader/carrierwave">GitHub - carrierwaveuploader/carrierwave</a></li>
+  <li><a href="https://github.com/minimagick/minimagick">GitHub - minimagick/minimagick</a></li>
+</ul>
+
+<p><strong>Добавить в Gemfile:</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">carrierwave</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">~&gt; 1.0</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">mini_magick</span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle install
+</pre></div>
+</div>
+</div>
+
+<p><strong>Генерация:</strong></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails generate uploader Picture
+</pre></div>
+</div>
+</div>
+
+<p><strong>Настройка конфигурации app/uploaders/picture_uploader.rb:</strong></p>
+
+<ul>
+  <li>Раскомментировать строку:</li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>include <span style="color:#036;font-weight:bold">CarrierWave</span>::<span style="color:#036;font-weight:bold">MiniMagick</span>
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>storage <span style="color:#A60">:file</span>
+</pre></div>
+</div>
+</div>
+
+<ul>
+  <li>
+    <p>Выбрать путь к файлам в store_dir</p>
+  </li>
+  <li>
+    <p>Можно настроить несколько версий для изображения в строке: version</p>
+  </li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>version <span style="color:#A60">:large</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  process <span style="color:#606">resize_to_fit</span>: [<span style="color:#00D">1024</span>, <span style="color:#00D">1024</span>]
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>version <span style="color:#A60">:title</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  process <span style="color:#606">resize_to_fit</span>: [<span style="color:#00D">600</span>, <span style="color:#00D">450</span>]
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>version <span style="color:#A60">:thumb</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  process <span style="color:#606">resize_to_fit</span>: [<span style="color:#00D">300</span>, <span style="color:#00D">300</span>]
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<ul>
+  <li>Валидация формата файлов:</li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">extension_whitelist</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%w(</span><span style="color:#D20">jpg jpeg gif png</span><span style="color:#710">)</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Проведём миграцию, прикрепим изображение к нашим страницам</strong></p>
+
+<p>Предположим, что у нас есть сущность Project - <a href="https://github.com/krdprog/rails_essence_cookbook/">инструкция, как создать сущность Project</a></p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g migration add_picture_to_projects picture:string
+</pre></div>
+</div>
+</div>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<p><strong>Пропишем в модели app/models/project.rb</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Project</span> &lt; <span style="color:#036;font-weight:bold">ApplicationRecord</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  mount_uploader <span style="color:#A60">:picture</span>, <span style="color:#036;font-weight:bold">PictureUploader</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Добавим в форму (в /app/views/projects/_form.html.erb):</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> form_for @project, html: { multipart: true } do |f| %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+<p>и там же добавить:</p>
+
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;p&gt;</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#F00;background-color:#FAA">&lt;</span>%= f.label :picture, 'Загрузить картинку:' %<span style="color:#F00;background-color:#FAA">&gt;</span><span style="color:#070;font-weight:bold">&lt;br</span> <span style="color:#070;font-weight:bold">/&gt;</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#F00;background-color:#FAA">&lt;</span>%= f.file_field :picture %<span style="color:#F00;background-color:#FAA">&gt;</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#070;font-weight:bold">&lt;/p&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<p>И, в контроллере /app/controllers/projects_controller.rb укажем разрешённый параметр :picture</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">project_params</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  params.require(<span style="color:#A60">:project</span>).permit(<span style="color:#A60">:title</span>, <span style="color:#A60">:body</span>, <span style="color:#A60">:picture</span>)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Ещё нам надо вывести картинку в show.html.erb</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;p&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> image_tag @project.picture.url(:title), class: 'img-show', alt: @project.title if @project.picture? %&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;p&gt;&lt;%</span><span style="color:#710">=</span></span> image_tag <span style="color:#33B">@project</span>.picture.url(<span style="color:#A60">:thumb</span>), <span style="color:#606">class</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">img-show</span><span style="color:#710">'</span></span>, <span style="color:#606">alt</span>: <span style="color:#33B">@project</span>.title <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@project</span>.picture? <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/p</span><span style="color:#710">&gt;</span></span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Можно добавить CSS:</strong></p>
+
+<div class="language-css highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#B06;font-weight:bold">.img-show</span> {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#606">display</span>: <span style="color:#088">block</span>;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#606">margin-bottom</span>: <span style="color:#60E">2</span><span style="color:#088">rem</span>;
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>}
+</pre></div>
+</div>
+</div>
+
+<p>Запустим <code>rails s</code> и откроем в браузере <code>http://localhost:3000/projects/new</code>, в форме появится кнопка загрузки фотографий.</p>
+:ET

@@ -1,0 +1,128 @@
+I"K<p><strong>Задача:</strong> сделать ЧПУ.</p>
+
+<p><strong>Для решение задачи задействуем 2 гема:</strong></p>
+
+<ul>
+  <li><a href="https://github.com/norman/friendly_id">https://github.com/norman/friendly_id</a></li>
+  <li><a href="https://github.com/norman/babosa">https://github.com/norman/babosa</a></li>
+</ul>
+
+<p>Для этого, пропишем в Gemfile:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">friendly_id</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">~&gt; 5.2.4</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">babosa</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Сделаем бандл инсталл:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle install
+</pre></div>
+</div>
+</div>
+
+<p>Для демонстрации, создадим ресурс User:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g model User name:string email:string
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>rake db:migrate
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>rails g controller Users
+</pre></div>
+</div>
+</div>
+
+<p>Пропишем в config/routes.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>resources <span style="color:#A60">:users</span>
+</pre></div>
+</div>
+</div>
+
+<p>Создадим миграцию:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g migration <span style="color:#036;font-weight:bold">AddSlugToUsers</span> <span style="color:#606">slug</span>:uniq
+</pre></div>
+</div>
+</div>
+
+<p>Сгенерируем friendly_id:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails generate friendly_id
+</pre></div>
+</div>
+</div>
+
+<p>Накатим миграци:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails db:migrate
+</pre></div>
+</div>
+</div>
+
+<p>app/models/user.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">User</span> &lt; <span style="color:#036;font-weight:bold">ApplicationRecord</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  extend <span style="color:#036;font-weight:bold">FriendlyId</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  friendly_id <span style="color:#A60">:name</span>, <span style="color:#606">use</span>: <span style="color:#A60">:slugged</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">normalize_friendly_id</span>(text)
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    text.to_slug.transliterate(<span style="color:#A60">:russian</span>).normalize.to_s
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>app/controllers/users_controller.rb</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">UserController</span> &lt; <span style="color:#036;font-weight:bold">ApplicationController</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    <span style="color:#33B">@user</span> = <span style="color:#036;font-weight:bold">User</span>.friendly.find(params[<span style="color:#A60">:id</span>])
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Создадим вьюху app/views/users/show.html.erb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;h1&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @user.name %&gt;&lt;/h1&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;p&gt;&lt;%</span><span style="color:#710">=</span></span> <span style="color:#33B">@user</span>.email <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/p</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>&lt;p&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @user.slug %&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>Откроем Rails-консоль и создадим юзера:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails c
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>User.create!(name: &quot;Анфиса Николаевна Добронравова&quot;, email: &quot;foo@barbaz.ru&quot;)
+</pre></div>
+</div>
+</div>
+
+<p>Запустим приложение:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails s
+</pre></div>
+</div>
+</div>
+
+<p>Откроем в браузере: <a href="http://localhost:3000/users/anfisa-nikolaevna-dobronravova">http://localhost:3000/users/anfisa-nikolaevna-dobronravova</a></p>
+
+<p>Готово!</p>
+
+:ET

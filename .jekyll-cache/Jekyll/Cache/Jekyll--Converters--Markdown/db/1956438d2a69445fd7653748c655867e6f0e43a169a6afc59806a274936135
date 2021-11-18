@@ -1,0 +1,130 @@
+I"�'<p>Создадим контроллер:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g controller Posts
+</pre></div>
+</div>
+</div>
+
+<p>Пропишем в routes.rb:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>resources <span style="color:#A60">:posts</span>
+</pre></div>
+</div>
+</div>
+
+<p>Создадим модель:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g model Post title:string
+</pre></div>
+</div>
+</div>
+
+<p>Накатим миграцию:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake <span style="color:#606">db</span>:migrate
+</pre></div>
+</div>
+</div>
+
+<p>Активируем ActionText:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails action_text:install
+</pre></div>
+</div>
+</div>
+
+<p>Накатим миграцию:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<p>Добавим в app/models/post.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>has_rich_text <span style="color:#A60">:text</span>
+</pre></div>
+</div>
+</div>
+
+<p>Пропишем в контроллере posts_controller.rb:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">PostsController</span> &lt; <span style="color:#036;font-weight:bold">ApplicationController</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">new</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">create</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    <span style="color:#33B">@post</span> = <span style="color:#036;font-weight:bold">Post</span>.new(post_params)
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    <span style="color:#33B">@post</span>.save
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    redirect_to <span style="color:#33B">@post</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  private
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">post_params</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    params.require(<span style="color:#A60">:post</span>).permit(<span style="color:#A60">:title</span>, <span style="color:#A60">:text</span>)
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Пропишем во вьюхе app/views/posts/new.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> form_with scope: :post, url: posts_path, local: true do |form| %&gt;</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> form.label <span style="color:#A60">:title</span> %&gt;&lt;br&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> form.text_field :title %&gt;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> form.label <span style="color:#A60">:text</span> %&gt;&lt;br&gt;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> form.rich_text_area :text %&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> form.submit <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+</pre></div>
+</div>
+</div>
+
+<p><strong>Обратите внимание, на значение поля: form.rich_text_area</strong></p>
+
+<p>Пропишем в контроллере:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#33B">@post</span> = <span style="color:#036;font-weight:bold">Post</span>.find(params[<span style="color:#A60">:id</span>])
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Пропишем во вьюхе app/views/posts/show.html.erb</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;p&gt;<span style="color:#036;font-weight:bold">Post</span> <span style="color:#606">Title</span>: &lt;strong&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @post.title %&gt;&lt;/strong&gt;&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;p&gt;Post Text: &lt;strong&gt;&lt;%</span><span style="color:#710">=</span></span> <span style="color:#33B">@post</span>.text <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/strong</span><span style="color:#710">&gt;</span></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">p&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;p&gt;&lt;%= link_to 'Create new Post', new_post_path %&gt;&lt;</span><span style="color:#404">/</span></span>p&gt;
+</pre></div>
+</div>
+</div>
+
+<p>Запустим:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails s
+</pre></div>
+</div>
+</div>
+
+<p>Откроем:</p>
+<div class="language-txt highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>http://localhost:3000/posts/new
+</pre></div>
+</div>
+</div>
+:ET

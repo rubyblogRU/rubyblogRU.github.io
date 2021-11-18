@@ -1,0 +1,545 @@
+I"�`<p>Ранее: открыть первую часть конспекта с базовыми командами: <a href="http://rubyblog.ru/others/git/">http://rubyblog.ru/others/git/</a></p>
+
+<p>Пуш в удалённую ветку:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout -b feature_name
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git push -u origin feature_name
+</pre></div>
+</div>
+</div>
+
+<p>Посмотреть содержимое последних 2 коммитов прямо в консоли:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git log -p -2
+</pre></div>
+</div>
+</div>
+<h4 id="рабочие-ветки">Рабочие ветки:</h4>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>master  _____*___________*_____
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>hotfix  _____/          /
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>release __________*____*_______
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>develop ____*____/____/________
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>feature ___/
+</pre></div>
+</div>
+</div>
+<p>Переключиться на ветку, создав её:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout -b hotfix
+</pre></div>
+</div>
+</div>
+
+<p>Посмотреть список веток:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git branch
+</pre></div>
+</div>
+</div>
+
+<p>Переключиться на ветку master и слить с hotfix, потом удалить hotfix:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout master
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git merge hotfix
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git branch -d hotfix
+</pre></div>
+</div>
+</div>
+
+<h3 id="merge-conflict">merge conflict</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git mergetool
+</pre></div>
+</div>
+</div>
+
+<h3 id="difftool-и-mergetool-инструменты">difftool и mergetool инструменты</h3>
+
+<p><a href="https://habr.com/ru/post/150001/">Обзор инструментов для визуального сравнения и разрешения конфликтов слияния / Хабр</a></p>
+
+<p><a href="http://kdiff3.sourceforge.net/">KDiff3 - Homepage</a></p>
+
+<p><a href="http://meldmerge.org/">Meld</a></p>
+
+<p><a href="http://reangdblog.blogspot.com/2015/11/git-meld-5.html">Программист - это звучит гордо: Подружить git и meld за 5 минут</a></p>
+
+<p>Конфигурация mergetool с meld linux:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install meld
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git config --global merge.tool meld
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git config --list
+</pre></div>
+</div>
+</div>
+
+<p>Конфигурация mergetool с kdiff3 linux:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install kdiff3
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git config --global merge.tool kdiff3
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git config --list
+</pre></div>
+</div>
+</div>
+
+<p>GUI Linux Git:</p>
+
+<p>https://www.gitkraken.com/git-client</p>
+
+<h3 id="git-cola">Git-cola:</h3>
+
+<p>https://git-cola.github.io/downloads.html</p>
+
+<p>https://git-cola.github.io/share/doc/git-cola/hotkeys.html</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install git-cola
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git-cola
+</pre></div>
+</div>
+</div>
+
+<p>https://gitignore.io/</p>
+
+<p>https://help.github.com/en</p>
+
+<h3 id="удаление-файла-из-списка-слежения">Удаление файла из списка слежения:</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git rm --cached foo.txt
+</pre></div>
+</div>
+</div>
+
+<p>Откатить антрекет файл к предыдущему состоянию:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout -- foo.txt
+</pre></div>
+</div>
+</div>
+
+<p>Убрать из индекса файл:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git reset HEAD foo.txt
+</pre></div>
+</div>
+</div>
+
+<p>Help:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git help log
+</pre></div>
+</div>
+</div>
+
+<p>Log за последние 2 недели:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git log --since=2.weeks
+</pre></div>
+</div>
+</div>
+
+<p>Пушить все ветки:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git config --global push.default matching
+</pre></div>
+</div>
+</div>
+
+<h4 id="git-fetch">git fetch</h4>
+
+<p>Забираем изменения из удалённого репозитория, но не меняет наши локальные файлы.</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git fetch
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git merge origin/develop
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span># как 
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>git pull
+</pre></div>
+</div>
+</div>
+
+<h3 id="git-show---изучить-конкретный-коммит">git show - изучить конкретный коммит</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git log
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git show e130422
+</pre></div>
+</div>
+</div>
+
+<h3 id="git-diff">git diff</h3>
+
+<h3 id="название-веток">Название веток:</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout -b feature/devise 
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git checkout -b release/1.0
+</pre></div>
+</div>
+</div>
+<h3 id="gitflow">Gitflow</h3>
+
+<p>https://github.com/nvie/gitflow</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install git-flow
+</pre></div>
+</div>
+</div>
+<p>https://nvie.com/posts/a-successful-git-branching-model/</p>
+
+<p>https://danielkummer.github.io/git-flow-cheatsheet/index.ru_RU.html</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git flow init
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git flow feature start foobar
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git flow feature finish foobar
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git flow release start 1.1
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git flow release finish 1.1
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git flow hotfix start 1.1.1
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git flow hotfix finish 1.1.1
+</pre></div>
+</div>
+</div>
+
+<h3 id="git-tag">git tag</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git tag 1.1.2
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git push origin --tags
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>git checkout -b 1.1.2
+</pre></div>
+</div>
+</div>
+
+<h3 id="aliases">aliases</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>git config --global alias.br branch
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>git config --global alias.p push
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>git config --global alias.co checkout
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>git config --global alias.m merge
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>git config --global alias.ci commit
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>git config --global alias.st status
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>git config --global alias.type 'cat-file -t'
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>git config --global alias.dump 'cat-file -p'
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>git config --global alias.hist &quot;log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short&quot;
+</pre></div>
+</div>
+</div>
+
+<h3 id="удаление-коммита">Удаление коммита:</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git revert HEAD --no-edit
+</pre></div>
+</div>
+</div>
+
+<h3 id="git-rebase">git rebase</h3>
+
+<p>git rebase не сохраняет последовательность коммитов, как при git merge</p>
+
+<p>git rebase использовать для своих веток при разработке фич, но не рекомендуется использовать для публичных веток.</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git rebase develop
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git pull --rebase orign master
+</pre></div>
+</div>
+</div>
+
+<p>Помогает избегать конфликты. сначала скачает, потом накатит локальные изменения.</p>
+
+<h3 id="git-stash">git stash</h3>
+
+<p>Временно убираем локальные изменения в крозину (коробку).</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git stash
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git pull --rebase orign master
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git stash pop
+</pre></div>
+</div>
+</div>
+<p>В корзину можно складывать более одного изменения.</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git stash list # show all stashes
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git stash show # show last stash
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git stash apply # apply last stash
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>git stash drop # delete last stash
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>git stash pop # apply and delete last stash
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>git stash clear # clear all stash
+</pre></div>
+</div>
+</div>
+
+<h3 id="orign">orign</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git remote
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git remote -v
+</pre></div>
+</div>
+</div>
+
+<h3 id="notes">NOTES:</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>man git log
+</pre></div>
+</div>
+</div>
+<p>Тег и отдаление на предыдущий коммит перед версией (^ - это родитель v1):</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git tag v1
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git checkout v1^
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git tag v1-beta
+</pre></div>
+</div>
+</div>
+
+<p>Если мы внесли изменения в файл, но он ешё не в индексе, то можно откатить изменения файла до состояния текущего коммита:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout hello.html
+</pre></div>
+</div>
+</div>
+<p>Отмена проиндексированных изменений (перед коммитом) - уже зелёный, но ещё не коммит:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git reset HEAD hello.html
+</pre></div>
+</div>
+</div>
+<p>Отменим индексацию изменений и откатим изменения:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git reset HEAD hello.html
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git checkout hello.html
+</pre></div>
+</div>
+</div>
+<p>Отмена коммита путём создания нового коммита, отменяющего нежелательные изменения:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git revert HEAD
+</pre></div>
+</div>
+</div>
+
+<h3 id="удаление-коммиттов-из-ветки">Удаление коммиттов из ветки</h3>
+
+<p>Предположим, что у нас есть тег v1, откатим к нему:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git reset --hard v1
+</pre></div>
+</div>
+</div>
+<p>Теперь коммиты в ветке master не видны, которые были после тега v1 (если были созданы теги позднее тега v1), но они не исчезли, их можно посмотреть:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git hist --all
+</pre></div>
+</div>
+</div>
+
+<p>Удалить тег:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git tag -d foobar
+</pre></div>
+</div>
+</div>
+
+<h3 id="изменить-предыдущий-коммит">Изменить предыдущий коммит</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git add foo.html
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git commit -amend -m &quot;Foo file edit&quot; 
+</pre></div>
+</div>
+</div>
+
+<h3 id="перемещение-файлов">Перемещение файлов</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkdir bar
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git mv foo.rb bar
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git status
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>git commit -m &quot;Moved foo.rb to bar&quot;
+</pre></div>
+</div>
+</div>
+
+<h3 id="просмотр-отличающихся-веток">Просмотр отличающихся веток:</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git hist --all
+</pre></div>
+</div>
+</div>
+<h3 id="merge-vs-rebase">merge vs rebase</h3>
+
+<p>Не использовать rebase:</p>
+
+<ul>
+  <li>если ветка является публичной и расшаренной, чтобы не мешать работе других программистов.</li>
+  <li>когда важна точная история коммитов ветки (rebase переписывает историю коммитов)</li>
+</ul>
+
+<p>Использовать rebase для кратковременных локальных веток, а merge для веток в публичном репозитории.</p>
+
+<h3 id="локальное-клонирование-репозитория">Локальное клонирование репозитория</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git clone foo foo_cloned
+</pre></div>
+</div>
+</div>
+
+<h3 id="origin">origin</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git remote
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git remote show origin
+</pre></div>
+</div>
+</div>
+
+<p>Посмотреть список удалённых веток:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git branch -a
+</pre></div>
+</div>
+</div>
+
+<p>Извлечение изменений из удалённого репозитория:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git fetch
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git merge origin/master
+</pre></div>
+</div>
+</div>
+<p>Что равно:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git pull
+</pre></div>
+</div>
+</div>
+
+<h3 id="добавление-локальной-ветки-для-отслеживания-удалённой-ветки">Добавление локальной ветки для отслеживания удалённой ветки:</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git branch --track foo origin/foo
+</pre></div>
+</div>
+</div>
+
+<h3 id="создание-чистого-репозитория">Создание “чистого репозитория”:</h3>
+
+<p>Чистый репозиторий (без рабочих каталогов)</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git clone --bare foo foo.git
+</pre></div>
+</div>
+</div>
+<p>Добавить чистый репозиторий в качестве удаленного репозитория к нашему оригинальному репозиторию:</p>
+
+<p>В нашем оригинальном репозитории надо сделать:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git remote add shared ../foo.git
+</pre></div>
+</div>
+</div>
+<p>Отправка изменений в общий репозиторий:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git push shared master
+</pre></div>
+</div>
+</div>
+<p>Общим называется репозиторий, получающий отправленные нами изменения.</p>
+
+<p>Извлечение общих изменений:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git remote add shared ../foo.git
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git branch --track shared master
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git pull shared master
+</pre></div>
+</div>
+</div>
+<h3 id="способ-расшарить-git-репозиторий-по-сети">Способ расшарить git репозиторий по сети</h3>
+
+<p>Запуск git сервера (в рабочей директории)</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git daemon --verbose --export-all --base-path=.
+</pre></div>
+</div>
+</div>
+<p>Клонируем:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git clone git://localhost/foo.git foo_cloned
+</pre></div>
+</div>
+</div>
+
+<p>Расшарить репозитории по Wi-fi сети:</p>
+
+<p>В Git Daemon, добавьте метку –enable=receive-pack к команде git daemon</p>
+
+<p>Посмотрите, запущен ли git daemon у вашего соседа. Обменяйтесь IP-адресами и проверьте, сможете ли вы извлекать изменения из репозиториев друг друга.</p>
+:ET

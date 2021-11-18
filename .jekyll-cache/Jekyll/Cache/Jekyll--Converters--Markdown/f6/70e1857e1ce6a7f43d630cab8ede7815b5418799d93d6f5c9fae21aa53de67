@@ -1,0 +1,9 @@
+I"�<p>Ссылка сайт программы SQLite Browser:  <a href="https://sqlitebrowser.org/dl/">https://sqlitebrowser.org/dl/</a></p>
+
+<p>Установка на GNU/Linux:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt-get install sqlitebrowser
+</pre></div>
+</div>
+</div>
+:ET

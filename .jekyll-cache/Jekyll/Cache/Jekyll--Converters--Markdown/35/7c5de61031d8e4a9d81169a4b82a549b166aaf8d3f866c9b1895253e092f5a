@@ -1,0 +1,56 @@
+I"¬<ul>
+  <li><a href="https://rspec.rubystyle.guide/">https://rspec.rubystyle.guide/</a></li>
+  <li><a href="https://github.com/rubocop-hq/rspec-style-guide">https://github.com/rubocop-hq/rspec-style-guide</a></li>
+  <li><a href="http://rspec.info/">http://rspec.info/</a></li>
+  <li><a href="http://www.betterspecs.org/ru/">http://www.betterspecs.org/ru/</a></li>
+  <li><a href="https://www.rubyguides.com/2018/10/rspec-mocks/">https://www.rubyguides.com/2018/10/rspec-mocks/</a></li>
+  <li><a href="https://www.rubyguides.com/2018/07/rspec-tutorial/">https://www.rubyguides.com/2018/07/rspec-tutorial/</a></li>
+  <li><a href="https://relishapp.com/rspec/">https://relishapp.com/rspec/</a></li>
+  <li><a href="https://code.tutsplus.com/tutorials/ruby-for-newbies-testing-with-rspec--net-21297">https://code.tutsplus.com/tutorials/ruby-for-newbies-testing-with-rspecâ€“net-21297</a></li>
+</ul>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem install rspec
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rspec --init
+</pre></div>
+</div>
+</div>
+
+<p>foo.rb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Foo</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">sum</span>(a, b)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    a + b
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>spec/foo_spec.rb</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">rspec</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">./foo.rb</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>describe <span style="color:#036;font-weight:bold">Foo</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Summa 2 and 3 do 5</span><span style="color:#710">'</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    dog = <span style="color:#036;font-weight:bold">Foo</span>.new
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    expect(dog.sum(<span style="color:#00D">2</span>, <span style="color:#00D">3</span>)).to eq(<span style="color:#00D">5</span>)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>bash:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rspec
+</pre></div>
+</div>
+</div>
+:ET

@@ -1,0 +1,27 @@
+I"*<ul>
+  <li>Oh-my-zsh: <a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></li>
+  <li>Agnoster theme: <a href="https://gist.github.com/agnoster/3712874">https://gist.github.com/agnoster/3712874</a></li>
+  <li>Powerline fonts: <a href="https://github.com/powerline/fonts">https://github.com/powerline/fonts</a></li>
+  <li>Themes: <a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Themes">https://github.com/robbyrussell/oh-my-zsh/wiki/Themes</a></li>
+</ul>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;
+</pre></div>
+</div>
+</div>
+
+<p>~/.zshrc</p>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ZSH_THEME=agnoster
+</pre></div>
+</div>
+</div>
+
+<p>После обновления .zshrc надо в терминале ввести:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>source ~/.zshrc
+</pre></div>
+</div>
+</div>
+:ET

@@ -1,0 +1,803 @@
+I"��<p>Ветвь dev:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git branch -d dev
+</pre></div>
+</div>
+</div>
+<p>Отправка:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git push
+</pre></div>
+</div>
+</div>
+
+<p>Phusion Passenger - модуль для Apache и Nginx</p>
+
+<p>Heroku (production) - см. стр. 52:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">pg</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">rails_12factor</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Bundle:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle install --without production
+</pre></div>
+</div>
+</div>
+<p>alias:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bwp
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>heroku login
+</pre></div>
+</div>
+</div>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>heroku create # alias: herc
+</pre></div>
+</div>
+</div>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git push heroku master # alias: gphm
+</pre></div>
+</div>
+</div>
+<p>Rename:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>heroku rename foo
+</pre></div>
+</div>
+</div>
+<p>Open:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>heroku open # alias: hero
+</pre></div>
+</div>
+</div>
+
+<p>Если проект уже был создан, и надо сделать миграцию базы данных:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>heroku run rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<p>Отменить изменения:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout -f
+</pre></div>
+</div>
+</div>
+
+<p>Добавить и отправить:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git remote add orign git@...
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git push -u orign --all
+</pre></div>
+</div>
+</div>
+<ol>
+  <li>Ветвление</li>
+  <li>Редактирование</li>
+  <li>Фиксация</li>
+  <li>Слияние</li>
+</ol>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>alias git co = git checkout
+</pre></div>
+</div>
+</div>
+
+<p>Ветвление:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git co -b dev # создание ветки
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git branch # список веток
+</pre></div>
+</div>
+</div>
+
+<p>Фиксация:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git status # gs
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git commit # gc &quot;Foo&quot;
+</pre></div>
+</div>
+</div>
+
+<p>Слияние:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout master
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git merge dev
+</pre></div>
+</div>
+</div>
+
+<p>Модель данных Users + интерфейс = ресурс Users</p>
+
+<p>Scaffold:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails generate scaffold User name:string email:string
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+<p>Посмотреть список Rake-задач:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake -T db # по БД
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>rake -T # все
+</pre></div>
+</div>
+</div>
+<h4 id="crud">CRUD:</h4>
+
+<p>REST - передача репрезентативного состояния (архитектурный стиль разработки распределённых сетевых систем). Рой Фолдинг, 2000</p>
+
+<ul>
+  <li>C - POST - CREATE</li>
+  <li>R - GET - READ</li>
+  <li>U - PATCH - UPDATE</li>
+  <li>D - DELETE - DESTROY</li>
+</ul>
+
+<p>Маршруты RESTful - CRUD - операции БД и 4 метода HTTP-запроса + link_to (для ссылки)</p>
+
+<ul>
+  <li>index - /users - GET - users_path</li>
+  <li>show - /users/1 - GET - user</li>
+  <li>new - /users/new - GET - new_user_path</li>
+  <li>edit - /users/1/edit - GET - edit_user_path(user)</li>
+  <li>create - /users - POST</li>
+  <li>update - /users/1 - PATCH</li>
+  <li>destroy - /users/1 - DELETE - user, method: :delete</li>
+</ul>
+
+<p>Решить, какие контроллеры и методы необходимы: структур. приложение использ. ресурсы которые могут CRUD</p>
+
+<p>controller:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">index</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#33B">@users</span> = <span style="color:#036;font-weight:bold">User</span>.all
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<p>view:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">@users.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |user| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%= user.name %</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> user.email %&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%</span><span style="color:#710">=</span></span> link_to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Show</span><span style="color:#710">'</span></span>, user <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%= link_to 'Edit', edit_user_path(user) %</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Destroy', user, method: :delete %&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;%</span><span style="color:#710">=</span></span> link_to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">New User</span><span style="color:#710">'</span></span>, new_user_path <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+<h4 id="link_to">link_to</h4>
+
+<ul>
+  <li>users list - users_path</li>
+  <li>show - user</li>
+  <li>new user - new_user_path</li>
+  <li>edit - edit_user_path(user)</li>
+  <li>destroy - user, method: :delete</li>
+</ul>
+
+<h4 id="routesrb">routes.rb</h4>
+
+<p>Маршрутное правило (направляет запросы к URL в методы контроллера по REST):</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>resources <span style="color:#A60">:users</span>
+</pre></div>
+</div>
+</div>
+<p>Валидатор длины /models/…</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>validates <span style="color:#A60">:content</span>, <span style="color:#606">length</span>: {<span style="color:#606">maximum</span>: <span style="color:#00D">140</span>}
+</pre></div>
+</div>
+</div>
+
+<p>user_id</p>
+
+<p>В models:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>has_many <span style="color:#A60">:posts</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>belong_to <span style="color:#A60">:user</span>
+</pre></div>
+</div>
+</div>
+
+<p>Heroku run:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>heroku run rake <span style="color:#606">db</span>:migrate
+</pre></div>
+</div>
+</div>
+<p>Rails REST: стандартный набор URL и методов действий контроллеров для взаимодействия с моделями данных.</p>
+
+<p>Валидация наличия содержимого (в model):</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>validates <span style="color:#A60">:content</span>, <span style="color:#606">presence</span>: <span style="color:#069">true</span>
+</pre></div>
+</div>
+</div>
+
+<p>Gem-ы для test в Gemfile:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">minitest-reporters</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">mini_backtrace</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">guard-minitest</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">guard</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>heroku logs # hl
+</pre></div>
+</div>
+</div>
+<p>Если много статических страниц, то лучше использовать гем high_voltage</p>
+
+<p>Default start page (routes.rb):</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>root <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">application#hello</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Генерировать контроллеры в верблюжьей нотации:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails generate controller StaticPages home help
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span># alias rgc
+</pre></div>
+</div>
+</div>
+<p>Откат создания контроллера:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails destroy controller StaticPages home
+</pre></div>
+</div>
+</div>
+<p>Откат создания модели:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails destroy model User
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+<p>Откатить на 1 шаг миграции:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:rollback
+</pre></div>
+</div>
+</div>
+<p>Откат к началу:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake db:migrate VERSION=0
+</pre></div>
+</div>
+</div>
+<p>В некоторых средах перед rake надо писать:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle exec
+</pre></div>
+</div>
+</div>
+<p>Маршруты к методам в routes.rb:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">static_pages/home</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+<h4 id="тестирование-контроллеров">Тестирование контроллеров:</h4>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>test <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">should get home</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  get static_pages_home_url
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#606">assert_response</span>: success
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle
+</pre></div>
+</div>
+</div>
+<p>Исслед. сообщ. об ошибке:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rake test
+</pre></div>
+</div>
+</div>
+<h4 id="красный--зелёный--рефакторинг">КРАСНЫЙ / ЗЕЛЁНЫЙ / РЕФАКТОРИНГ</h4>
+
+<p>Проверка заголовка (тест):</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>assert_select <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">title</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo</span><span style="color:#710">&quot;</span></span>
+</pre></div>
+</div>
+</div>
+<p>.erb:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> provide(:title, &quot;Home&quot;) %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;%</span><span style="color:#710">=</span></span> <span style="color:#080;font-weight:bold">yield</span>(<span style="color:#A60">:title</span>) %&gt;
+</pre></div>
+</div>
+</div>
+<h4 id="автозапуск-тестов">Автозапуск тестов:</h4>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle exec guard init # alias begi
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>bundle exec guard # alias beg
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span># Enter
+</pre></div>
+</div>
+</div>
+<p>Когда тормозит:</p>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ps aux | grep spring # узнаем pid
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>kill -9 [pid] # или
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>spring stop # или
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>pkill -9f spring
+</pre></div>
+</div>
+</div>
+<p>Смотри мой репо на гитхаб - https://github.com/krdprog/hartl-ror-custom-guardfile</p>
+
+<h4 id="код-ruby-пишем-в-хелперах">Код Ruby пишем в хелперах</h4>
+
+<p>/app/helpers/application-helper.rb</p>
+
+<p>Можно создавать свои вспомогательные функции (методы)</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a.class
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>a.class.superclass.superclass
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span># наследование классов
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Word</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">palindrome?</span>(string)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    string == string.reverse
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>w = <span style="color:#036;font-weight:bold">Word</span>.new
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span>w.palindrome?(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo</span><span style="color:#710">&quot;</span></span>) <span style="color:#777">#=&gt; false</span>
+</pre></div>
+</div>
+</div>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Word</span> &lt; <span style="color:#036;font-weight:bold">String</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">palindrome?</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    <span style="color:#069">self</span> == <span style="color:#069">self</span>.reverse
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>s = <span style="color:#036;font-weight:bold">Word</span>.new(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">level</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>s.palindrome? <span style="color:#777">#=&gt; true</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>s.size <span style="color:#777">#=&gt; 5</span>
+</pre></div>
+</div>
+</div>
+<p>Изменение встроенных классов:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">String</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">palindrome?</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    <span style="color:#069">self</span> == <span style="color:#069">self</span>.reverse
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">level</span><span style="color:#710">&quot;</span></span>.palindrome? <span style="color:#777">#=&gt; true</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>.empty? <span style="color:#777"># Ruby-метод</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> </span><span style="color:#710">&quot;</span></span>.blank? <span style="color:#777"># Rails-метод</span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">User</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#777"># создадим методы доступа к атрибутам</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  attr_accessor <span style="color:#A60">:name</span> <span style="color:#A60">:email</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  <span style="color:#777"># автоматически вызывается при User.new, аргумент attributes со значением по умолчанию - пустой хеш (nil)</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(attributes = {})
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    <span style="color:#33B">@name</span> = attributes[<span style="color:#A60">:name</span>]
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    <span style="color:#33B">@email</span> = attributes[<span style="color:#A60">:email</span>]
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#777"># переменные экземпляра (в Rails автоматически доступны во views)</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">formatted_email</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@name</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> - </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@email</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<ul>
+  <li>getter - метод чтения</li>
+  <li>setter - метод записи</li>
+</ul>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">./example_user</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>example = <span style="color:#036;font-weight:bold">User</span>.new
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>example.name = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>example.email = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">foo@bar.com</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>example.formatted_email
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#777"># или так:</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>user = <span style="color:#036;font-weight:bold">User</span>.new(<span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Foo</span><span style="color:#710">&quot;</span></span>, <span style="color:#606">email</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Bar</span><span style="color:#710">&quot;</span></span>)
+</pre></div>
+</div>
+</div>
+<p>Инициализация объектов передачей хешей в аргументах широко используется в Rails.</p>
+
+<h3 id="оформление-макета">Оформление макета:</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to &quot;Logo&quot;, &quot;#&quot;, id: &quot;logo&quot; %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+<p>текст ссылки - именованный маршрут - хеш с дополнительными параметрами (в случае выше: CSS id)</p>
+
+<p>Картинка-ссылка:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to image_tag(&quot;logo.png&quot;, alt: &quot;logo&quot;), 'http://krdprog.ru/' %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>Картинки складываем в /app/asserts/images/, но в коде загруженной страницы путь будет виден без images части.</p>
+
+<h3 id="установим-бустрап">Установим бустрап:</h3>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">bootstrap-sass</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle install
+</pre></div>
+</div>
+</div>
+<p>и, добавить в файл /app/asserts/stylesheets/custom.css.scss:</p>
+<div class="language-css highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#088;font-weight:bold">@import</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">bootstrap-sprockets</span><span style="color:#710">&quot;</span></span>;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#088;font-weight:bold">@import</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">bootstrap</span><span style="color:#710">&quot;</span></span>;
+</pre></div>
+</div>
+</div>
+
+<p>Все стили будем прописывать тут: /app/asserts/stylesheets/custom.css.scss</p>
+
+<p>Все таблицы стилей из каталога /app/asserts/stylesheets/ добавятся в файл application.css</p>
+
+<h3 id="частичные-шаблоны">Частичные шаблоны</h3>
+
+<p>Из основного шаблона можно вынести часть кода в частичные шаблоны и вызвать их в
+основном.</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> render 'layouts/header' %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>При этом будет найден и обработан файл /app/views/layouts/_header.html.erb</p>
+
+<p>_foo.html.erb - универсальное соглашени по именованию частичных шаблонов.</p>
+
+<p>Многие для частичных шаблонов используют каталог shared, Хартл предлагает
+каталог shared использовать для хранения служебных шаблонов использующихся в
+нескольких страницах, а в layouts - части макета (используемые на каждой
+странице).</p>
+
+<h3 id="sass-и-конвейер-ресурсов-asset-pipeline">Sass и конвейер ресурсов (asset pipeline)</h3>
+
+<p>Конвейер ресурсов значительно упрощает создание и управление статическими
+ресурсами (CSS, JS, изображения).</p>
+
+<p>3 основных аспекта:</p>
+
+<ul>
+  <li>каталоги ресурсов</li>
+  <li>файлы манифестов</li>
+  <li>препроцессоры</li>
+</ul>
+
+<h3 id="3-канонических-каталога">3 канонических каталога:</h3>
+
+<ul>
+  <li>/app/asserts - ресурсы данного приложения</li>
+  <li>/lib/asserts - ресурсы для библиотек написанных вашей командой разработчиков</li>
+  <li>/vendor/asserts - ресурсы сторонних поставщиков</li>
+</ul>
+
+<h3 id="файлы-манифестов-декларации">Файлы манифестов (декларации)</h3>
+
+<p>Чтобы сообщить Rails через гем Sprockets как объединить и сформировать в 1 файл CSS и JS файлы.</p>
+
+<p>/app/asserts/stylesheets/application.css</p>
+
+<div class="language-css highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">*</span>= <span style="color:#070;font-weight:bold">require_tree</span> . <span style="color:#F00;background-color:#FAA">-</span> <span style="color:#F00;background-color:#FAA">в</span><span style="color:#F00;background-color:#FAA">к</span><span style="color:#F00;background-color:#FAA">л</span><span style="color:#F00;background-color:#FAA">ю</span><span style="color:#F00;background-color:#FAA">ч</span><span style="color:#F00;background-color:#FAA">и</span><span style="color:#F00;background-color:#FAA">т</span> <span style="color:#F00;background-color:#FAA">в</span><span style="color:#F00;background-color:#FAA">с</span><span style="color:#F00;background-color:#FAA">е</span> <span style="color:#F00;background-color:#FAA">к</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">т</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">л</span><span style="color:#F00;background-color:#FAA">о</span><span style="color:#F00;background-color:#FAA">г</span><span style="color:#F00;background-color:#FAA">и</span> <span style="color:#F00;background-color:#FAA">и</span> <span style="color:#F00;background-color:#FAA">п</span><span style="color:#F00;background-color:#FAA">о</span><span style="color:#F00;background-color:#FAA">д</span><span style="color:#F00;background-color:#FAA">к</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">т</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">л</span><span style="color:#F00;background-color:#FAA">о</span><span style="color:#F00;background-color:#FAA">г</span><span style="color:#F00;background-color:#FAA">и</span> <span style="color:#F00;background-color:#FAA">в</span> /<span style="color:#070;font-weight:bold">app</span>/<span style="color:#070;font-weight:bold">asserts</span>/<span style="color:#070;font-weight:bold">stylesheets</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#070;font-weight:bold">*</span>= <span style="color:#070;font-weight:bold">require_self</span> <span style="color:#F00;background-color:#FAA">-</span> <span style="color:#F00;background-color:#FAA">у</span><span style="color:#F00;background-color:#FAA">к</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">з</span><span style="color:#F00;background-color:#FAA">ы</span><span style="color:#F00;background-color:#FAA">в</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">е</span><span style="color:#F00;background-color:#FAA">т</span>, <span style="color:#F00;background-color:#FAA">г</span><span style="color:#F00;background-color:#FAA">д</span><span style="color:#F00;background-color:#FAA">е</span> <span style="color:#F00;background-color:#FAA">б</span><span style="color:#F00;background-color:#FAA">у</span><span style="color:#F00;background-color:#FAA">д</span><span style="color:#F00;background-color:#FAA">е</span><span style="color:#F00;background-color:#FAA">т</span> <span style="color:#F00;background-color:#FAA">в</span><span style="color:#F00;background-color:#FAA">к</span><span style="color:#F00;background-color:#FAA">л</span><span style="color:#F00;background-color:#FAA">ю</span><span style="color:#F00;background-color:#FAA">ч</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">т</span><span style="color:#F00;background-color:#FAA">ь</span><span style="color:#F00;background-color:#FAA">с</span><span style="color:#F00;background-color:#FAA">я</span> <span style="color:#F00;background-color:#FAA">к</span><span style="color:#F00;background-color:#FAA">о</span><span style="color:#F00;background-color:#FAA">д</span> <span style="color:#F00;background-color:#FAA">с</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">м</span><span style="color:#F00;background-color:#FAA">о</span><span style="color:#F00;background-color:#FAA">г</span><span style="color:#F00;background-color:#FAA">о</span> <span style="color:#F00;background-color:#FAA">ф</span><span style="color:#F00;background-color:#FAA">а</span><span style="color:#F00;background-color:#FAA">й</span><span style="color:#F00;background-color:#FAA">л</span><span style="color:#F00;background-color:#FAA">а</span> <span style="color:#070;font-weight:bold">application</span><span style="color:#B06;font-weight:bold">.css</span>
+</pre></div>
+</div>
+</div>
+
+<p>Смотри подробнее по ссылке: https://guides.rubyonrails.org/asset_pipeline.html и http://rusrails.ru/asset-pipeline</p>
+
+<h3 id="препроцессоры">Препроцессоры</h3>
+
+<p>сборка ресурсов - подготовка для добавления в макет (прогон через несколько препроцессоров) - комбинирование с помощью файлов манифестов.</p>
+
+<ul>
+  <li>.scss - Sass</li>
+  <li>.coffee - CofeeScript</li>
+  <li>.erb - Embed Ruby</li>
+</ul>
+
+<p>TODO: Изучить CoffeeScript.</p>
+
+<p>Цепочки препроцессоров для обработки файлов: foo.js.erb.coffee - обработка справа-налево</p>
+
+<h3 id="эффективность-на-этапе-эксплуатации">Эффективность на этапе эксплуатации</h3>
+
+<p>Автоматическая автоматизация ресурсов.</p>
+
+<ul>
+  <li>application.css</li>
+  <li>application.js</li>
+</ul>
+
+<p>Объединение и минимизация.</p>
+
+<h3 id="sass">Sass</h3>
+
+<p>Язык определения таблиц стилей.</p>
+
+<ul>
+  <li>вложения</li>
+  <li>переменные</li>
+  <li>примеси</li>
+</ul>
+
+<p>.scss</p>
+
+<p>custom.css.scss</p>
+
+<h4 id="вложения">Вложения</h4>
+
+<p>CSS:</p>
+<div class="language-css highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#B06;font-weight:bold">.center</span> {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#606">text-align</span>: <span style="color:#088">center</span>;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>}
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="color:#B06;font-weight:bold">.center</span> <span style="color:#070;font-weight:bold">h1</span> {
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  <span style="color:#606">margin-bottom</span>: <span style="color:#60E">10px</span>;
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>}
+</pre></div>
+</div>
+</div>
+
+<p>Sass:</p>
+<div class="language-css highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#B06;font-weight:bold">.center</span> {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#606">text-align</span>: <span style="color:#088">center</span>;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  <span style="color:#606">h1</span> {
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>    <span style="color:#606">margin-bottom</span>: <span style="color:#60E">10px</span>;
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  }
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>}
+</pre></div>
+</div>
+</div>
+
+<p>Вложение правила со ссылкой на родительский элемент:</p>
+
+<div class="language-css highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#33D;font-weight:bold">#logo</span> {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  <span style="color:#606">margin-left</span>: <span style="color:#60E">10px</span>;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#606">color</span>: <span style="color:#0A0">#fff</span>;
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  <span style="color:#F00;background-color:#FAA">&amp;</span>:<span style="color:#088">hover</span> {
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    <span style="color:#606">text-decoration</span>: <span style="color:#088">none</span>;
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  }
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span>}
+</pre></div>
+</div>
+</div>
+
+<p>Sass заменяет &amp;:hover на #logo:hover</p>
+
+<h4 id="переменные-в-sass">Переменные в Sass</h4>
+
+<div class="language-css highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#F00;background-color:#FAA">$</span><span style="color:#070;font-weight:bold">light-gray</span>: <span style="color:#0A0">#777</span>;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#070;font-weight:bold">color</span>: <span style="color:#F00;background-color:#FAA">$</span><span style="color:#070;font-weight:bold">light-gray</span>;
+</pre></div>
+</div>
+</div>
+
+<p>В Less, переменные обозначаются знаком @, в Sass - $</p>
+
+<h3 id="ссылки-в-макете">Ссылки в макете:</h3>
+
+<div class="language-text highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Home     | /        | root_path
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>About    | /about   | about_path
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>Help     | /help    | help_path
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>Contact  | /contact | contact_path
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>Signup   | /signup  | signup_path
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>Login    | /login   | login_path
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to &quot;About&quot;, about_path %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>С помощью файла /config/routes.rb Rails определяет соответствия между именами маршрутов и адресами URL.</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>root_path -&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>root_url -&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">https://foo.com/</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Общее соглашение использовать _path, кроме случаев переадресации (стандарт HTTP требует полный адрес URL) - _url</p>
+
+<p><strong>Чтобы определить именованные маршруты</strong>, надо поменять правила в /config/routes.rb:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">static_pages/help</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#777"># поменять на:</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">help</span><span style="color:#710">'</span></span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">static_pages#help</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+<p><strong>Второй вариант передаёт запрос GET к адресу URL /help в метод help контроллера StaticPages и создаётся именованные маршруты help_path и help_url</strong></p>
+
+<h3 id="тесты-для-проверки-ссылок-в-макете">Тесты для проверки ссылок в макете:</h3>
+
+<p>Проверим ссылки в макете с помощью интеграционных тестов.</p>
+
+<p>Создадим тест site_layout</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g integration_test site_layout
+</pre></div>
+</div>
+</div>
+<p>Или используя алиас (создал для себя rgit):</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rgit site_layout
+</pre></div>
+</div>
+</div>
+<p>Будет создан файл /test/integration/site_layout_test.rb</p>
+
+<p>Добавим в него тест проверки наших ссылок:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">test_helper</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">SiteLayoutTest</span> &lt; <span style="color:#036;font-weight:bold">ActionDispatch</span>::<span style="color:#036;font-weight:bold">IntegrationTest</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  test <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">layout links</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    get root_path
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    assert_template <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">static_pages/home</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    assert_select <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">a[href=?]</span><span style="color:#710">&quot;</span></span>, root_path, <span style="color:#606">count</span>: <span style="color:#00D">2</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    assert_select <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">a[href=?]</span><span style="color:#710">&quot;</span></span>, help_path
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    assert_select <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">a[href=?]</span><span style="color:#710">&quot;</span></span>, about_path
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    assert_select <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">a[href=?]</span><span style="color:#710">&quot;</span></span>, contact_path
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Дополнительно потребовался gem, добавить в Gemfile и сделать bundle install:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">rails-controller-testing</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Запустим интеграционный тест:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle exec rake test:integration
+</pre></div>
+</div>
+</div>
+
+<p>И, все тесты:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle exec rake test
+</pre></div>
+</div>
+</div>
+
+<p>Примеры assert_select:</p>
+
+<div class="language-text highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>assert_select &quot;div&quot;                         | &lt;div&gt;faz&lt;/div&gt;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>assert_select &quot;div&quot;, &quot;foo&quot;                  | &lt;div&gt;foo&lt;/div&gt;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>assert_select &quot;div.nav&quot;                     | &lt;div class=&quot;nav&quot;&gt;foo&lt;/div&gt;
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>assert_select &quot;div#profile&quot;                 | &lt;div id=&quot;profile&quot;&gt;foo&lt;/div&gt;
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>assert_select &quot;div[name=ku]&quot;                | &lt;div name=&quot;ku&quot;&gt;foo&lt;/div&gt;
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>assert_select &quot;a[href=?]&quot;, '/', count: 1    | &lt;a href=&quot;/&quot;&gt;foo&lt;/a&gt;
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>assert_select &quot;a[href=?]&quot;, '/', text: &quot;bar&quot; | &lt;a href=&quot;/&quot;&gt;bar&lt;/a&gt;
+</pre></div>
+</div>
+</div>
+
+<h3 id="подготовим-всё-для-авторизации">Подготовим всё для авторизации:</h3>
+
+<p>Создадим контроллер Users и метод действия new:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g controller Users new
+</pre></div>
+</div>
+</div>
+
+<p>Будет создан контроллер, заглушка представления new и тест.</p>
+
+<p>И, создадим маршрут в /config/routes.rb</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>get <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">signup</span><span style="color:#710">'</span></span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">users#new</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<p>Ссылка на страницу регистрации:</p>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to &quot;Sign up now!&quot;, signup_path, class: &quot;btn btn-lg btn-primary&quot; %&gt;</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+:ET

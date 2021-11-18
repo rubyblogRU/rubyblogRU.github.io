@@ -1,0 +1,242 @@
+I"~<p>Чтобы сделать структуру каталога с категориями и подкатегориями, воспользуемся гемом <a href="https://github.com/stefankroes/ancestry">https://github.com/stefankroes/ancestry</a></p>
+
+<p>Итак, поехали.</p>
+
+<h3 id="создадим-ресурс-категории">Создадим ресурс категории:</h3>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g model Category name:string description:text
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>rails g controller Categories
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># config/routes.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#036;font-weight:bold">Rails</span>.application.routes.draw <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  resources <span style="color:#A60">:categories</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<h3 id="добавим-в-gemfile-и-создадим-миграцию">Добавим в Gemfile и создадим миграцию:</h3>
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gem <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">ancestry</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>bundle install
+</pre></div>
+</div>
+</div>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rails g migration add_ancestry_to_categories ancestry:string:index
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>rake db:migrate
+</pre></div>
+</div>
+</div>
+
+<h3 id="продолжим-работу-с-ресурсом-категории">Продолжим работу с ресурсом категории:</h3>
+
+<p><strong>Добавим в модель категории:</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Category</span> &lt; <span style="color:#036;font-weight:bold">ApplicationRecord</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  has_ancestry
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Добавим в контроллер категории:</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">CategoriesController</span> &lt; <span style="color:#036;font-weight:bold">ApplicationController</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  before_action <span style="color:#A60">:set_category</span>, <span style="color:#606">only</span>: [<span style="color:#A60">:show</span>, <span style="color:#A60">:edit</span>, <span style="color:#A60">:update</span>, <span style="color:#A60">:destroy</span>]
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">index</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#33B">@categories</span> = <span style="color:#036;font-weight:bold">Category</span>.all
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">show</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">new</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#33B">@category</span> = <span style="color:#036;font-weight:bold">Category</span>.new
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">create</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    <span style="color:#33B">@category</span> = <span style="color:#036;font-weight:bold">Category</span>.new(category_params)
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@category</span>.valid?
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>      <span style="color:#33B">@category</span>.save
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>      redirect_to <span style="color:#33B">@category</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>    <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>      render <span style="color:#A60">:new</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">update</span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>    <span style="color:#080;font-weight:bold">if</span> <span style="color:#33B">@category</span>.update(category_params)
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>      redirect_to <span style="color:#33B">@category</span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>    <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>      render <span style="color:#A60">:edit</span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">destroy</span>
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>    <span style="color:#33B">@category</span>.destroy
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>    redirect_to categories_path
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>  private
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">set_category</span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>    <span style="color:#33B">@category</span> = <span style="color:#036;font-weight:bold">Category</span>.find(params[<span style="color:#A60">:id</span>])
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">category_params</span>
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>    params.require(<span style="color:#A60">:category</span>).permit(<span style="color:#A60">:name</span>, <span style="color:#A60">:description</span>, <span style="color:#A60">:parent_id</span>)
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>Поработаем с вьюхами и паршилами:</strong></p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># app/views/categories/index.html.erb:</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>&lt;h1&gt;Категории&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= render partial: &quot;category&quot;, locals: { collection: Category.all } %&gt;</span></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= link_to 'Новая категория', new_category_path %&gt;</span></span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># app/views/categories/_category.html.erb:</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>&lt;ul <span style="color:#080;font-weight:bold">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">categories</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">collection.arrange.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |category, sub_item| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;li</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to category.name, category_path(category) %&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &lt;% if category.has_children? %&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">        &lt;%</span><span style="color:#710">=</span></span> render <span style="color:#606">partial</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">category</span><span style="color:#710">&quot;</span></span>, <span style="color:#606">locals</span>: { <span style="color:#606">collection</span>: category.children } %&gt;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>      &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    &lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">li&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">  &lt;% end %&gt;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;</span><span style="color:#404">/</span><span style="color:#C2C">u</span></span>l&gt;
+</pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># app/views/categories/new.html.erb:</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>&lt;h1&gt;Создать категорию&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= render 'form' %&gt;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777"># app/views/categories/edit.html.erb:</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>&lt;h1&gt;Редактировать категорию&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">h1&gt;</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808">&lt;%= render 'form' %&gt;</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># app/views/categories/_form.html.erb:</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> form_for @category do |f| %&gt;</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> f.label <span style="color:#A60">:name</span> %&gt;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> f.text_field :name %&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> f.label <span style="color:#A60">:description</span> %&gt;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> f.text_area :description %&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> f.label <span style="color:#A60">:parent_id</span> %&gt;
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> f.collection_select :parent_id, Category.order(:name), :id, :name, include_blank: true %&gt;</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;p&gt;</span></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;%</span><span style="color:#710">=</span></span> f.submit <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Сохранить</span><span style="color:#710">'</span></span> %&gt; |
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Отмена', categories_path %&gt;</span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %&gt;</span></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># app/views/categories/show.html.erb:</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>&lt;h1&gt;&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> @category.name %&gt;&lt;/h1&gt;</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;p&gt;&lt;%</span><span style="color:#710">=</span></span> <span style="color:#33B">@category</span>.description <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/p</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>&lt;p&gt;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Редактировать категорию', edit_category_path(@category) %&gt; |</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;%</span><span style="color:#710">=</span></span> link_to <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Удалить категорию</span><span style="color:#710">'</span></span>, category_path(<span style="color:#33B">@category</span>), <span style="color:#606">method</span>: <span style="color:#A60">:delete</span>, <span style="color:#606">data</span>: { <span style="color:#606">confirm</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Точно удалить?</span><span style="color:#710">'</span></span> } %&gt; |
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to 'Назад в категории', categories_path %&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;/p&gt;</span></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% if @category.has_children? %&gt;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;h3&gt;Подкатегории у категории: &lt;%</span><span style="color:#710">=</span></span> <span style="color:#33B">@category</span>.name <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20">&lt;/h3</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  &lt;div <span style="color:#080;font-weight:bold">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">submenu</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> render 'submenu_categories', categories: @category.root.descendants.arrange %&gt;</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;/div&gt;</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;% end %&gt;</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># app/views/categories/_submenu_categories.html.erb:</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>&lt;ul&gt;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">categories.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |category, children| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;li</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to_unless_current category.name, category %&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">      &lt;%</span><span style="color:#710">=</span></span> render <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">submenu_categories</span><span style="color:#710">'</span></span>, <span style="color:#606">categories</span>: children <span style="color:#080;font-weight:bold">if</span> children.present? <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;/li</span><span style="color:#710">&gt;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">end</span><span style="color:#710"> </span></span>%&gt;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>&lt;<span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">ul&gt;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#808"></span></span></pre></div>
+</div>
+</div>
+
+<p>Готово. Теперь можно вкладывать подкатегории в категории. Плюс у нас готовы 2 типа меню, отображающие всю структуру категорий-подкатегорий (в index.html.erb) и меню отображающее только подкатегории данной категории (в show.html.erb)</p>
+
+<p>Плюс Вы можете добавить меню с корневыми категориями (добавим в layout):</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># app/views/layouts/application.html.erb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>&lt;ul id=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">menu</span><span style="color:#710">&quot;</span></span>&gt;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  &lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">% </span><span style="color:#D20">Category.roots.each</span><span style="color:#710"> </span></span><span style="color:#080;font-weight:bold">do</span> |category| <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%&gt;</span><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">    &lt;li</span><span style="color:#710">&gt;</span></span>&lt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">%=</span><span style="color:#D20"> link_to category.name, category %&gt;&lt;/li&gt;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">  &lt;% end %&gt;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;/ul&gt;</span></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;hr&gt;</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20"></span></span></pre></div>
+</div>
+</div>
+
+<p>Можно ещё почитать: <a href="https://hackernoon.com/nested-categories-with-rails-gem-ancestry-112ca8bbbf98">https://hackernoon.com/nested-categories-with-rails-gem-ancestry-112ca8bbbf98</a></p>
+
+<p>Более подробно про гем и его настройки, читайте тут: <a href="https://github.com/stefankroes/ancestry">https://github.com/stefankroes/ancestry</a></p>
+:ET

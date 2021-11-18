@@ -1,0 +1,23 @@
+I"8<p>Insomnia — это программа для тестирования REST API.</p>
+
+<p><a href="https://insomnia.rest/">https://insomnia.rest/</a></p>
+
+<p>Установка Insomnia на Ubuntu/Debian:</p>
+
+<div class="language-bash highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span># Add to sources
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>echo &quot;deb https://dl.bintray.com/getinsomnia/Insomnia /&quot; \
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    | sudo tee -a /etc/apt/sources.list.d/insomnia.list
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span># Add public key used to verify code signature
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>wget --quiet -O - https://insomnia.rest/keys/debian-public.key.asc \
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    | sudo apt-key add -
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span># Refresh repository sources and install Insomnia
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>sudo apt-get update
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>sudo apt-get install insomnia
+</pre></div>
+</div>
+</div>
+<p>Другие ОС: <a href="https://support.insomnia.rest/article/23-installation">https://support.insomnia.rest/article/23-installation</a></p>
+:ET
