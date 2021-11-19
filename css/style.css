@@ -104,6 +104,15 @@ a:hover {
   display: none;
 }
 
+.highlight {
+  border: 1px solid gray;
+  background-color: lemonchiffon;
+  border-radius: 2px;
+  padding: 20px 20px 0 20px;
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+}
+
 .avatar {
   width: 150px;
   height: 150px;
